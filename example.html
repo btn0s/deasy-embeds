@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deasy embeds — plain HTML host</title>
+    <style>
+      body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #fff; color: #111; }
+      h2 { margin: 32px 24px 12px; font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: #888; }
+    </style>
+  </head>
+  <body>
+    <h2>&lt;deasy-rotating-document&gt;</h2>
+    <deasy-rotating-document></deasy-rotating-document>
+
+    <h2>mountScanner(el, { colorMode: 'dark' })</h2>
+    <div id="scanner-dark"></div>
+
+    <h2>&lt;deasy-scanner color-mode="light"&gt;</h2>
+    <deasy-scanner color-mode="light"></deasy-scanner>
+
+    <script type="module">
+      import { mountScanner, defineScannerElement, defineRotatingDocumentElement } from './index.js'
+      defineScannerElement()
+      defineRotatingDocumentElement()
+      window.scanner = mountScanner(document.getElementById('scanner-dark'), { colorMode: 'dark' })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "@deasy/embeds",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": { "types": "./index.d.ts", "default": "./index.js" },
+    "./scanner": { "types": "./scanner.d.ts", "default": "./scanner.js" },
+    "./rotating-document": { "types": "./rotating-document.d.ts", "default": "./rotating-document.js" }
+  }
+}
