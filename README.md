@@ -1,7 +1,8 @@
 # Deasy embeds
 
-The scanner demo (`src/prototypes/scanner-gunmetal`) and the rotating-document
-3D hero (`src/prototypes/rotating-cube-v2`) compiled into a framework-agnostic
+The How it Works blade (`src/prototypes/how-it-works`), the scanner demo
+(`src/prototypes/scanner-gunmetal`) and the rotating-document 3D hero
+(`src/prototypes/rotating-cube-v2`) compiled into a framework-agnostic
 ES module package. Drop it into any TS/JS project; it does not need React,
 three.js or a bundler plugin on the host side.
 
@@ -24,8 +25,12 @@ Or copy the files into your project and import `./index.js` directly.
 ## Use
 
 ```ts
+import { mountHowItWorks } from '@deasy/embeds/how-it-works'
 import { mountScanner } from '@deasy/embeds/scanner'
 import { mountRotatingDocument } from '@deasy/embeds/rotating-document'
+
+const blade = mountHowItWorks(document.querySelector('#how-it-works')!, { colorMode: 'light' })
+blade.update({ colorMode: 'dark' })
 
 const scanner = mountScanner(document.querySelector('#scanner')!, { colorMode: 'dark' })
 scanner.update({ colorMode: 'light' })
@@ -38,24 +43,31 @@ hero.unmount()
 Or as custom elements:
 
 ```ts
+import { defineHowItWorksElement } from '@deasy/embeds/how-it-works'
 import { defineScannerElement } from '@deasy/embeds/scanner'
 import { defineRotatingDocumentElement } from '@deasy/embeds/rotating-document'
 
+defineHowItWorksElement()       // <deasy-how-it-works color-mode="light" transparent no-fonts>
 defineScannerElement()          // <deasy-scanner color-mode="light" transparent no-fonts>
 defineRotatingDocumentElement() // <deasy-rotating-document show-topbar no-fonts>
 ```
 
 In React, mount into a ref in an effect and call `unmount()` in the cleanup.
-Import the subpaths (`/scanner`, `/rotating-document`) rather than the root so
-a page that only needs the scanner doesn't load three.js.
+Import the subpaths (`/how-it-works`, `/scanner`, `/rotating-document`) rather than the root so
+a page that only needs one blade doesn't load three.js.
+
+`how-it-works` is the latest How it Works flow (connect up to two sources, Read,
+Curate, Activate) in the Gunmetal treatment. `scanner` is the earlier Gunmetal
+scanner it was designed on; use `how-it-works` for the site module.
 
 ## Notes
 
-- Both pieces were built as full-page prototypes: the scanner fills at least
+- These were built as full-page prototypes: the scanners fill at least
   one viewport of height, and the hero listens to window scroll/wheel/touch.
 - The hero hides the prototype's fake site top bar unless `showTopbar` is set.
   Append `?debug` to the host URL to show its Leva tuning panel.
-- Size: the shared runtime is ~215 kB gzip, the scanner adds ~73 kB, and the
+- Size: the shared runtime is ~250 kB gzip, `how-it-works` and `scanner` each
+  add ~45 kB (mostly the inlined source marks, shared between them), and the
   hero adds ~1.6 MB (three.js plus the inlined textures and model).
 
 ## Rebuild
@@ -67,5 +79,5 @@ pnpm build:embeds   # writes embeds/package
 ```
 
 The built package is published to https://github.com/btn0s/deasy-embeds.
-Its `example.html` shows both pieces on a plain HTML page (serve the folder
+Its `example.html` shows every piece on a plain HTML page (serve the folder
 statically, e.g. `python3 -m http.server`).

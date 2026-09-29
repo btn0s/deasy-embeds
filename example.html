@@ -10,6 +10,12 @@
     </style>
   </head>
   <body>
+    <h2>&lt;deasy-how-it-works color-mode="light"&gt;</h2>
+    <deasy-how-it-works color-mode="light"></deasy-how-it-works>
+
+    <h2>mountHowItWorks(el, { colorMode: 'dark' })</h2>
+    <div id="how-it-works-dark"></div>
+
     <h2>&lt;deasy-rotating-document&gt;</h2>
     <deasy-rotating-document></deasy-rotating-document>
 
@@ -20,7 +26,9 @@
     <deasy-scanner color-mode="light"></deasy-scanner>
 
     <script type="module">
-      import { mountScanner, defineScannerElement, defineRotatingDocumentElement } from './index.js'
+      import { mountHowItWorks, defineHowItWorksElement, mountScanner, defineScannerElement, defineRotatingDocumentElement } from './index.js'
+      defineHowItWorksElement()
+      window.howItWorks = mountHowItWorks(document.getElementById('how-it-works-dark'), { colorMode: 'dark' })
       defineScannerElement()
       defineRotatingDocumentElement()
       window.scanner = mountScanner(document.getElementById('scanner-dark'), { colorMode: 'dark' })

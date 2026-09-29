@@ -18,6 +18,15 @@ export type ScannerHandle = {
   unmount: () => void
 }
 
+/** Same options as the scanner. */
+export type HowItWorksOptions = ScannerOptions
+
+export type HowItWorksHandle = {
+  /** Merge new options and re-render (e.g. to follow the host's theme). */
+  update: (options: HowItWorksOptions) => void
+  unmount: () => void
+}
+
 export type RotatingDocumentOptions = MountOptions & {
   /** Keep the prototype's fake site top bar. Default false. */
   showTopbar?: boolean
@@ -31,6 +40,11 @@ export type RotatingDocumentHandle = {
 export declare function mountScanner(el: HTMLElement, options?: ScannerOptions): ScannerHandle
 /** Register `<deasy-scanner color-mode="light|dark" transparent no-fonts>`. */
 export declare function defineScannerElement(tag?: string): void
+
+/** Render the How it Works blade (connect, Read, Curate, Activate) into `el` inside a shadow root. */
+export declare function mountHowItWorks(el: HTMLElement, options?: HowItWorksOptions): HowItWorksHandle
+/** Register `<deasy-how-it-works color-mode="light|dark" transparent no-fonts>`. */
+export declare function defineHowItWorksElement(tag?: string): void
 
 /** Render the rotating-document hero (3D scene, copy, toggle) into `el` inside a shadow root. */
 export declare function mountRotatingDocument(el: HTMLElement, options?: RotatingDocumentOptions): RotatingDocumentHandle
