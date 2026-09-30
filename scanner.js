@@ -1,2 +1,2 @@
-import { n as e, t } from "./chunks/scanner-B4RAAUVN.js";
+import { n as e, t } from "./chunks/scanner-eQsdwQaB.js";
 export { t as defineScannerElement, e as mountScanner };
