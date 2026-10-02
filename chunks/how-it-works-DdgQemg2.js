@@ -2162,7 +2162,7 @@ function We({ fixedHeader: e = !1 }) {
 //#endregion
 //#region embeds/src/how-it-works.tsx
 var Ge = "\n.variant-shell { font-family: var(--sans); font-size: var(--body-size); line-height: var(--body-line-height); -webkit-font-smoothing: antialiased; }\n.variant-shell[data-color-mode='light'] { color-scheme: light; background: #fbf9f5; color: #24221e; }\n.variant-shell[data-color-mode='dark'] { color-scheme: dark; background: #211e1c; color: #f0ebe3; }\n.variant-shell.hiw-site-page { background: #2f2c25; }\n.variant-shell[data-transparent] { background: transparent; }\n";
-function Ke({ colorMode: e = "dark", design: t = "gunmetal", transparent: n = !1 }) {
+function Ke({ colorMode: e = "dark", design: t = "site", transparent: n = !1 }) {
 	let r = t === "site";
 	return /* @__PURE__ */ (0, D.jsx)("div", {
 		className: `variant-shell ${r ? "hiw-site-page" : ""}`,
@@ -2198,7 +2198,7 @@ function qe(e, t = {}) {
 function Je(e) {
 	return {
 		colorMode: e.getAttribute("color-mode") === "light" ? "light" : "dark",
-		design: e.getAttribute("design") === "site" ? "site" : "gunmetal",
+		design: e.getAttribute("design") === "gunmetal" ? "gunmetal" : "site",
 		transparent: e.hasAttribute("transparent"),
 		loadFonts: !e.hasAttribute("no-fonts")
 	};

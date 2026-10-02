@@ -29,8 +29,8 @@ import { mountHowItWorks } from '@deasy/embeds/how-it-works'
 import { mountScanner } from '@deasy/embeds/scanner'
 import { mountRotatingDocument } from '@deasy/embeds/rotating-document'
 
-const blade = mountHowItWorks(document.querySelector('#how-it-works')!, { colorMode: 'light' })
-blade.update({ colorMode: 'dark' })
+const blade = mountHowItWorks(document.querySelector('#how-it-works')!)
+// The reviewed site design is the default; no styling option is required.
 
 const scanner = mountScanner(document.querySelector('#scanner')!, { colorMode: 'dark' })
 scanner.update({ colorMode: 'light' })
@@ -47,7 +47,7 @@ import { defineHowItWorksElement } from '@deasy/embeds/how-it-works'
 import { defineScannerElement } from '@deasy/embeds/scanner'
 import { defineRotatingDocumentElement } from '@deasy/embeds/rotating-document'
 
-defineHowItWorksElement()       // <deasy-how-it-works color-mode="light" transparent no-fonts>
+defineHowItWorksElement()       // <deasy-how-it-works>
 defineScannerElement()          // <deasy-scanner color-mode="light" transparent no-fonts>
 defineRotatingDocumentElement() // <deasy-rotating-document show-topbar no-fonts>
 ```
@@ -57,9 +57,11 @@ Import the subpaths (`/how-it-works`, `/scanner`, `/rotating-document`) rather t
 a page that only needs one blade doesn't load three.js.
 
 `how-it-works` is the latest How it Works flow (connect up to four sources, Read,
-Curate, Activate) in the Gunmetal treatment by default. Set `design: 'site'` or
-`<deasy-how-it-works design="site">` for the reviewed home-v2 styling,
-fixed header, and cream-on-charcoal palette. `scanner` is the earlier Gunmetal
+Curate, Activate) with the reviewed home-v2 styling, fixed header, and
+cream-on-charcoal palette by default. Use `mountHowItWorks(el)` or
+`<deasy-how-it-works>` directly. The earlier treatment is available explicitly
+with `design: 'gunmetal'` or `design="gunmetal"`; `colorMode` applies to that
+legacy design. `scanner` is the earlier Gunmetal
 scanner it was designed on; use `how-it-works` for the site module.
 
 ## Notes
@@ -68,8 +70,8 @@ scanner it was designed on; use `how-it-works` for the site module.
   one viewport of height, and the hero listens to window scroll/wheel/touch.
 - The hero hides the prototype's fake site top bar unless `showTopbar` is set.
   Append `?debug` to the host URL to show its Leva tuning panel.
-- Size: the shared runtime is ~250 kB gzip, `how-it-works` and `scanner` each
-  add ~45 kB (mostly the inlined source marks, shared between them), and the
+- Size: the shared runtime is ~250 kB gzip, `how-it-works` adds ~870 kB (including the inlined site background),
+  `scanner` adds ~45 kB, and the
   hero adds ~1.6 MB (three.js plus the inlined textures and model).
 
 ## Rebuild

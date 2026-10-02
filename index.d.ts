@@ -20,7 +20,7 @@ export type ScannerHandle = {
 
 /** Palette plus the site's fixed-header design. */
 export type HowItWorksOptions = ScannerOptions & {
-  /** Default 'gunmetal'; 'site' uses the home-v2 light palette on charcoal. */
+  /** Default 'site'; uses the home-v2 light palette on charcoal. */
   design?: 'gunmetal' | 'site'
 }
 

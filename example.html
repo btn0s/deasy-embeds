@@ -10,13 +10,13 @@
     </style>
   </head>
   <body>
-    <h2>How it Works — site design</h2>
-    <deasy-how-it-works design="site"></deasy-how-it-works>
+    <h2>How it Works — default shipped design</h2>
+    <deasy-how-it-works></deasy-how-it-works>
 
-    <h2>&lt;deasy-how-it-works color-mode="light"&gt;</h2>
-    <deasy-how-it-works color-mode="light"></deasy-how-it-works>
+    <h2>Legacy Gunmetal — light</h2>
+    <deasy-how-it-works design="gunmetal" color-mode="light"></deasy-how-it-works>
 
-    <h2>mountHowItWorks(el, { colorMode: 'dark' })</h2>
+    <h2>Legacy Gunmetal — dark</h2>
     <div id="how-it-works-dark"></div>
 
     <h2>&lt;deasy-rotating-document&gt;</h2>
@@ -31,7 +31,7 @@
     <script type="module">
       import { mountHowItWorks, defineHowItWorksElement, mountScanner, defineScannerElement, defineRotatingDocumentElement } from './index.js'
       defineHowItWorksElement()
-      window.howItWorks = mountHowItWorks(document.getElementById('how-it-works-dark'), { colorMode: 'dark' })
+      window.howItWorks = mountHowItWorks(document.getElementById('how-it-works-dark'), { design: 'gunmetal', colorMode: 'dark' })
       defineScannerElement()
       defineRotatingDocumentElement()
       window.scanner = mountScanner(document.getElementById('scanner-dark'), { colorMode: 'dark' })
