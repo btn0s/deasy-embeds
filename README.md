@@ -56,8 +56,10 @@ In React, mount into a ref in an effect and call `unmount()` in the cleanup.
 Import the subpaths (`/how-it-works`, `/scanner`, `/rotating-document`) rather than the root so
 a page that only needs one blade doesn't load three.js.
 
-`how-it-works` is the latest How it Works flow (connect up to two sources, Read,
-Curate, Activate) in the Gunmetal treatment. `scanner` is the earlier Gunmetal
+`how-it-works` is the latest How it Works flow (connect up to four sources, Read,
+Curate, Activate) in the Gunmetal treatment by default. Set `design: 'site'` or
+`<deasy-how-it-works design="site">` for the reviewed home-v2 styling,
+fixed header, and cream-on-charcoal palette. `scanner` is the earlier Gunmetal
 scanner it was designed on; use `how-it-works` for the site module.
 
 ## Notes
