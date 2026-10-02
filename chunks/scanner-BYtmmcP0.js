@@ -1,8 +1,8 @@
-import { C as e, D as t, S as n, b as r, l as i, n as a, o, t as s, u as c, w as l, x as u } from "./shadow-gZh4r8ik.js";
-import { a as d, i as f, n as p, o as m, r as h, t as ee } from "./use-animate-Bfrm0Xf9.js";
-import { t as te } from "./databricks-etch-ChMXsqzT.js";
+import { S as e, T as t, b as n, l as r, n as i, o as a, t as o, u as s, x as c } from "./shadow-C_sgEj3S.js";
+import { a as l, i as u, n as d, o as f, r as p, t as m } from "./use-animate-C-xDgiIY.js";
+import { n as h, r as ee, t as te } from "./confluence-etch-CfSkSswt.js";
 //#region src/prototypes/scanner-gunmetal/sourceModel.ts
-var g = /* @__PURE__ */ t(u(), 1), _ = [
+var g = /* @__PURE__ */ t(c(), 1), _ = [
 	{
 		name: "Enterprise_Refund_Policy.pdf",
 		tags: [
@@ -121,7 +121,7 @@ function x(e, t, n = 0) {
 }
 //#endregion
 //#region src/prototypes/scanner-gunmetal/ScannerDemo.tsx
-var S = r(), C = [
+var S = n(), C = [
 	{
 		id: "s3",
 		name: "S3 bucket",
@@ -280,10 +280,10 @@ var ie = {
 		color: "var(--destructive)"
 	}
 ], le = {
-	s3: l,
-	sp: e,
-	db: te,
-	cf: n
+	s3: e,
+	sp: ee,
+	db: h,
+	cf: te
 };
 function ue({ id: e }) {
 	return e === "s3" ? /* @__PURE__ */ (0, S.jsxs)("svg", {
@@ -470,26 +470,26 @@ var R = {
 	bounce: 0
 }, B = P.flatMap((e, t) => e.kind === "keep" ? [t] : []), V = (e) => B.indexOf(e);
 function H({ className: e, describe: t, children: n }) {
-	let [r, i] = (0, g.useState)(null), a = p(0), s = p(0), l = (e) => {
+	let [r, i] = (0, g.useState)(null), o = d(0), c = d(0), l = (e) => {
 		let t = e.currentTarget.getBoundingClientRect(), n = e.clientX - t.left;
-		a.set(n), s.set(e.clientY - t.top);
-		let o = e.target.closest("[data-id]")?.dataset.id, c = n < t.width * .25 ? "start" : n > t.width * .75 ? "end" : "center";
-		o !== void 0 && (Number(o) !== r?.id || c !== r.align) && i({
-			id: Number(o),
-			align: c
+		o.set(n), c.set(e.clientY - t.top);
+		let a = e.target.closest("[data-id]")?.dataset.id, s = n < t.width * .25 ? "start" : n > t.width * .75 ? "end" : "center";
+		a !== void 0 && (Number(a) !== r?.id || s !== r.align) && i({
+			id: Number(a),
+			align: s
 		});
 	}, u = r ? t(r.id) : null;
 	return /* @__PURE__ */ (0, S.jsxs)("div", {
 		className: `${e} file-pile`,
 		onPointerMove: l,
 		onPointerLeave: () => i(null),
-		children: [n, /* @__PURE__ */ (0, S.jsx)(c, { children: u && r ? /* @__PURE__ */ (0, S.jsxs)(o.div, {
+		children: [n, /* @__PURE__ */ (0, S.jsx)(s, { children: u && r ? /* @__PURE__ */ (0, S.jsxs)(a.div, {
 			className: "file-tip",
 			"aria-hidden": "true",
 			"data-align": r.align,
 			style: {
-				x: a,
-				y: s
+				x: o,
+				y: c
 			},
 			initial: { opacity: 0 },
 			animate: {
@@ -584,15 +584,15 @@ function fe({ source: e, onNext: t }) {
 	});
 }
 function pe({ source: e, onBack: t, onNext: n }) {
-	let r = [
+	let i = [
 		"Removing duplicates",
 		"Removing old versions",
 		"Removing sensitive data",
 		"Removing stale docs",
 		"Meets quality criteria"
-	], a = i(), [s, c] = ee(), [l, u] = (0, g.useState)(!1), d = a || l;
+	], o = r(), [s, c] = m(), [l, u] = (0, g.useState)(!1), d = o || l;
 	return (0, g.useEffect)(() => {
-		if (a) return;
+		if (o) return;
 		let e = !0, t = [], n = (e) => (t.push(e), e), r = (e) => Array.from(s.current.querySelectorAll(e)), i = async (t) => {
 			delete t.dataset.removed, await n(c(t, {
 				scale: [
@@ -623,7 +623,7 @@ function pe({ source: e, onBack: t, onNext: n }) {
 				duration: .2,
 				ease: "easeOut"
 			})));
-		}, o = [
+		}, a = [
 			...[
 				0,
 				1,
@@ -668,13 +668,13 @@ function pe({ source: e, onBack: t, onNext: n }) {
 			}))),
 			...r(".filter-file:not(.keep)").map(i)
 		];
-		return Promise.all(o).then(() => {
+		return Promise.all(a).then(() => {
 			e && u(!0);
 		}), () => {
 			e = !1, t.forEach((e) => e.stop());
 		};
 	}, [
-		a,
+		o,
 		c,
 		s
 	]), /* @__PURE__ */ (0, S.jsxs)("div", {
@@ -703,7 +703,7 @@ function pe({ source: e, onBack: t, onNext: n }) {
 						})]
 					}), /* @__PURE__ */ (0, S.jsx)("div", {
 						className: "filter-label",
-						children: r.map((e, t) => /* @__PURE__ */ (0, S.jsx)("span", {
+						children: i.map((e, t) => /* @__PURE__ */ (0, S.jsx)("span", {
 							className: `filter-label-${t}`,
 							children: e
 						}, e))
@@ -718,7 +718,7 @@ function pe({ source: e, onBack: t, onNext: n }) {
 							tone: t
 						};
 					},
-					children: [P.map(({ kind: e, at: t }, n) => e === "keep" ? d ? /* @__PURE__ */ (0, S.jsx)("span", { className: "filter-file vacated" }, n) : /* @__PURE__ */ (0, S.jsx)(o.span, {
+					children: [P.map(({ kind: e, at: t }, n) => e === "keep" ? d ? /* @__PURE__ */ (0, S.jsx)("span", { className: "filter-file vacated" }, n) : /* @__PURE__ */ (0, S.jsx)(a.span, {
 						className: "filter-file keep",
 						layoutId: `doc-${n}`,
 						transition: R,
@@ -731,7 +731,7 @@ function pe({ source: e, onBack: t, onNext: n }) {
 						"data-id": n
 					}, n)), d ? /* @__PURE__ */ (0, S.jsx)("div", {
 						className: "filter-result",
-						children: B.map((e) => /* @__PURE__ */ (0, S.jsx)(o.span, {
+						children: B.map((e) => /* @__PURE__ */ (0, S.jsx)(a.span, {
 							className: "filter-file keep",
 							layoutId: `doc-${e}`,
 							transition: R,
@@ -762,19 +762,19 @@ function pe({ source: e, onBack: t, onNext: n }) {
 	});
 }
 function me({ source: e, openId: t, onOpen: n, onBack: r, onNext: i }) {
-	let a = _[V(t)];
+	let o = _[V(t)];
 	return /* @__PURE__ */ (0, S.jsxs)("div", {
 		className: "report-panel rise-in",
 		children: [
 			/* @__PURE__ */ (0, S.jsx)(L, { phase: 2 }),
 			/* @__PURE__ */ (0, S.jsxs)("div", {
 				className: "enrich-wrap",
-				children: [/* @__PURE__ */ (0, S.jsx)(o.div, {
+				children: [/* @__PURE__ */ (0, S.jsx)(a.div, {
 					className: "enriched-document",
 					layoutId: `doc-${t}`,
 					transition: R,
 					style: { borderRadius: 5 },
-					children: /* @__PURE__ */ (0, S.jsxs)(o.div, {
+					children: /* @__PURE__ */ (0, S.jsxs)(a.div, {
 						initial: { opacity: 0 },
 						animate: {
 							opacity: 1,
@@ -794,7 +794,7 @@ function me({ source: e, openId: t, onOpen: n, onBack: r, onNext: i }) {
 							}),
 							/* @__PURE__ */ (0, S.jsx)("div", {
 								className: "document-name",
-								children: a.name
+								children: o.name
 							}),
 							/* @__PURE__ */ (0, S.jsxs)("div", {
 								className: "document-sub",
@@ -809,7 +809,7 @@ function me({ source: e, openId: t, onOpen: n, onBack: r, onNext: i }) {
 					}, t)
 				}), /* @__PURE__ */ (0, S.jsx)("div", {
 					className: "metadata-tags",
-					children: a.tags.map(([e, t], n) => /* @__PURE__ */ (0, S.jsxs)("span", {
+					children: o.tags.map(([e, t], n) => /* @__PURE__ */ (0, S.jsxs)("span", {
 						className: "metadata-tag",
 						style: { animationDelay: `${.45 + n * .16}s` },
 						children: [/* @__PURE__ */ (0, S.jsx)("span", { children: e }), t]
@@ -827,7 +827,7 @@ function me({ source: e, openId: t, onOpen: n, onBack: r, onNext: i }) {
 					className: "kept-slot",
 					"aria-current": "true",
 					"aria-label": `${_[V(e)].name}, open`
-				}, e) : /* @__PURE__ */ (0, S.jsx)(o.button, {
+				}, e) : /* @__PURE__ */ (0, S.jsx)(a.button, {
 					className: "filter-file kept-thumb",
 					type: "button",
 					layoutId: `doc-${e}`,
@@ -866,13 +866,13 @@ var U = "What is our refund policy for enterprise customers?", W = [
 	1100
 ], G = W.length;
 function he() {
-	let e = i(), [t, n] = (0, g.useState)(0), r = (0, g.useRef)([]), a = (0, g.useCallback)(() => {
-		r.current.forEach(clearTimeout), r.current = [];
+	let e = r(), [t, n] = (0, g.useState)(0), i = (0, g.useRef)([]), a = (0, g.useCallback)(() => {
+		i.current.forEach(clearTimeout), i.current = [];
 	}, []), o = (0, g.useCallback)(() => {
 		if (a(), n(e ? G : 0), e) return;
 		let t = 0;
-		W.forEach((e, i) => {
-			t += e, r.current.push(window.setTimeout(() => n(i + 1), t));
+		W.forEach((e, r) => {
+			t += e, i.current.push(window.setTimeout(() => n(r + 1), t));
 		});
 	}, [a, e]);
 	return (0, g.useEffect)(() => a, [a]), {
@@ -915,7 +915,7 @@ var q = {
 	}
 };
 function J({ connectors: e }) {
-	return /* @__PURE__ */ (0, S.jsxs)(o.div, {
+	return /* @__PURE__ */ (0, S.jsxs)(a.div, {
 		className: "chat-user",
 		...q,
 		children: [/* @__PURE__ */ (0, S.jsx)("p", {
@@ -928,7 +928,7 @@ function J({ connectors: e }) {
 	});
 }
 function Y({ children: e }) {
-	return /* @__PURE__ */ (0, S.jsxs)(o.p, {
+	return /* @__PURE__ */ (0, S.jsxs)(a.p, {
 		className: "chat-thinking",
 		...q,
 		children: [/* @__PURE__ */ (0, S.jsx)("span", {
@@ -938,11 +938,11 @@ function Y({ children: e }) {
 	});
 }
 function X({ source: e, script: t, onBack: n }) {
-	let { stage: r, start: i } = t, a = (0, g.useRef)(null), s = r >= 3 ? [e, "deasy"] : [e], l = r === 0 || r === 3;
+	let { stage: r, start: i } = t, o = (0, g.useRef)(null), c = r >= 3 ? [e, "deasy"] : [e], l = r === 0 || r === 3;
 	return (0, g.useEffect)(() => {
 		i();
 	}, [i]), (0, g.useEffect)(() => {
-		let e = a.current;
+		let e = o.current;
 		e && (e.scrollTop = e.scrollHeight);
 	}, [r]), /* @__PURE__ */ (0, S.jsxs)("div", {
 		className: "report-panel retrieve-panel",
@@ -950,7 +950,7 @@ function X({ source: e, script: t, onBack: n }) {
 			/* @__PURE__ */ (0, S.jsx)(L, { phase: 3 }),
 			/* @__PURE__ */ (0, S.jsxs)("div", {
 				className: "chat",
-				ref: a,
+				ref: o,
 				"aria-live": "polite",
 				children: [
 					r < 3 ? /* @__PURE__ */ (0, S.jsxs)(S.Fragment, { children: [
@@ -973,7 +973,7 @@ function X({ source: e, script: t, onBack: n }) {
 							e.unit,
 							"…"
 						] }) : null,
-						r >= 2 ? /* @__PURE__ */ (0, S.jsxs)(o.div, {
+						r >= 2 ? /* @__PURE__ */ (0, S.jsxs)(a.div, {
 							className: "answer bad-answer",
 							layoutId: "raw-answer",
 							transition: z,
@@ -1009,7 +1009,7 @@ function X({ source: e, script: t, onBack: n }) {
 								})
 							]
 						}) : null
-					] }) : /* @__PURE__ */ (0, S.jsxs)(o.div, {
+					] }) : /* @__PURE__ */ (0, S.jsxs)(a.div, {
 						className: "answer bad-answer bad-recap",
 						layoutId: "raw-answer",
 						transition: z,
@@ -1027,7 +1027,7 @@ function X({ source: e, script: t, onBack: n }) {
 							", leaked a customer email, cited a 2021 draft"
 						] })]
 					}),
-					r >= 3 ? /* @__PURE__ */ (0, S.jsxs)(o.p, {
+					r >= 3 ? /* @__PURE__ */ (0, S.jsxs)(a.p, {
 						className: "chat-event chat-event-deasy",
 						...q,
 						children: [
@@ -1045,7 +1045,7 @@ function X({ source: e, script: t, onBack: n }) {
 						e.unit,
 						" where type is policy, version is current…"
 					] }) : null,
-					r >= 5 ? /* @__PURE__ */ (0, S.jsxs)(o.div, {
+					r >= 5 ? /* @__PURE__ */ (0, S.jsxs)(a.div, {
 						className: "answer good-answer",
 						...q,
 						children: [
@@ -1105,9 +1105,9 @@ function X({ source: e, script: t, onBack: n }) {
 					}),
 					/* @__PURE__ */ (0, S.jsx)("span", {
 						className: "chat-composer-connectors",
-						children: /* @__PURE__ */ (0, S.jsx)(c, {
+						children: /* @__PURE__ */ (0, S.jsx)(s, {
 							initial: !1,
-							children: s.map((e) => /* @__PURE__ */ (0, S.jsx)(o.span, {
+							children: c.map((e) => /* @__PURE__ */ (0, S.jsx)(a.span, {
 								layout: !0,
 								initial: {
 									opacity: 0,
@@ -1160,12 +1160,12 @@ function X({ source: e, script: t, onBack: n }) {
 function ge() {
 	let [e, t] = (0, g.useState)(null), [n, r] = (0, g.useState)(0), [i, a] = (0, g.useState)(B[0]), [o, s] = (0, g.useState)(!1), c = he(), l = (0, g.useRef)(null), u = (0, g.useRef)(null), d = e ? w[e] : void 0, f = (0, g.useCallback)(() => {
 		requestAnimationFrame(() => l.current?.focus());
-	}, []), p = (e) => {
+	}, []), m = (e) => {
 		n === 3 && c.stop(), r(e);
-	}, m = (e) => {
+	}, h = (e) => {
 		t(e), r(0), a(B[0]), f();
 	};
-	return /* @__PURE__ */ (0, S.jsx)(h, {
+	return /* @__PURE__ */ (0, S.jsx)(p, {
 		reducedMotion: "user",
 		children: /* @__PURE__ */ (0, S.jsxs)("section", {
 			className: "wrap scan-section",
@@ -1221,7 +1221,7 @@ function ge() {
 							ref: u,
 							children: C.map((e) => /* @__PURE__ */ (0, S.jsx)(de, {
 								source: e,
-								onSelect: m
+								onSelect: h
 							}, e.id))
 						})]
 					}), /* @__PURE__ */ (0, S.jsx)("div", {
@@ -1235,31 +1235,31 @@ function ge() {
 						onDrop: (e) => {
 							e.preventDefault(), s(!1);
 							let t = e.dataTransfer.getData("text/plain");
-							Object.hasOwn(w, t) && m(t);
+							Object.hasOwn(w, t) && h(t);
 						},
 						children: d ? /* @__PURE__ */ (0, S.jsxs)("div", {
 							className: "selected-report",
 							children: [
 								n === 0 ? /* @__PURE__ */ (0, S.jsx)(fe, {
 									source: d,
-									onNext: () => p(1)
+									onNext: () => m(1)
 								}) : null,
 								n === 1 ? /* @__PURE__ */ (0, S.jsx)(pe, {
 									source: d,
-									onBack: () => p(0),
-									onNext: () => p(2)
+									onBack: () => m(0),
+									onNext: () => m(2)
 								}) : null,
 								n === 2 ? /* @__PURE__ */ (0, S.jsx)(me, {
 									source: d,
 									openId: i,
 									onOpen: a,
-									onBack: () => p(1),
-									onNext: () => p(3)
+									onBack: () => m(1),
+									onNext: () => m(3)
 								}) : null,
 								n === 3 ? /* @__PURE__ */ (0, S.jsx)(X, {
 									source: d,
 									script: c,
-									onBack: () => p(2)
+									onBack: () => m(2)
 								}) : null
 							]
 						}, `${d.id}-${n}`) : /* @__PURE__ */ (0, S.jsxs)("div", {
@@ -1298,10 +1298,10 @@ function Z({ colorMode: e = "dark", transparent: t = !1 }) {
 	});
 }
 function Q(e, t = {}) {
-	let n = t, r = a(e, "scanner", [
-		m,
-		d,
+	let n = t, r = i(e, "scanner", [
 		f,
+		l,
+		u,
 		_e
 	], /* @__PURE__ */ (0, S.jsx)(Z, { ...n }), t);
 	return {
@@ -1322,7 +1322,7 @@ function $(e) {
 	};
 }
 function ve(e = "deasy-scanner") {
-	s(e, ["color-mode", "transparent"], (e) => Q(e, $(e)), (e, t) => t.update($(e)));
+	o(e, ["color-mode", "transparent"], (e) => Q(e, $(e)), (e, t) => t.update($(e)));
 }
 //#endregion
 export { Q as n, ve as t };
