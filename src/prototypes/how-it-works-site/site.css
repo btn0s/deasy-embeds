@@ -1,0 +1,299 @@
+/* home-v2's CSS uses 8px controls, 4–10px cards, and 5px dashed rules.
+   The palette and printed pages also match the repo's 3D document scene. */
+.hiw-site-page {
+  min-height: 100vh;
+  background: #2f2c25;
+  color: #24221e;
+  font-family: var(--sans);
+}
+.hiw-site {
+  --chalk: #fbf9f5;
+  --limestone: #f7f3eb;
+  --clay-limestone: #e8e2d7;
+  --clay: #d9d2c4;
+  --stone: #b4ac9d;
+  --ash: #49463f;
+  --pitch: #24221e;
+  --slate: #5f7193;
+  --glacier: #95aedd;
+  --sage: #8ba68c;
+  --pine: #3d5a3f;
+  --rust: #b7500c;
+  --ochre: #d67e43;
+  --rule: var(--clay);
+  --dots: 1px dashed var(--rule);
+  --panel-r: 4px;
+  --foreground: var(--pitch);
+  --ink-soft: var(--ash);
+  --good: var(--pine);
+  --metric-duplicate: var(--slate);
+  --q-sen: var(--ochre);
+  --brand-signal: var(--rust);
+  --cta-surface: var(--rust);
+  --primary-hover: #aa4c0e;
+  --graph-edge: color-mix(in srgb, var(--slate) 45%, transparent);
+  --graph-node: color-mix(in srgb, var(--slate) 38%, var(--chalk));
+  --graph-path: var(--pitch);
+}
+.hiw-site .site-intro {
+  display: grid;
+  width: min(calc(100% - 48px), 1024px);
+  margin: 24px auto 40px;
+  justify-items: start;
+  text-align: left;
+}
+.hiw-site .site-intro h2 {
+  margin: 0;
+  color: var(--chalk);
+  font: 400 48px/1.2 var(--serif);
+  letter-spacing: -0.02em;
+}
+.hiw-site .prototype-back,
+.hiw-site .scanner-toolbar .blade-tab { color: var(--chalk); }
+.hiw-site .source-switch { color: var(--stone); }
+.hiw-site .source-switch:hover { color: var(--chalk); }
+.hiw-site .eyebrow,
+.hiw-site .column-label { color: var(--ash); font: 600 13px/1.2 var(--sans); letter-spacing: 0; text-transform: none; }
+
+.variant-shell[data-color-mode] .hiw-site .rig,
+.variant-shell[data-color-mode] .hiw-site .rig.has-source {
+  padding: 24px;
+  border: 1px dashed var(--stone);
+  border-radius: 4px;
+  background: var(--limestone);
+  box-shadow: none;
+}
+.variant-shell[data-color-mode] .hiw-site.scanner-gunmetal .scanner,
+.variant-shell[data-color-mode] .hiw-site.scanner-gunmetal .rig.has-source .scanner,
+.variant-shell[data-color-mode] .hiw-site.scanner-gunmetal .rig.is-connected .scanner {
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+}
+/* Only the initial illustration uses the same isometric mesh as the 3D
+   hero; the text and quality results sit on clear paper. */
+.hiw-site .rig:not(.has-source) .scanner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/brand/visuals/patterns/isometric-mesh.png') center / auto repeat;
+  opacity: 0.06;
+  mask: radial-gradient(ellipse at center, #000 20%, transparent 72%);
+  pointer-events: none;
+}
+.scanner-gunmetal.hiw-site .report-panel { padding: 0; }
+/* The rig supplies the edge spacing for the header, body, and actions. */
+.hiw-site .run-head,
+.hiw-site .run-body {
+  width: 100%;
+  margin-inline: 0;
+}
+.hiw-site .hub-source,
+.hiw-site .lk-source { border: 1px solid var(--clay); border-radius: 4px; background: var(--chalk); }
+.hiw-site .run-head,
+.hiw-site .quality-head { border-bottom: var(--dots); }
+.hiw-site .quality-row { padding: 7px 0 8px; border-bottom: 0; }
+.hiw-site .quality-meter { background: var(--clay-limestone); }
+.hiw-site .quality-meter,
+.hiw-site .quality-meter > span { border-radius: 2px; }
+.variant-shell[data-color-mode] .hiw-site .button {
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  box-shadow: none;
+  font: 600 14px/1.5 var(--sans);
+}
+.variant-shell[data-color-mode] .hiw-site .button-primary { background: var(--rust); color: #fff; }
+.variant-shell[data-color-mode] .hiw-site .button-primary:hover { background: #aa4c0e; transform: none; }
+.variant-shell[data-color-mode] .hiw-site .button-ghost { border: 1px solid var(--clay); background: transparent; color: var(--pitch); }
+.variant-shell[data-color-mode] .hiw-site .button-ghost:hover { background: var(--chalk); }
+.variant-shell[data-color-mode] .hiw-site .verpick { border: 1px dashed var(--stone); border-radius: 4px; background: var(--chalk); box-shadow: none; }
+.hiw-site .vtag { border-radius: 3px; }
+.variant-shell[data-color-mode] .hiw-site .chat-composer { border-radius: 8px; box-shadow: none; }
+.hiw-site .query-icon,
+.hiw-site .connector { border-radius: 4px; }
+.variant-shell[data-color-mode] .hiw-site .activate-stage .answer { border: 1px dashed var(--stone); border-radius: 4px; background: var(--chalk); box-shadow: none; }
+.hiw-site .citation { border-top: var(--dots); }
+.hiw-site .graph-svg .xcap { fill: var(--ash); font-weight: 600; }
+.hiw-site .graph-svg .ge:not(.on) { stroke-dasharray: 3 3; stroke-width: 0.9; }
+.hiw-site .graph-svg .medge { stroke: var(--pine); }
+.hiw-site.scanner-gunmetal .filter-result { border: 1px dashed var(--stone); border-radius: 4px; background: var(--chalk); box-shadow: none; }
+
+@media (max-width: 640px) {
+  .hiw-site { --wrap-padding: 14px; }
+  .hiw-site .prototype-chrome { padding-inline: 18px; }
+  .hiw-site .site-intro { width: auto; margin: 8px 0 24px; padding-inline: 18px; }
+  .hiw-site .site-intro h2 { font-size: 30px; }
+  .variant-shell[data-color-mode] .hiw-site .rig,
+  .variant-shell[data-color-mode] .hiw-site .rig.has-source { padding: 18px; }
+  .scanner-gunmetal.hiw-site .scanner { height: 566px; }
+  .scanner-gunmetal.hiw-site .scanner:has([data-phase='activate']) { height: 618px; }
+  .scanner-gunmetal.hiw-site .rig:not(.has-source) .scanner,
+  .scanner-gunmetal.hiw-site .rig.is-connected:not(.has-source) .scanner { height: 224px; }
+  .scanner-gunmetal.hiw-site .stage { gap: 16px; }
+  .hiw-site .quality-row { padding: 5px 0; border-bottom: var(--dots); }
+  .scanner-gunmetal.hiw-site :is(.report-footer, .retrieve-footer) .button { min-height: 36px; padding: 0 16px; font-size: 12px; }
+  .scanner-gunmetal.hiw-site .filter-result { grid-template-columns: repeat(6, 32px); }
+  .scanner-gunmetal.hiw-site .filter-result .filter-file { width: 32px; }
+}
+
+/* The header belongs to the whole widget, above the changing source and
+   scanner columns. Its empty link slot reserves the connected row. */
+.hiw-site .rig > .run-head { margin: 0 0 24px; }
+.hiw-site .run-head .linkstrip { min-height: 22px; }
+.hiw-site .run-body { margin-top: 0; }
+.scanner-gunmetal.hiw-site .scanner { height: 432px; }
+.scanner-gunmetal.hiw-site .scanner:has([data-phase='activate']) { height: 472px; }
+.hiw-site .column-label { margin: 0 0 14px; }
+@media (max-width: 640px) {
+  .hiw-site .rig > .run-head { margin-bottom: 20px; }
+  .scanner-gunmetal.hiw-site .scanner { height: 480px; }
+  .scanner-gunmetal.hiw-site .scanner:has([data-phase='activate']) { height: 534px; }
+  .scanner-gunmetal.hiw-site .rig:not(.has-source) .scanner,
+  .scanner-gunmetal.hiw-site .rig.is-connected:not(.has-source) .scanner { height: 184px; }
+}
+.hiw-site .step-dot { width: 12px; text-align: center; }
+.hiw-site .step .step-dot,
+.hiw-site .step.active .step-dot,
+.hiw-site .step.done .step-dot { width: 12px; text-align: center; }
+
+
+@media (max-width: 640px) {
+  .scanner-gunmetal.hiw-site :is(.report-footer, .retrieve-footer) .button { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .variant-shell[data-color-mode] .hiw-site .button:active { transform: scale(0.98); }
+}
+
+/* Reserve space for citation outlines, shadows, and the 3px lift inside
+   the scanner's clipping boundary. The caption can wrap at narrow widths. */
+.hiw-site .context-strip {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 6px 4px 4px;
+}
+.hiw-site .kept-strip { flex: none; }
+.hiw-site .context-caption { flex: none; }
+.hiw-site .activate-context { gap: 8px; }
+.hiw-site .activate-stage .chat-composer {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+}
+.hiw-site .chat-composer .query-icon { width: 32px; height: 32px; }
+.hiw-site .chat-composer .query-icon svg { width: 18px; height: 18px; }
+.hiw-site .chat-composer .typed-query { margin: 0; font-size: 14px; line-height: 1.5; min-height: 3em; }
+.hiw-site .chat-composer .typed-line { min-height: 1.5em; }
+.hiw-site .chat-composer .connector { min-height: 28px; padding: 0 10px; }
+@media (max-width: 640px) {
+  .hiw-site .activate-stage .chat-composer {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+  }
+  .hiw-site .chat-composer .query-icon { width: 28px; height: 28px; }
+  .hiw-site .chat-composer .typed-query { font-size: 13px; min-height: 0; }
+  .hiw-site .context-strip { gap: 8px; }
+  .hiw-site .activate-context { gap: 8px; }
+}
+
+/* Keep the quality findings prominent beside the shrinking file pile. */
+.hiw-site .quality { padding: 16px; border: var(--dots); border-radius: 4px; background: var(--chalk); }
+.hiw-site .quality-row { padding: 7px 0; }
+.hiw-site .quality-name { font-size: 13px; font-weight: 500; }
+.hiw-site .quality-pct { font-size: 24px; font-weight: 600; }
+.hiw-site .quality-row.active .quality-pct { color: var(--rust); }
+.hiw-site .quality-row.cleared .quality-pct { color: var(--pine); }
+@media (max-width: 700px) {
+  .hiw-site .quality { padding: 10px 12px; }
+  .hiw-site .quality-head { font-size: 14px; }
+  .hiw-site .quality-row { padding: 4px 0; }
+  .hiw-site .quality-name { font-size: 12px; }
+  .hiw-site .quality-pct { font-size: 18px; }
+}
+@media (max-width: 640px) {
+  .scanner-gunmetal.hiw-site .scanner:has(.pile-stage) { height: 552px; }
+}
+
+/* Source connections share one calm surface; state lives in the status. */
+.hiw-site .sources { gap: 8px; }
+.variant-shell[data-color-mode] .hiw-site .source-card {
+  min-height: 76px;
+  padding: 14px 16px;
+  gap: 14px;
+  border: 1px solid var(--clay);
+  border-radius: 6px;
+  background: var(--chalk);
+  box-shadow: none;
+}
+.variant-shell[data-color-mode] .hiw-site .source-card.connected {
+  border-color: var(--clay);
+  background: var(--chalk);
+  box-shadow: none;
+}
+.variant-shell[data-color-mode] .hiw-site .source-card:hover {
+  border-color: var(--stone);
+  background: #fffdf9;
+}
+.variant-shell[data-color-mode] .hiw-site .source-card:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+.variant-shell[data-color-mode] .hiw-site .source-icon {
+  width: 28px;
+  height: 32px;
+  border-radius: 0;
+  background: transparent;
+}
+.hiw-site .source-icon .source-etch { width: 26px; height: 26px; background: var(--ash); }
+.hiw-site .source-copy { display: grid; gap: 4px; }
+.hiw-site .source-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+.hiw-site .source-meta { color: var(--ash); font-size: 12px; line-height: 1.3; }
+.variant-shell[data-color-mode] .hiw-site .source-badge,
+.variant-shell[data-color-mode] .hiw-site .source-card.connected .source-badge {
+  display: flex;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ash);
+}
+.variant-shell[data-color-mode] .hiw-site .source-card.connected .source-badge { color: var(--pine); }
+@media (max-width: 640px) {
+  .variant-shell[data-color-mode] .hiw-site .source-card { min-height: 64px; padding: 12px; gap: 12px; }
+  .hiw-site .source-name { font-size: 12px; }
+}
+
+/* Small supporting details keep the same legibility and spacing as the controls. */
+.hiw-site .context-caption,
+.hiw-site .activate-stage .verdict,
+.variant-shell[data-color-mode] .hiw-site .activate-stage .citation { color: var(--ash); }
+.hiw-site .step:not(.active):not(.done) { color: #756f64; }
+.hiw-site .source-switch { margin-top: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; }
+.hiw-site .source-card .source-etch { opacity: 1; }
+.hiw-site .source-badge::before,
+.hiw-site .source-card.connected .source-badge::before { content: none; }
+.hiw-site .hub-hint { white-space: nowrap; }
+@media (min-width: 641px) and (max-width: 900px) {
+  .scanner-gunmetal.hiw-site .rig:not(.has-source) .scanner,
+  .scanner-gunmetal.hiw-site .rig.is-connected:not(.has-source) .scanner { height: 280px; }
+}
+@media (max-width: 640px) {
+  .scanner-gunmetal.hiw-site :is(.report-footer, .retrieve-footer) .button { font-size: 13px; }
+  .hiw-site .source-meta { font-size: 11px; }
+  .hiw-site .hub-hint { font-size: 12px; }
+}
+
+@media (max-width: 360px) {
+  .variant-shell[data-color-mode] .hiw-site .source-card { height: 80px; }
+  .hiw-site .source-badge { min-width: 72px; }
+}
+.hiw-site .scanner-toolbar { min-height: 44px; align-items: center; }

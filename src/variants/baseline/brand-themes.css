@@ -1,0 +1,563 @@
+/*
+ * Brand palettes for baseline.
+ *
+ * Each theme defines a complete light + dark environment: surfaces, hierarchy,
+ * semantic accents, and motion intensity — not just primary swaps.
+ *
+ * Semantic tokens:
+ *   --brand-emphasis   Display accent (hero word, eyebrows, stat highlights)
+ *   --brand-signal     Interactive pulse (tab dot, active step, scanner hot)
+ *   --cta-surface / --cta-foreground   Primary + popup CTA fill
+ */
+
+/* ─── Rust · light ───────────────────────────────────────────────────────────
+ * Warm paper tray on chalk. Rust is the human accent; Pine handles success;
+ * Slate separates data. Surfaces stay limestone-warm.
+ */
+.variant-shell[data-brand-theme='rust'][data-color-mode='light'] {
+  color-scheme: light;
+  --background: #fbf9f5;
+  --foreground: #24221e;
+  --card: #faf8f4;
+  --card-foreground: #24221e;
+  --popover: #ffffff;
+  --popover-foreground: #24221e;
+  --primary: #b7500c;
+  --primary-foreground: #fbf9f5;
+  --primary-hover: color-mix(in srgb, var(--primary) 82%, var(--foreground));
+  --secondary: #e8e2d6;
+  --secondary-foreground: #24221e;
+  --muted: #f3efe6;
+  --muted-foreground: #5c5750;
+  --accent: #3d5a3f;
+  --accent-foreground: #fbf9f5;
+  --destructive: #b7500c;
+  --destructive-background: color-mix(in srgb, #b7500c 10%, #fbf9f5);
+  --border: color-mix(in srgb, #b4ac9d 42%, #f3efe6);
+  --border-soft: color-mix(in srgb, #b4ac9d 22%, #f3efe6);
+  --border-dashed: color-mix(in srgb, #8a8175 88%, #e4ddd0);
+  --input: color-mix(in srgb, #b4ac9d 38%, #f3efe6);
+  --ring: #b7500c;
+  --subtle-foreground: #9a9185;
+  --track: color-mix(in srgb, #d9d2c4 65%, #f3efe6);
+  --success: #3d5a3f;
+  --success-background: color-mix(in srgb, #3d5a3f 10%, #fbf9f5);
+  --metric-duplicate: #5f7193;
+  --metric-stale: #3d5a3f;
+  --metric-old-version: #b7500c;
+  --surface-sunken: #e4ddd0;
+  --surface-stage: #f3efe6;
+  --surface-highlight: color-mix(in srgb, #ffffff 80%, transparent);
+  --surface-inset-rim: color-mix(in srgb, #ffffff 55%, transparent);
+  --shadow-ambient: rgb(36 34 30 / 6%);
+  --shadow-card: rgb(36 34 30 / 4%);
+  --shadow-overlay: rgb(36 34 30 / 12%);
+  --shadow-inset: rgb(36 34 30 / 14%);
+  --brand-emphasis: #b7500c;
+  --brand-signal: #b7500c;
+  --cta-surface: #b7500c;
+  --cta-foreground: #fbf9f5;
+  --popup-cta-surface: #b7500c;
+  --popup-cta-foreground: #fbf9f5;
+  --rig-shadow: 0 12px 44px rgb(36 34 30 / 5%);
+  --source-glow-scale: 1.02;
+  --scan-sweep-glow: rgb(183 80 12 / 50%);
+  --chalk: var(--background);
+  --pitch: var(--foreground);
+  --rust: var(--brand-emphasis);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: var(--subtle-foreground);
+  --line: var(--border);
+  --line-soft: var(--border-soft);
+  --panel: var(--surface-stage);
+  --bad: var(--destructive);
+  --bad-bg: var(--destructive-background);
+  --good: var(--success);
+  --good-bg: var(--success-background);
+}
+
+/* ─── Rust · dark ───────────────────────────────────────────────────────────
+ * Coal and pitch foundations. Ochre carries warmth for interaction; Sage is the
+ * positive secondary; Glacier cools chart reads. Accents stay sparse.
+ */
+.variant-shell[data-brand-theme='rust'][data-color-mode='dark'] {
+  color-scheme: dark;
+  --background: #211e1c;
+  --foreground: #f0ebe3;
+  --card: #2c2924;
+  --card-foreground: #f0ebe3;
+  --popover: #33302a;
+  --popover-foreground: #f0ebe3;
+  --primary: #d67e43;
+  --primary-foreground: #211e1c;
+  --primary-hover: color-mix(in srgb, var(--primary) 84%, var(--foreground));
+  --secondary: #3d3a34;
+  --secondary-foreground: #f0ebe3;
+  --muted: #2a2722;
+  --muted-foreground: #b8b0a4;
+  --accent: #d67e43;
+  --accent-foreground: #211e1c;
+  --destructive: #d67e43;
+  --destructive-background: color-mix(in srgb, #d67e43 14%, #211e1c);
+  --border: color-mix(in srgb, #b4ac9d 14%, #2a2722);
+  --border-soft: color-mix(in srgb, #b4ac9d 7%, #2a2722);
+  --border-dashed: color-mix(in srgb, #b4ac9d 58%, #1c1a17);
+  --input: color-mix(in srgb, #b4ac9d 18%, #2a2722);
+  --ring: #d67e43;
+  --subtle-foreground: #7a736a;
+  --track: #3a3630;
+  --success: #8ba68c;
+  --success-background: color-mix(in srgb, #8ba68c 14%, #211e1c);
+  --metric-duplicate: #95aedd;
+  --metric-stale: #9a9488;
+  --metric-old-version: #d67e43;
+  --surface-sunken: #1c1a17;
+  --surface-stage: #2a2722;
+  --surface-highlight: color-mix(in srgb, #fbf9f5 4%, transparent);
+  --surface-inset-rim: color-mix(in srgb, #fbf9f5 3%, transparent);
+  --shadow-ambient: rgb(0 0 0 / 32%);
+  --shadow-card: rgb(0 0 0 / 24%);
+  --shadow-overlay: rgb(0 0 0 / 50%);
+  --shadow-inset: rgb(0 0 0 / 28%);
+  --brand-emphasis: #d67e43;
+  --brand-signal: #d67e43;
+  --cta-surface: #d67e43;
+  --cta-foreground: #211e1c;
+  --popup-cta-surface: #8ba68c;
+  --popup-cta-foreground: #24221e;
+  --rig-shadow: 0 18px 48px rgb(0 0 0 / 32%);
+  --source-glow-scale: 1.006;
+  --scan-sweep-glow: rgb(214 126 67 / 45%);
+  --chalk: var(--background);
+  --pitch: var(--foreground);
+  --rust: var(--brand-emphasis);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: var(--subtle-foreground);
+  --line: var(--border);
+  --line-soft: var(--border-soft);
+  --panel: var(--surface-stage);
+  --bad: var(--destructive);
+  --bad-bg: var(--destructive-background);
+  --good: var(--success);
+  --good-bg: var(--success-background);
+}
+
+/* ─── Pine · light ────────────────────────────────────────────────────────────
+ * Limestone with a botanical wash. Pine owns structure and CTAs; Slate handles
+ * data separation; Rust appears only for warnings and stale metrics — never as
+ * the default eyebrow/hero accent.
+ */
+.variant-shell[data-brand-theme='pine'][data-color-mode='light'] {
+  color-scheme: light;
+  --background: #f9faf7;
+  --foreground: #24221e;
+  --card: #f7f8f4;
+  --card-foreground: #24221e;
+  --popover: #ffffff;
+  --popover-foreground: #24221e;
+  --primary: #3d5a3f;
+  --primary-foreground: #fbf9f5;
+  --primary-hover: color-mix(in srgb, var(--primary) 78%, var(--foreground));
+  --secondary: #e3e8e0;
+  --secondary-foreground: #24221e;
+  --muted: #eef1ea;
+  --muted-foreground: #556055;
+  --accent: #b7500c;
+  --accent-foreground: #fbf9f5;
+  --destructive: #b7500c;
+  --destructive-background: color-mix(in srgb, #b7500c 9%, #f9faf7);
+  --border: color-mix(in srgb, #9aa894 32%, #eef1ea);
+  --border-soft: color-mix(in srgb, #9aa894 16%, #eef1ea);
+  --border-dashed: color-mix(in srgb, #6f7a6f 72%, #dde4d8);
+  --input: color-mix(in srgb, #9aa894 28%, #eef1ea);
+  --ring: #3d5a3f;
+  --subtle-foreground: #8a9185;
+  --track: color-mix(in srgb, #c8d0c4 58%, #eef1ea);
+  --success: #3d5a3f;
+  --success-background: color-mix(in srgb, #3d5a3f 11%, #f9faf7);
+  --metric-duplicate: #5f7193;
+  --metric-stale: #5f7193;
+  --metric-old-version: #b7500c;
+  --surface-sunken: #e0e6dc;
+  --surface-stage: #eef1ea;
+  --surface-highlight: color-mix(in srgb, #ffffff 78%, transparent);
+  --surface-inset-rim: color-mix(in srgb, #ffffff 48%, transparent);
+  --shadow-ambient: rgb(36 42 34 / 7%);
+  --shadow-card: rgb(36 42 34 / 4%);
+  --shadow-overlay: rgb(36 42 34 / 13%);
+  --shadow-inset: rgb(36 42 34 / 15%);
+  --brand-emphasis: #3d5a3f;
+  --brand-signal: #3d5a3f;
+  --cta-surface: #3d5a3f;
+  --cta-foreground: #fbf9f5;
+  --popup-cta-surface: #3d5a3f;
+  --popup-cta-foreground: #fbf9f5;
+  --rig-shadow: 0 12px 40px rgb(45 58 45 / 6%);
+  --source-glow-scale: 1.012;
+  --scan-sweep-glow: rgb(61 90 63 / 42%);
+  --chalk: var(--background);
+  --pitch: var(--foreground);
+  --rust: var(--accent);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: var(--subtle-foreground);
+  --line: var(--border);
+  --line-soft: var(--border-soft);
+  --panel: var(--surface-stage);
+  --bad: var(--destructive);
+  --bad-bg: var(--destructive-background);
+  --good: var(--success);
+  --good-bg: var(--success-background);
+}
+
+/* ─── Pine · dark ─────────────────────────────────────────────────────────────
+ * Cool coal with sage undertone. Sage leads interaction; Ochre is reserved for
+ * warnings and stale data; Glacier cools chart reads. Lower accent frequency.
+ */
+.variant-shell[data-brand-theme='pine'][data-color-mode='dark'] {
+  color-scheme: dark;
+  --background: #1c201d;
+  --foreground: #ece9e2;
+  --card: #272c28;
+  --card-foreground: #ece9e2;
+  --popover: #2f3530;
+  --popover-foreground: #ece9e2;
+  --primary: #8ba68c;
+  --primary-foreground: #1c201d;
+  --primary-hover: color-mix(in srgb, var(--primary) 80%, var(--foreground));
+  --secondary: #353b36;
+  --secondary-foreground: #ece9e2;
+  --muted: #252a26;
+  --muted-foreground: #b0b8b0;
+  --accent: #d67e43;
+  --accent-foreground: #1c201d;
+  --destructive: #d67e43;
+  --destructive-background: color-mix(in srgb, #d67e43 12%, #1c201d);
+  --border: color-mix(in srgb, #8ba68c 10%, #252a26);
+  --border-soft: color-mix(in srgb, #8ba68c 5%, #252a26);
+  --border-dashed: color-mix(in srgb, #8ba68c 42%, #181c19);
+  --input: color-mix(in srgb, #8ba68c 14%, #252a26);
+  --ring: #8ba68c;
+  --subtle-foreground: #727a72;
+  --track: #343a35;
+  --success: #8ba68c;
+  --success-background: color-mix(in srgb, #8ba68c 12%, #1c201d);
+  --metric-duplicate: #95aedd;
+  --metric-stale: #9a9488;
+  --metric-old-version: #d67e43;
+  --surface-sunken: #181c19;
+  --surface-stage: #252a26;
+  --surface-highlight: color-mix(in srgb, #fbf9f5 3.5%, transparent);
+  --surface-inset-rim: color-mix(in srgb, #fbf9f5 2.5%, transparent);
+  --shadow-ambient: rgb(0 0 0 / 34%);
+  --shadow-card: rgb(0 0 0 / 26%);
+  --shadow-overlay: rgb(0 0 0 / 52%);
+  --shadow-inset: rgb(0 0 0 / 30%);
+  --brand-emphasis: #8ba68c;
+  --brand-signal: color-mix(in srgb, #8ba68c 88%, #ece9e2);
+  --cta-surface: #8ba68c;
+  --cta-foreground: #1c201d;
+  --popup-cta-surface: #8ba68c;
+  --popup-cta-foreground: #24221e;
+  --rig-shadow: 0 18px 48px rgb(0 0 0 / 34%);
+  --source-glow-scale: 1.004;
+  --scan-sweep-glow: rgb(139 166 140 / 38%);
+  --chalk: var(--background);
+  --pitch: var(--foreground);
+  --rust: var(--accent);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: var(--subtle-foreground);
+  --line: var(--border);
+  --line-soft: var(--border-soft);
+  --panel: var(--surface-stage);
+  --bad: var(--destructive);
+  --bad-bg: var(--destructive-background);
+  --good: var(--success);
+  --good-bg: var(--success-background);
+}
+
+/* Pine · gentler source-card pulse (structural invite, not warm glow) */
+@keyframes source-glow-pine-light {
+  0%,
+  100% {
+    border-color: var(--border-soft);
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 1px 3px var(--shadow-card);
+    transform: translateY(0);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--primary) 22%, var(--border-soft));
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 0 0 2px color-mix(in srgb, var(--primary) 4%, transparent),
+      0 5px 14px color-mix(in srgb, var(--primary) 7%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes source-glow-pine-dark {
+  0%,
+  100% {
+    border-color: var(--border-soft);
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 1px 3px var(--shadow-card);
+    transform: translateY(0);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--primary) 18%, var(--border-soft));
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 0 0 2px color-mix(in srgb, var(--primary) 3%, transparent),
+      0 5px 14px var(--shadow-card);
+    transform: translateY(0);
+  }
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='light'] .source-card {
+  animation: source-glow-pine-light var(--source-glow-duration) ease-in-out infinite;
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='dark'] .source-card {
+  animation: source-glow-pine-dark var(--source-glow-duration) ease-in-out infinite;
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='light'] .scanner,
+.variant-shell[data-brand-theme='pine'][data-color-mode='dark'] .scanner {
+  background: var(--surface-sunken);
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='light'] .button-primary {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--cta-foreground) 16%, transparent),
+    0 4px 14px color-mix(in srgb, var(--cta-surface) 14%, transparent);
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='dark'] .button-primary {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--cta-foreground) 10%, transparent),
+    0 4px 16px color-mix(in srgb, var(--cta-surface) 12%, transparent);
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='dark'] .step.active {
+  color: var(--foreground);
+}
+
+.variant-shell[data-brand-theme='pine'][data-color-mode='dark'] .step.active .step-dot {
+  border-color: var(--brand-signal);
+  background: var(--brand-signal);
+  color: var(--cta-foreground);
+}
+
+.variant-shell[data-brand-theme='pine'] .new-badge {
+  color: var(--brand-emphasis);
+}
+
+/* ─── Slate · light ───────────────────────────────────────────────────────────
+ * Cool mineral desk on chalk. Slate owns precision and CTAs; Pine handles success;
+ * Rust appears only for warnings. Surfaces pick up a blue-gray wash.
+ */
+.variant-shell[data-brand-theme='slate'][data-color-mode='light'] {
+  color-scheme: light;
+  --background: #f8f9fb;
+  --foreground: #24221e;
+  --card: #f6f7fa;
+  --card-foreground: #24221e;
+  --popover: #ffffff;
+  --popover-foreground: #24221e;
+  --primary: #5f7193;
+  --primary-foreground: #fbf9f5;
+  --primary-hover: color-mix(in srgb, var(--primary) 80%, var(--foreground));
+  --secondary: #e4e8ef;
+  --secondary-foreground: #24221e;
+  --muted: #eef1f6;
+  --muted-foreground: #525a66;
+  --accent: #b7500c;
+  --accent-foreground: #fbf9f5;
+  --destructive: #b7500c;
+  --destructive-background: color-mix(in srgb, #b7500c 9%, #f8f9fb);
+  --border: color-mix(in srgb, #8a94a8 28%, #eef1f6);
+  --border-soft: color-mix(in srgb, #8a94a8 14%, #eef1f6);
+  --border-dashed: color-mix(in srgb, #6b758a 68%, #e2e7ef);
+  --input: color-mix(in srgb, #8a94a8 24%, #eef1f6);
+  --ring: #5f7193;
+  --subtle-foreground: #8a919f;
+  --track: color-mix(in srgb, #c5ccd8 58%, #eef1f6);
+  --success: #3d5a3f;
+  --success-background: color-mix(in srgb, #3d5a3f 10%, #f8f9fb);
+  --metric-duplicate: #4a5a78;
+  --metric-stale: #3d5a3f;
+  --metric-old-version: #b7500c;
+  --surface-sunken: #e2e7ef;
+  --surface-stage: #eef1f6;
+  --surface-highlight: color-mix(in srgb, #ffffff 80%, transparent);
+  --surface-inset-rim: color-mix(in srgb, #ffffff 50%, transparent);
+  --shadow-ambient: rgb(34 38 48 / 7%);
+  --shadow-card: rgb(34 38 48 / 4%);
+  --shadow-overlay: rgb(34 38 48 / 13%);
+  --shadow-inset: rgb(34 38 48 / 15%);
+  --brand-emphasis: #5f7193;
+  --brand-signal: #5f7193;
+  --cta-surface: #5f7193;
+  --cta-foreground: #fbf9f5;
+  --popup-cta-surface: #5f7193;
+  --popup-cta-foreground: #fbf9f5;
+  --rig-shadow: 0 12px 40px rgb(48 56 72 / 7%);
+  --source-glow-scale: 1.01;
+  --scan-sweep-glow: rgb(95 113 147 / 44%);
+  --chalk: var(--background);
+  --pitch: var(--foreground);
+  --rust: var(--accent);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: var(--subtle-foreground);
+  --line: var(--border);
+  --line-soft: var(--border-soft);
+  --panel: var(--surface-stage);
+  --bad: var(--destructive);
+  --bad-bg: var(--destructive-background);
+  --good: var(--success);
+  --good-bg: var(--success-background);
+}
+
+/* ─── Slate · dark ────────────────────────────────────────────────────────────
+ * Cool coal with glacier lift. Glacier leads interaction; Ochre warns; Sage
+ * confirms. Warm accents stay rare for dark-mode comfort.
+ */
+.variant-shell[data-brand-theme='slate'][data-color-mode='dark'] {
+  color-scheme: dark;
+  --background: #1e2024;
+  --foreground: #ece9e2;
+  --card: #272a30;
+  --card-foreground: #ece9e2;
+  --popover: #2e3239;
+  --popover-foreground: #ece9e2;
+  --primary: #95aedd;
+  --primary-foreground: #1e2024;
+  --primary-hover: color-mix(in srgb, var(--primary) 82%, var(--foreground));
+  --secondary: #353942;
+  --secondary-foreground: #ece9e2;
+  --muted: #252830;
+  --muted-foreground: #b4b8c2;
+  --accent: #d67e43;
+  --accent-foreground: #1e2024;
+  --destructive: #d67e43;
+  --destructive-background: color-mix(in srgb, #d67e43 12%, #1e2024);
+  --border: color-mix(in srgb, #95aedd 11%, #252830);
+  --border-soft: color-mix(in srgb, #95aedd 6%, #252830);
+  --border-dashed: color-mix(in srgb, #95aedd 38%, #1a1c22);
+  --input: color-mix(in srgb, #95aedd 15%, #252830);
+  --ring: #95aedd;
+  --subtle-foreground: #727886;
+  --track: #343842;
+  --success: #8ba68c;
+  --success-background: color-mix(in srgb, #8ba68c 12%, #1e2024);
+  --metric-duplicate: #b4c4e8;
+  --metric-stale: #9a9488;
+  --metric-old-version: #d67e43;
+  --surface-sunken: #191b1f;
+  --surface-stage: #252830;
+  --surface-highlight: color-mix(in srgb, #fbf9f5 3.5%, transparent);
+  --surface-inset-rim: color-mix(in srgb, #fbf9f5 2.5%, transparent);
+  --shadow-ambient: rgb(0 0 0 / 35%);
+  --shadow-card: rgb(0 0 0 / 27%);
+  --shadow-overlay: rgb(0 0 0 / 53%);
+  --shadow-inset: rgb(0 0 0 / 31%);
+  --brand-emphasis: #95aedd;
+  --brand-signal: color-mix(in srgb, #95aedd 86%, #ece9e2);
+  --cta-surface: #95aedd;
+  --cta-foreground: #1e2024;
+  --popup-cta-surface: #95aedd;
+  --popup-cta-foreground: #24221e;
+  --rig-shadow: 0 18px 48px rgb(0 0 0 / 35%);
+  --source-glow-scale: 1.004;
+  --scan-sweep-glow: rgb(149 174 221 / 36%);
+  --chalk: var(--background);
+  --pitch: var(--foreground);
+  --rust: var(--accent);
+  --ink-soft: var(--muted-foreground);
+  --ink-faint: var(--subtle-foreground);
+  --line: var(--border);
+  --line-soft: var(--border-soft);
+  --panel: var(--surface-stage);
+  --bad: var(--destructive);
+  --bad-bg: var(--destructive-background);
+  --good: var(--success);
+  --good-bg: var(--success-background);
+}
+
+@keyframes source-glow-slate-light {
+  0%,
+  100% {
+    border-color: var(--border-soft);
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 1px 3px var(--shadow-card);
+    transform: translateY(0);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--primary) 20%, var(--border-soft));
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 0 0 2px color-mix(in srgb, var(--primary) 4%, transparent),
+      0 5px 14px color-mix(in srgb, var(--primary) 6%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes source-glow-slate-dark {
+  0%,
+  100% {
+    border-color: var(--border-soft);
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 1px 3px var(--shadow-card);
+    transform: translateY(0);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--primary) 16%, var(--border-soft));
+    box-shadow:
+      inset 0 1px 0 var(--surface-highlight),
+      0 0 0 2px color-mix(in srgb, var(--primary) 3%, transparent),
+      0 5px 14px var(--shadow-card);
+    transform: translateY(0);
+  }
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='light'] .source-card {
+  animation: source-glow-slate-light var(--source-glow-duration) ease-in-out infinite;
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='dark'] .source-card {
+  animation: source-glow-slate-dark var(--source-glow-duration) ease-in-out infinite;
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='light'] .scanner,
+.variant-shell[data-brand-theme='slate'][data-color-mode='dark'] .scanner {
+  background: var(--surface-sunken);
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='light'] .button-primary {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--cta-foreground) 16%, transparent),
+    0 4px 14px color-mix(in srgb, var(--cta-surface) 12%, transparent);
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='dark'] .button-primary {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--cta-foreground) 10%, transparent),
+    0 4px 16px color-mix(in srgb, var(--cta-surface) 10%, transparent);
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='dark'] .step.active {
+  color: var(--foreground);
+}
+
+.variant-shell[data-brand-theme='slate'][data-color-mode='dark'] .step.active .step-dot {
+  border-color: var(--brand-signal);
+  background: var(--brand-signal);
+  color: var(--cta-foreground);
+}
+
+.variant-shell[data-brand-theme='slate'] .new-badge {
+  color: var(--brand-emphasis);
+}

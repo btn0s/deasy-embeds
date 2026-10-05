@@ -1,0 +1,683 @@
+/*
+ * How it Works — Gunmetal.
+ *
+ * The latest blade's flow on Gunmetal's stylesheet, which is imported whole:
+ * the frame, the etched marks, the paper sheets, the tooltip, the stepper
+ * and the Curate timeline all come from it. This file adds what the latest
+ * blade has and Gunmetal did not, and holds the blade to a few rules:
+ *
+ * - One frame. Every step shares the header and the content column, so
+ *   nothing jumps when you press Next.
+ * - One type scale. A serif display number, 13.5 body, 12.5 labels, and a
+ *   single eyebrow style for every small heading.
+ * - Colour by role. Rust means act or look here: the button, the current
+ *   step, Deasy once it is connected. Green means kept, done or live.
+ *   The three problems a sheet can be tabbed with keep their own muted
+ *   tints; everything else is ink.
+ * - Flat surfaces and quiet rules keep the documents in focus.
+ */
+
+.how-it-works {
+  --col: 860px;
+  --panel-r: 4px;
+  --q-sen: #a63d40;
+  --ink-meter: color-mix(in srgb, var(--foreground) 42%, transparent);
+  --graph-edge: color-mix(in srgb, var(--ink-faint) 34%, transparent);
+  --graph-node: color-mix(in srgb, var(--ink-faint) 42%, var(--card));
+  --graph-path: color-mix(in srgb, var(--foreground) 82%, transparent);
+}
+.variant-shell[data-color-mode='dark'] .how-it-works {
+  --q-sen: #e07c77;
+}
+
+/* Sensitive was the brand's own rust; it gets a red of its own so rust can
+   mean one thing. */
+.how-it-works .file-flags [data-flag='sen'] { --flag: var(--q-sen); }
+.how-it-works .filter-file.sen { --catch-color: var(--q-sen); }
+.how-it-works .filter-file.old { --catch-color: var(--metric-duplicate); }
+.how-it-works .file-tip-reason[data-tone='sen'] { color: var(--q-sen); }
+.how-it-works .file-tip-reason[data-tone='old'] { color: var(--metric-duplicate); }
+
+/* The one small heading style: plain sentence case. */
+.how-it-works .eyebrow {
+  color: var(--ink-faint);
+  font: 500 12.5px/1.2 var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.scanner-gunmetal.how-it-works .scanner { height: 500px; }
+/* The panel keeps one inset on every side; the base left the footer 8px
+   off the bottom edge against 20px at the sides. */
+.scanner-gunmetal.how-it-works .report-panel { padding: 20px; }
+
+/* ── Sources: tap to add, tap again to remove ──────────────────────────── */
+
+/* The cards drop the base's rolling glow and sit still. */
+.variant-shell[data-color-mode] .how-it-works .source-card { overflow: visible; animation: none; }
+.how-it-works .source-card.connected { border-color: color-mix(in srgb, var(--good) 55%, var(--border-soft)); }
+.how-it-works .column-label { height: auto; margin-bottom: 12px; }
+.how-it-works .source-badge {
+  align-self: start;
+  flex: none;
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  padding: 3px 8px;
+  color: var(--ink-faint);
+  font: 500 11px/1.2 var(--sans);
+  white-space: nowrap;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+.how-it-works .source-card.connected .source-badge {
+  border: 1px solid color-mix(in srgb, var(--good) 50%, transparent);
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+/* On a tap, hover would stick; only a pointer gets it. */
+@media (hover: hover) and (pointer: fine) {
+  .how-it-works .source-card:not(.connected):hover .source-badge {
+    border-style: solid;
+    border-color: color-mix(in srgb, var(--brand-signal) 55%, transparent);
+    color: var(--brand-emphasis);
+  }
+}
+
+/* Once anything is connected the drop zone is a solid surface. */
+.variant-shell[data-color-mode] .how-it-works .rig.is-connected .scanner {
+  border-style: solid;
+  border-color: var(--line);
+  box-shadow: inset 0 1px 0 var(--surface-highlight);
+}
+.variant-shell[data-color-mode] .how-it-works .rig .scanner.hot { border-color: var(--brand-signal); }
+
+/* ── Deasy, at the centre ──────────────────────────────────────────────── */
+
+/* The approved lockup, set straight on the stage. Before anything is
+   connected it sits dormant in the ink's faint tone; the first source
+   lights the symbol in rust, with a tight glow off the mark itself. */
+.how-it-works .deasy-logo { display: flex; width: 100%; }
+.how-it-works .deasy-logo svg { display: block; height: auto; overflow: visible; }
+.how-it-works .deasy-logo .logo-symbol { width: 17.12%; fill: var(--brand-signal); transition: fill 250ms ease, filter 300ms ease; }
+.how-it-works .deasy-logo .logo-word { width: 82.88%; fill: var(--foreground); transition: fill 250ms ease; }
+
+.how-it-works .hub { display: grid; justify-items: center; gap: 22px; }
+.how-it-works .hub-logo { display: block; width: 208px; }
+.how-it-works .hub:not(.live) .logo-symbol { fill: color-mix(in srgb, var(--ink-faint) 45%, transparent); }
+.how-it-works .hub:not(.live) .logo-word { fill: color-mix(in srgb, var(--ink-faint) 70%, transparent); }
+.how-it-works .hub.live .logo-symbol { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--brand-signal) 45%, transparent)); }
+.how-it-works .hub-sources { display: flex; min-height: 30px; gap: 8px; }
+.how-it-works .hub-source {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--card);
+}
+.how-it-works .hub-source .source-etch { width: 16px; height: 16px; }
+
+.how-it-works .drop-empty { gap: 14px; }
+.how-it-works .drop-empty p { display: grid; gap: 6px; max-width: none; }
+.how-it-works .desktop-drop-hint,
+.how-it-works .mobile-drop-hint { font-size: 12.5px; }
+
+/* ── The header every step shares ──────────────────────────────────────── */
+
+.how-it-works .run-head {
+  display: grid;
+  width: min(100%, var(--col));
+  min-height: 22px;
+  flex: none;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  margin: 2px auto 0;
+}
+.scanner-gunmetal.how-it-works .run-head .stepper { margin: 0; }
+.how-it-works .linkstrip { display: flex; min-width: 0; align-items: center; gap: 8px; }
+.how-it-works .lk-sources { display: flex; gap: 4px; }
+.how-it-works .lk-source {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  place-items: center;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: var(--popover);
+}
+.how-it-works .lk-source .source-etch { width: 13px; height: 13px; }
+.how-it-works .lk-pipe {
+  position: relative;
+  max-width: 56px;
+  height: 9px;
+  min-width: 18px;
+  flex: 1;
+  overflow: hidden;
+  background: linear-gradient(var(--line), var(--line)) center / 100% 1px no-repeat;
+}
+.how-it-works .lk-mark { display: block; width: 86px; flex: none; }
+/* The agent's Deasy connection carries the lockup too, light on the dark
+   composer. */
+.how-it-works .connector-deasy .connector-logo { width: 72px; }
+.how-it-works .chat-composer .connector-logo .logo-word { fill: #fbf9f5; }
+
+/* ── Connected, not yet read ───────────────────────────────────────────── */
+
+.how-it-works .connect-body {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 8px;
+}
+
+/* ── Read and Curate: one pile, one count, one checklist ───────────────── */
+
+.how-it-works .run-body {
+  width: min(100%, var(--col));
+  min-height: 0;
+  flex: 1;
+  margin: 24px auto 0;
+}
+.how-it-works .pile-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 232px;
+  align-items: start;
+  gap: 48px;
+}
+.how-it-works .pile-main { display: grid; min-width: 0; gap: 20px; }
+
+.scanner-gunmetal.how-it-works .hero { display: grid; justify-items: center; padding: 0; text-align: center; }
+.how-it-works .hero-n {
+  color: var(--foreground);
+  font: 400 52px/1 var(--serif);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  transition: color 400ms ease;
+}
+.how-it-works .hero-status {
+  position: relative;
+  display: block;
+  height: 16px;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font: 500 13px/16px var(--sans);
+  white-space: nowrap;
+}
+.how-it-works .hero-status > span { display: block; }
+.how-it-works .hero.done .hero-n,
+.how-it-works .hero.done .hero-status { color: var(--good); }
+
+.scanner-gunmetal.how-it-works .run-pile {
+  width: 100%;
+  min-height: 0;
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+  gap: 8px 8px;
+  padding: 0;
+  margin: 0;
+}
+.how-it-works .run-pile > .filter-file { position: relative; }
+/* Read's sweep: each sheet's tabs arrive as the sweep reaches its column. */
+.how-it-works .run-pile.reading .file-flags i { animation: hiw-tab 320ms cubic-bezier(0.19, 1, 0.22, 1) var(--sweep) both; }
+@keyframes hiw-tab { from { opacity: 0; transform: scaleX(0.2); } }
+/* Once the survivors have gathered, the outlines they left step back. */
+.scanner-gunmetal.how-it-works .run-pile.gathered > .filter-file { visibility: hidden; }
+/* A removed sheet leaves only its outline, not its tab. */
+.how-it-works .run-pile > .filter-file[data-removed] .file-flags { display: none; }
+
+.how-it-works .quality { padding-top: 4px; }
+.how-it-works .quality-head { margin: 0 0 6px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.how-it-works .quality-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.how-it-works .quality-row {
+  --q: var(--ink-meter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 6px 12px;
+  padding: 7px 0 8px;
+}
+.how-it-works .quality-name { color: var(--ink-soft); font: 500 12.5px/1.25 var(--sans); transition: color 250ms ease; }
+.how-it-works .quality-pct { color: var(--foreground); font: 500 13.5px/1 var(--sans); font-variant-numeric: tabular-nums; transition: color 250ms ease; }
+.how-it-works .quality-meter { grid-column: 1 / -1; height: 3px; overflow: hidden; border-radius: 2px; background: var(--track); }
+.how-it-works .quality-meter span { display: block; height: 100%; border-radius: 2px; background: var(--q); transform-origin: left; }
+/* In Curate the list is the checklist: the beat's check is lit, and each
+   one clears as its beat ends. */
+.how-it-works .quality-row.active .quality-name { color: var(--foreground); }
+.how-it-works .quality-row.cleared .quality-name { color: var(--ink-faint); }
+.how-it-works .quality-row.cleared .quality-pct { color: var(--good); }
+
+/* The survivors' tray: one ring, the kept sheet's own edge. */
+.scanner-gunmetal.how-it-works .filter-result {
+  display: grid;
+  grid-template-columns: repeat(6, 36px);
+  gap: 10px;
+  border-radius: var(--panel-r);
+  padding: 14px 16px;
+}
+.scanner-gunmetal.how-it-works .filter-result .filter-file { width: 36px; outline: none; }
+
+/* Two versions of one document meet in the middle of the pile; the old one
+   gives way and the current one is marked. */
+.how-it-works .verpick {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--panel-r);
+  padding: 16px 30px;
+  background: color-mix(in srgb, var(--background) 90%, transparent);
+  box-shadow: 0 4px 12px var(--shadow-ambient);
+  opacity: 0;
+  pointer-events: none;
+  translate: -50% -50%;
+}
+.scanner-gunmetal.how-it-works .verpick .vfile { position: relative; width: 46px; flex: none; }
+.how-it-works .vnew { --catch-color: var(--good); outline-offset: 2px; }
+.how-it-works .vtag {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 3px;
+  padding: 2px 4px;
+  background: var(--sheet-stock);
+  color: #756f63;
+  font: 600 9px/1 var(--sans);
+}
+.how-it-works .vnew .vtag { color: #4f6b43; }
+
+/* ── Activate: the question, what it reads from, the answer ────────────── */
+
+.how-it-works .activate-stage { display: flex; flex-direction: column; gap: 20px; }
+.how-it-works .activate-stage .ai-query,
+.how-it-works .activate-stage .answer { margin: 0; animation: none; }
+.how-it-works .activate-stage .chat-composer { flex: none; border-radius: var(--panel-r); }
+.how-it-works .activate-stage .query-label { color: color-mix(in srgb, var(--chalk) 60%, transparent); }
+.how-it-works .typed-query { display: block; min-height: 2.9em; margin-top: 6px; font: 14px/1.45 var(--sans); }
+.how-it-works .typed-line { display: block; min-height: 1.45em; }
+.how-it-works .caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 1px;
+  background: currentColor;
+  vertical-align: -2px;
+  animation: hiw-caret 0.75s step-end infinite;
+}
+@keyframes hiw-caret { 50% { opacity: 0; } }
+
+.how-it-works .activate-context { display: grid; min-width: 0; gap: 18px; }
+.how-it-works .context-strip { display: flex; flex: none; align-items: center; gap: 14px; }
+.how-it-works .kept-strip { display: flex; gap: 5px; }
+.scanner-gunmetal.how-it-works .kept-strip .filter-file {
+  position: relative;
+  width: 18px;
+  flex: none;
+  transition: translate 300ms cubic-bezier(0.19, 1, 0.22, 1), outline-color 300ms ease;
+  outline: 1.5px solid transparent;
+  outline-offset: 1.5px;
+}
+.scanner-gunmetal.how-it-works .kept-strip .filter-file.cited { outline-color: var(--good); translate: 0 -3px; }
+.how-it-works .context-caption { color: var(--ink-faint); font: 12.5px/1.3 var(--sans); }
+
+.how-it-works .activate-grid {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+}
+.how-it-works .graph-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.how-it-works .graph-svg .ge { fill: none; stroke: var(--graph-edge); stroke-width: 0.7; }
+.how-it-works .graph-svg .ge.dashed { opacity: 0.7; stroke-dasharray: 3 4; }
+.how-it-works .graph-svg .gn { fill: var(--graph-node); }
+.how-it-works .graph-svg .ge.on { opacity: 1; stroke: var(--graph-path); stroke-width: 1.4; }
+.how-it-works .graph-svg .gn.lit { fill: var(--foreground); }
+.how-it-works .graph-svg .ghalo { fill: var(--foreground); opacity: 0.08; }
+.how-it-works .graph-svg .glabel { fill: var(--ink-soft); font-family: var(--sans); font-size: 12.5px; font-weight: 500; }
+.how-it-works .graph-svg .xcap { fill: var(--ink-faint); font-family: var(--sans); font-size: 12.5px; font-weight: 500; }
+.how-it-works .graph-svg .mnode { opacity: 0; animation: hiw-grow 300ms ease 3.8s forwards; }
+.how-it-works .graph-svg .gn.new { fill: var(--good); }
+.how-it-works .graph-svg .medge { stroke: color-mix(in srgb, var(--good) 60%, transparent); stroke-width: 1.1; }
+@keyframes hiw-grow { to { opacity: 1; } }
+.how-it-works .activate-stage .answer { border-radius: var(--panel-r); }
+.how-it-works .activate-stage .answer p { font-size: 13.5px; line-height: 1.55; }
+.how-it-works .activate-stage .verdict { margin-bottom: 8px; color: var(--ink-faint); font: 500 12.5px/1.2 var(--sans); }
+/* The answer reads as an answer: a plain card, ink text, the key terms in
+   weight rather than colour, and its sources in the body face. */
+.variant-shell[data-color-mode] .how-it-works .activate-stage .answer {
+  border-color: var(--border-soft);
+  background: var(--card);
+  box-shadow: none;
+}
+.how-it-works .activate-stage .answer strong { color: var(--foreground); font-weight: 600; }
+.variant-shell[data-color-mode] .how-it-works .activate-stage .citation { color: var(--ink-faint); font: 12.5px/1.2 var(--sans); }
+.how-it-works .run-panel .retrieve-footer { flex: none; margin-top: auto; }
+/* Live sits opposite the link it describes. */
+
+/* ── Phone ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .scanner-gunmetal.how-it-works .scanner { height: 676px; }
+  .scanner-gunmetal.how-it-works .rig:not(.has-source) .scanner { height: 340px; }
+  .scanner-gunmetal.how-it-works .rig.is-connected:not(.has-source) .scanner { height: 340px; }
+  .how-it-works .source-card::after { display: none; }
+  /* No room for words beside the count; the badge becomes a + or a tick. */
+  .how-it-works .source-badge {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    align-self: center;
+    place-items: center;
+    padding: 0;
+    font-size: 0;
+  }
+  .how-it-works .source-badge::before { content: '+'; font: 500 15px/1 var(--sans); }
+  .how-it-works .source-card.connected .source-badge::before { content: '✓'; font-size: 12px; font-weight: 700; }
+  .how-it-works .selected-source-tab { overflow: hidden; text-overflow: ellipsis; }
+
+  /* The connected sources keep their row under the tab; the steps go
+     beneath them. */
+  .how-it-works .run-head { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+  .how-it-works .run-head > span:empty { display: none; }
+  .how-it-works .linkstrip { justify-self: start; }
+  /* The tab sits on the panel's left edge, so that corner is square. */
+  .how-it-works .rig { border-top-left-radius: 0; }
+  /* The header already carries the lockup; the question gets the width. */
+  .how-it-works .chat-composer-connectors { display: none; }
+
+  .how-it-works .hub-logo { width: 176px; }
+
+  /* Activate sets the stage height; Read and Curate sit centred in it. */
+  .how-it-works .pile-stage { grid-template-columns: minmax(0, 1fr); align-content: center; gap: 16px; width: min(100%, 256px); justify-self: center; }
+  .how-it-works .pile-main { gap: 16px; }
+  .how-it-works .hero-n { font-size: 38px; }
+  .how-it-works .hero-status { font-size: 12px; }
+  /* Forty bigger sheets, five rows of eight: the last twenty problem
+     sheets stay off the phone, and all twelve sound ones stay on it. */
+  .scanner-gunmetal.how-it-works .run-pile { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px 8px; }
+  .scanner-gunmetal.how-it-works .run-pile > .filter-file:nth-child(n + 57) { display: block; }
+  .scanner-gunmetal.how-it-works .run-pile > .filter-file:nth-child(n + 36):not([data-kind='keep']) { display: none; }
+  .how-it-works .quality-head { display: none; }
+  .how-it-works .quality-row { gap: 4px 12px; padding: 4px 0 5px; }
+  .how-it-works .quality-name { font-size: 11.5px; }
+  .how-it-works .quality-pct { font-size: 12.5px; }
+  .scanner-gunmetal.how-it-works .filter-result { grid-template-columns: repeat(6, 28px); gap: 8px; padding: 12px; }
+  .scanner-gunmetal.how-it-works .filter-result .filter-file { width: 28px; }
+
+  .how-it-works .activate-stage { gap: 12px; margin-top: 14px; }
+  .how-it-works .typed-query { margin-top: 0; font-size: 13px; }
+  .how-it-works .typed-line { display: inline; }
+  .how-it-works .typed-line:first-child::after { content: ' '; }
+  .how-it-works .context-strip { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .how-it-works .kept-strip { gap: 4px; }
+  .scanner-gunmetal.how-it-works .kept-strip .filter-file { width: 16px; }
+  .how-it-works .context-caption { font-size: 12px; }
+  .how-it-works .activate-grid { grid-template-columns: minmax(0, 1fr); align-content: start; gap: 12px; }
+  .how-it-works .graph-svg .glabel { font-size: 15px; }
+  /* The cropped graph stays inside the stage and under its caption. */
+  .how-it-works .graph-wrap { overflow: hidden; }
+  .how-it-works .activate-stage .answer { padding: 12px 14px; }
+  .how-it-works .activate-stage .answer p { font-size: 12.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-it-works .run-pile.reading .file-flags i,
+  .how-it-works .run-pile.reading > .filter-file,
+  .how-it-works .caret { animation: none; }
+  .how-it-works .graph-svg .mnode { opacity: 1; animation: none; }
+}
+
+/* The demo is one surface. The sources are a list beside it, and the
+   toolbar describes the selection without becoming another frame. */
+.variant-shell[data-color-mode] .how-it-works .rig,
+.variant-shell[data-color-mode] .how-it-works .rig.has-source {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.scanner-gunmetal.how-it-works .scanner-toolbar,
+.scanner-gunmetal.how-it-works .scanner-toolbar:has(.source-switch) {
+  height: auto;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+}
+.variant-shell[data-color-mode] .how-it-works .blade-tab {
+  margin: 0;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font: 500 13px/1.3 var(--sans);
+  letter-spacing: 0;
+}
+.how-it-works .tab-dot { display: none; }
+.scanner-gunmetal.how-it-works .stage { gap: 24px; grid-template-columns: 300px minmax(0, 1fr); }
+.scanner-gunmetal.how-it-works .rig.has-source .stage { grid-template-columns: minmax(0, 1fr); }
+.variant-shell[data-color-mode] .how-it-works .scanner,
+.variant-shell[data-color-mode] .how-it-works .rig.has-source .scanner,
+.variant-shell[data-color-mode] .how-it-works .rig.is-connected .scanner {
+  border: 1px dotted var(--line);
+  border-radius: var(--panel-r);
+  background: var(--card);
+  box-shadow: none;
+}
+.variant-shell[data-color-mode] .how-it-works .scanner.hot { border-color: var(--brand-signal); }
+.scanner-gunmetal.how-it-works .report-panel { padding: 28px; }
+.how-it-works .column-label { margin: 14px 0 18px; }
+.how-it-works .sources { gap: 10px; }
+.variant-shell[data-color-mode] .how-it-works .source-card {
+  min-height: 80px;
+  gap: 10px;
+  padding: 14px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--foreground);
+  cursor: pointer;
+  box-shadow: 0 1px 2px var(--shadow-card);
+}
+.variant-shell[data-color-mode] .how-it-works .source-card:hover {
+  border-color: var(--brand-signal);
+  background: color-mix(in srgb, var(--brand-signal) 5%, var(--card));
+  transform: none;
+  box-shadow: 0 1px 2px var(--shadow-card);
+}
+.variant-shell[data-color-mode] .how-it-works .source-card.connected {
+  border-color: var(--good);
+  background: color-mix(in srgb, var(--good) 6%, var(--card));
+}
+.variant-shell[data-color-mode] .how-it-works .source-icon {
+  width: 32px;
+  height: 36px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+}
+.how-it-works .source-copy { flex: 1; min-width: 0; }
+.how-it-works .source-name { font-weight: 500; }
+.how-it-works .source-badge,
+.how-it-works .source-card.connected .source-badge {
+  display: grid;
+  width: auto;
+  height: 30px;
+  align-self: center;
+  place-items: center;
+  padding: 0 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--ink-soft);
+  font: 600 11px/1 var(--sans);
+}
+.how-it-works .source-card.connected .source-badge {
+  border-color: var(--good);
+  background: var(--good);
+  color: var(--card);
+}
+.how-it-works .source-badge::before { content: none; }
+.how-it-works .run-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px dotted var(--line);
+}
+.how-it-works .run-head > span:empty { display: none; }
+.how-it-works .run-head .stepper { gap: 24px; }
+.how-it-works .step-fragment,
+.how-it-works .step-fragment:last-child { flex: none; }
+.how-it-works .step-line { display: none; }
+.how-it-works .step-dot,
+.how-it-works .step.active .step-dot,
+.how-it-works .step.done .step-dot {
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  font: 500 12px/1 var(--sans);
+}
+.how-it-works .step.active { color: var(--brand-signal); }
+.how-it-works .step.done { color: var(--ink-soft); }
+.how-it-works .step-name { display: inline; }
+.how-it-works .lk-source,
+.how-it-works .hub-source {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.how-it-works .lk-mark { width: 100px; }
+.how-it-works .run-body { margin-top: 32px; }
+.how-it-works .pile-stage { gap: 40px; }
+.how-it-works .quality-name { font-weight: 400; }
+.how-it-works .quality-meter { height: 2px; }
+.how-it-works .quality-row.cleared .quality-name { color: var(--ink-soft); }
+.scanner-gunmetal.how-it-works .filter-result {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.variant-shell[data-color-mode] .how-it-works .button {
+  border-radius: 8px;
+  box-shadow: none;
+}
+.variant-shell[data-color-mode] .how-it-works .button-ghost {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+}
+.variant-shell[data-color-mode] .how-it-works .button-ghost:hover { color: var(--foreground); }
+
+@media (max-width: 640px) {
+  .scanner-gunmetal.how-it-works .scanner { height: 590px; }
+  .scanner-gunmetal.how-it-works .scanner:has([data-phase='activate']) { height: 604px; }
+  .scanner-gunmetal.how-it-works .rig:not(.has-source) .scanner,
+  .scanner-gunmetal.how-it-works .rig.is-connected:not(.has-source) .scanner { height: 260px; }
+  .scanner-gunmetal.how-it-works .stage { gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  .variant-shell[data-color-mode] .how-it-works .source-card { min-height: 64px; padding: 10px; }
+  .how-it-works .source-copy { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .how-it-works .source-name { font-size: 12.5px; white-space: normal; }
+  .how-it-works .column-label { margin: 4px 0 8px; }
+  .scanner-gunmetal.how-it-works .report-panel { padding: 18px; }
+  .how-it-works .run-head { grid-template-columns: 1fr; gap: 16px; padding-bottom: 16px; }
+  .how-it-works .run-head .stepper { grid-row: auto; width: 100%; justify-content: space-between; gap: 8px; }
+  .scanner-gunmetal.how-it-works .step:not(.active) .step-name { display: inline; }
+  .how-it-works .step { gap: 6px; font-size: 12px; }
+  .how-it-works .linkstrip { gap: 6px; }
+  .how-it-works .lk-pipe { max-width: 24px; }
+  .how-it-works .lk-mark { width: 90px; }
+  .how-it-works .pile-stage { width: min(100%, 288px); gap: 16px; margin-top: 20px; align-content: start; }
+  .how-it-works .pile-main { gap: 14px; }
+  .how-it-works .hero-n { font-size: 36px; }
+  .scanner-gunmetal.how-it-works .run-pile > .filter-file:nth-child(n + 13):not([data-kind='keep']) { display: none; }
+  .how-it-works .quality-row { padding: 5px 0; gap: 0 10px; border-bottom: 1px dotted var(--line); }
+  .how-it-works .quality-name { font-size: 12px; line-height: 1.3; }
+  .how-it-works .quality-pct { font-size: 12px; }
+  .how-it-works .quality-meter { display: none; }
+  .how-it-works .hero-status { font-size: 12px; }
+  .how-it-works .activate-stage { margin-top: 18px; }
+}
+
+.scanner-gunmetal.how-it-works .scanner:has([data-phase='activate']) { height: 540px; }
+.how-it-works .activate-stage { flex: none; }
+.how-it-works .quality-head { border-bottom-style: dotted; }
+.variant-shell[data-color-mode] .how-it-works .activate-stage .answer { border-style: dotted; }
+.how-it-works .citation { border-top-style: dotted; }
+@media (max-width: 640px) {
+  .scanner-gunmetal.how-it-works .scanner:has([data-phase='activate']) { height: 654px; }
+  .how-it-works .activate-stage .answer p { line-height: 1.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The base scanner clears its old filter illustration. Read still
+     needs its printed pages here; Curate jumps to the gathered result. */
+  .variant-shell[data-color-mode] .how-it-works .run-pile:not(.gathered) > .filter-file {
+    opacity: 1;
+    border-color: var(--sheet-edge);
+    background: var(--sheet-light), var(--page) center / cover no-repeat, var(--sheet-stock);
+    box-shadow: var(--sheet-shadow);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .scanner-gunmetal.how-it-works .stage { grid-template-columns: minmax(0, 1fr); }
+  .how-it-works .sources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .how-it-works .source-name { font-size: 12.5px; }
+}
+
+/* Frequent controls respond quickly, without hover lingering on touch. */
+.variant-shell[data-color-mode] .how-it-works .source-card {
+  transition: border-color 140ms ease, background-color 140ms ease, transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.variant-shell[data-color-mode] .how-it-works .button { transition: background-color 140ms ease, color 140ms ease, transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@media (prefers-reduced-motion: no-preference) {
+  .variant-shell[data-color-mode] .how-it-works .source-card:active,
+  .variant-shell[data-color-mode] .how-it-works .button:active { transform: scale(0.98); }
+}
+@media (hover: none) {
+  .variant-shell[data-color-mode] .how-it-works .source-card:not(.connected):hover { border-color: var(--line); background: var(--card); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scanner-gunmetal.how-it-works .kept-strip .filter-file.cited { translate: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .variant-shell[data-color-mode] .how-it-works .source-card:active,
+  .variant-shell[data-color-mode] .how-it-works .button:active { transform: none; }
+}
+
+/* Quality results carry the curation story without duplicate meter marks. */
+.how-it-works .quality-name { font-weight: 500; color: var(--foreground); }
+.how-it-works .quality-pct { font: 600 21px/1.1 var(--sans); }
+.how-it-works .quality-row { min-height: 40px; align-items: center; }
+.how-it-works .quality-row.cleared .quality-name { color: var(--foreground); }
+.how-it-works .quality-head { color: var(--foreground); font-size: 15px; }
+@media (max-width: 700px) {
+  .how-it-works .quality-head { display: block; padding-bottom: 8px; }
+  .how-it-works .quality-row { min-height: 28px; }
+  .how-it-works .quality-name { font-size: 12px; }
+  .how-it-works .quality-pct { font-size: 17px; }
+}
+
+.how-it-works .hub-hint { color: var(--ink-soft); font: 400 13px/30px var(--sans); }
+.how-it-works .hub-hint[hidden] { display: none; }
+
+.how-it-works .source-badge,
+.how-it-works .source-card.connected .source-badge { display: flex; gap: 5px; }
+.how-it-works .source-badge svg { width: 14px; height: 14px; flex: none; }

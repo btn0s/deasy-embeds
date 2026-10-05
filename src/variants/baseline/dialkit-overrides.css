@@ -1,0 +1,5 @@
+/* DialKit ships preset/version/copy controls we don't need for brand switching. */
+.dialkit-panel-toolbar,
+.dialkit-panel-section-toolbar {
+  display: none;
+}

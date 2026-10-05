@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "purpose": "Isolate the Deasy machine material before transferring it to product geometry.",
+  "invariants": {
+    "geometry": "perfect sphere",
+    "background": "#FBF9F5",
+    "lighting": "soft neutral studio",
+    "forbidden": [
+      "ports",
+      "logos",
+      "etching",
+      "documents",
+      "internal geometry",
+      "clouds",
+      "smoke",
+      "streams",
+      "particles",
+      "recognizable color orbs"
+    ]
+  },
+  "palette": {
+    "sage": "#8BA68C",
+    "glacier": "#95AEDD",
+    "ochre": "#D67E43",
+    "pine": "#3D5A3F"
+  },
+  "studies": [
+    {
+      "id": "A",
+      "name": "Pearl diffuse",
+      "file": "orb-a-pearl-diffuse.png",
+      "frostOpacity": 0.85,
+      "diffusedTransmission": 0.15,
+      "relativeSaturation": 0.2,
+      "assessment": "Closest to the requested embedded, borderless color illumination."
+    },
+    {
+      "id": "B",
+      "name": "Balanced milk",
+      "file": "orb-b-balanced-milk.png",
+      "frostOpacity": 0.72,
+      "diffusedTransmission": 0.28,
+      "relativeSaturation": 0.35,
+      "assessment": "Colors become too discrete and object-like."
+    },
+    {
+      "id": "C",
+      "name": "Opal depth",
+      "file": "orb-c-opal-depth.png",
+      "frostOpacity": 0.62,
+      "diffusedTransmission": 0.38,
+      "relativeSaturation": 0.4,
+      "assessment": "Strong optical depth and edge refraction; more transparent than requested."
+    },
+    {
+      "id": "D",
+      "name": "Deep frost",
+      "file": "orb-d-deep-frost.png",
+      "frostOpacity": 0.92,
+      "diffusedTransmission": 0.08,
+      "relativeSaturation": 0.15,
+      "assessment": "Maximum concealment; likely too quiet for the hero."
+    }
+  ],
+  "recommendedStartingPoint": "A",
+  "nextLayer": "Transfer the selected material unchanged to primitive body shapes before adding ports or the official Deasy symbol etch."
+}

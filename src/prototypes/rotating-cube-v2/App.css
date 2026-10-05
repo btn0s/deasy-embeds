@@ -1,0 +1,276 @@
+.rotating-document-page {
+  --brand-pitch: #24221e;
+  --brand-coal: #2f2c25;
+  --brand-ash: #49463f;
+  --brand-stone: #b4ac9d;
+  --brand-clay: #d9d2c4;
+  --brand-limestone: #f7f3eb;
+  --brand-chalk: #fbf9f5;
+  --brand-ochre: #d67e43;
+  --brand-sage: #8ba68c;
+  --brand-glacier: #95aedd;
+
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: var(--brand-pitch);
+  color: var(--brand-chalk);
+  font-family: 'Rethink Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.prototype-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgb(180 172 157 / 16%);
+  background: rgb(36 34 30 / 88%);
+  backdrop-filter: blur(12px);
+}
+
+.prototype-topbar-inner {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 4vw, 48px);
+}
+
+.prototype-brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.prototype-brand span {
+  display: block;
+  width: 162px;
+  height: 22px;
+  background: var(--brand-chalk);
+  mask: url('/brand/logos/deasy-labs-lockup-small.svg') no-repeat center / contain;
+  -webkit-mask: url('/brand/logos/deasy-labs-lockup-small.svg') no-repeat center / contain;
+}
+
+.prototype-nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.prototype-nav a {
+  color: rgb(217 210 196 / 74%);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition-property: color, background-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.prototype-nav a:hover {
+  color: var(--brand-chalk);
+}
+
+.prototype-nav .prototype-cta {
+  min-height: 40px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--brand-sage);
+  color: var(--brand-pitch);
+  font-weight: 600;
+}
+
+.prototype-nav .prototype-cta:hover {
+  background: var(--brand-chalk);
+  color: var(--brand-pitch);
+}
+
+.rotating-document-scene {
+  width: 100%;
+  overflow: hidden;
+}
+
+.prototype-hero-copy {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(32px, 6svh, 72px) clamp(24px, 4vw, 48px) 0;
+  text-align: center;
+}
+
+.prototype-hero-copy h1 {
+  max-width: 22ch;
+  margin: 0 auto;
+  font-family: 'Gilda Display', serif;
+  font-size: clamp(40px, 5.2vw, 72px);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.prototype-hero-copy p {
+  max-width: 620px;
+  margin: 16px auto 0;
+  color: rgb(217 210 196 / 72%);
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.document-scene-frame {
+  position: relative;
+  width: 100%;
+  height: var(--scene-height, clamp(320px, 50svh, 560px));
+  margin-top: clamp(12px, 2svh, 24px);
+  overflow: hidden;
+}
+
+/* Brand isometric mesh as the structure the diagram sits on. The asset is
+   used as-is (no recolour, no scaling); only opacity and a soft edge fade. */
+.document-scene-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/brand/visuals/patterns/isometric-mesh.png') center / auto repeat;
+  opacity: 0.16;
+  -webkit-mask: radial-gradient(ellipse 70% 80% at 50% 50%, #000 40%, transparent 100%);
+  mask: radial-gradient(ellipse 70% 80% at 50% 50%, #000 40%, transparent 100%);
+  pointer-events: none;
+}
+
+.document-scene-frame canvas {
+  position: relative;
+  display: block;
+}
+
+.deasy-mode-toggle {
+  display: flex;
+  width: max-content;
+  margin: 12px auto 20px;
+  padding: 4px;
+  border: 1px solid rgb(180 172 157 / 32%);
+  border-radius: 999px;
+  background: var(--brand-coal);
+  transform: translateY(10px);
+}
+
+.deasy-mode-toggle button {
+  min-height: 40px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--brand-clay);
+  cursor: pointer;
+  font: 600 13px/1 'Rethink Sans', sans-serif;
+  white-space: nowrap;
+  transition:
+    background-color 160ms ease-out,
+    color 160ms ease-out;
+}
+
+.deasy-mode-toggle button:hover {
+  color: var(--brand-chalk);
+}
+
+.deasy-mode-toggle button:first-child[data-active='true'] {
+  background: var(--brand-ash);
+  color: var(--brand-chalk);
+}
+
+.deasy-mode-toggle button:last-child[data-active='true'] {
+  background: var(--brand-sage);
+  color: var(--brand-chalk);
+  text-shadow:
+    0 0 5px rgb(251 249 245 / 70%),
+    0 0 12px rgb(139 166 140 / 90%);
+}
+
+.deasy-mode-toggle button:focus-visible {
+  outline: 2px solid var(--brand-glacier);
+  outline-offset: 2px;
+}
+
+/* Metrics card over the character's bottom-right corner; Sage when Deasy is on. */
+.agent-readout {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 16px 18px;
+  min-width: 176px;
+  border: 1px solid var(--brand-stone);
+  background: var(--brand-pitch);
+  color: var(--brand-clay);
+  font: 500 15px/1.2 'Rethink Sans', sans-serif;
+  pointer-events: none;
+  transition: border-color 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+.agent-readout div { display: flex; justify-content: space-between; gap: 16px; }
+.agent-readout dt { color: var(--brand-stone); }
+.agent-readout dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--brand-ochre); transition: color 220ms cubic-bezier(0.2, 0, 0, 1); }
+.agent-readout[data-active='true'] { border-color: var(--brand-sage); }
+.agent-readout[data-active='true'] dd { color: var(--brand-sage); }
+
+/* Small muted labels under the source and sorting boxes. */
+.kit-label {
+  display: inline-block;
+  color: var(--brand-ash);
+  font: 600 10px/1 'Rethink Sans', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+
+
+.prototype-controls {
+  position: fixed;
+  top: 76px;
+  right: 12px;
+  z-index: 100;
+  width: 280px;
+}
+
+@media (max-width: 720px) {
+  .prototype-nav a:not(.prototype-cta) {
+    display: none;
+  }
+
+  .prototype-brand span {
+    width: 138px;
+  }
+
+  .prototype-hero-copy {
+    padding-top: 44px;
+  }
+
+  .document-scene-frame {
+    height: min(var(--scene-height, 420px), 260px);
+  }
+
+  .kit-label {
+    display: none;
+  }
+
+  .prototype-controls {
+    top: 72px;
+    width: 250px;
+  }
+
+  .deasy-mode-toggle button {
+    padding-inline: 13px;
+  }
+}
+
+/* Locked hero rotor (shared with variants/baseline) */
+.hero-line { display: block; }
+.rotor { position: relative; display: inline-block; vertical-align: baseline; text-align: center; }
+.rotor-measure { display: block; visibility: hidden; white-space: nowrap; pointer-events: none; }
+.rotor-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.rot-word { display: inline-block; color: var(--brand-emphasis, #8ba68c); white-space: nowrap; will-change: transform, opacity; }
+
+/* On Pitch the Ash label vanishes; lift to Stone. */
+.kit-label-on-dark { color: var(--brand-stone); }

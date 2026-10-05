@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fbf9f5" />
+  <title>Deasy Labs — Concept Render Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Rethink+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rust: #b7500c;
+      --pine: #3d5a3f;
+      --sage: #8ba68c;
+      --glacier: #95aedd;
+      --pitch: #24221e;
+      --coal: #2f2c25;
+      --ash: #49463f;
+      --stone: #b4ac9d;
+      --clay: #d9d2c4;
+      --limestone: #f7f3eb;
+      --chalk: #fbf9f5;
+      --display: "Gilda Display", Georgia, serif;
+      --body: "Rethink Sans", system-ui, sans-serif;
+      --page: min(1400px, calc(100vw - 48px));
+      color-scheme: light;
+      font-family: var(--body);
+      font-synthesis: none;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--chalk);
+      color: var(--pitch);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgb(251 249 245 / 0.64), var(--chalk) 720px),
+        url("../../brand/visuals/patterns/isometric-mesh.png") top 86px center / 960px auto no-repeat,
+        var(--chalk);
+    }
+
+    body:has(dialog[open]) {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .masthead {
+      width: var(--page);
+      min-height: 96px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid color-mix(in srgb, var(--stone) 62%, transparent);
+    }
+
+    .masthead img {
+      display: block;
+      width: 200px;
+      height: auto;
+    }
+
+    .masthead-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ash);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
+
+    .masthead-meta::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rust);
+      content: "";
+    }
+
+    main {
+      width: var(--page);
+      margin: 0 auto;
+      padding: 96px 0 120px;
+    }
+
+    .intro {
+      max-width: 950px;
+      margin-bottom: 76px;
+    }
+
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--rust);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(58px, 7.2vw, 100px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 0.98;
+    }
+
+    .intro-copy {
+      max-width: 730px;
+      margin: 34px 0 0;
+      color: var(--ash);
+      font-size: clamp(18px, 1.6vw, 21px);
+      line-height: 1.48;
+    }
+
+    .style-keys {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 36px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .style-keys li {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid var(--clay);
+      border-radius: 999px;
+      background: rgb(251 249 245 / 0.74);
+      color: var(--ash);
+      font-size: 13px;
+    }
+
+    .gallery-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .gallery-heading h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(36px, 4vw, 48px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-count {
+      color: var(--ash);
+      font-size: 14px;
+    }
+
+    .render-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .render-card {
+      min-width: 0;
+      margin: 0;
+    }
+
+    .render-open {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      border: 1px solid var(--clay);
+      border-radius: 18px;
+      background: var(--limestone);
+      isolation: isolate;
+      text-decoration: none;
+    }
+
+    .render-open::after {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid rgb(251 249 245 / 0.74);
+      border-radius: 50%;
+      background: rgb(36 34 30 / 0.72);
+      color: var(--chalk);
+      content: "↗";
+      font-size: 20px;
+      line-height: 1;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .render-open img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .render-open:hover::after,
+    .render-open:focus-visible::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .render-open:hover img,
+    .render-open:focus-visible img {
+      transform: scale(1.018);
+    }
+
+    .render-open:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--rust) 48%, transparent);
+      outline-offset: 4px;
+    }
+
+    figcaption {
+      padding: 18px 4px 14px;
+    }
+
+    .caption-topline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .caption-kicker {
+      color: var(--rust);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .caption-number {
+      color: var(--stone);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    h3 {
+      margin: 8px 0 0;
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+    }
+
+    figcaption p {
+      max-width: 630px;
+      margin: 10px 0 0;
+      color: var(--ash);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .page-note {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 48px;
+      margin-top: 92px;
+      padding: 52px;
+      border-radius: 20px;
+      background: var(--pitch);
+      color: var(--chalk);
+    }
+
+    .page-note h2 {
+      max-width: 620px;
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(38px, 4vw, 54px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+
+    .page-note p {
+      align-self: end;
+      margin: 0;
+      color: var(--clay);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    footer {
+      width: var(--page);
+      margin: 0 auto;
+      padding: 28px 0 40px;
+      border-top: 1px solid var(--clay);
+      color: var(--ash);
+      font-size: 13px;
+    }
+
+    dialog {
+      width: 100vw;
+      max-width: none;
+      height: 100dvh;
+      max-height: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: rgb(36 34 30 / 0.98);
+      color: var(--chalk);
+    }
+
+    dialog::backdrop {
+      background: var(--pitch);
+    }
+
+    .lightbox-shell {
+      display: grid;
+      min-height: 100%;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      padding: 24px;
+    }
+
+    .lightbox-bar {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .lightbox-title-wrap {
+      min-width: 0;
+    }
+
+    .lightbox-eyebrow {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--sage);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .lightbox-title {
+      overflow: hidden;
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 400;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .icon-button {
+      display: grid;
+      flex: 0 0 auto;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border: 1px solid rgb(251 249 245 / 0.24);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--chalk);
+      cursor: pointer;
+      font: 400 22px/1 var(--body);
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .icon-button:hover,
+    .icon-button:focus-visible {
+      border-color: var(--sage);
+      background: rgb(139 166 140 / 0.12);
+      outline: 0;
+    }
+
+    .lightbox-stage {
+      position: relative;
+      display: grid;
+      min-height: 0;
+      place-items: center;
+      padding: 24px 74px;
+    }
+
+    .lightbox-image {
+      display: block;
+      max-width: min(1500px, 100%);
+      max-height: calc(100dvh - 210px);
+      border: 1px solid rgb(251 249 245 / 0.12);
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox-prev {
+      left: 4px;
+    }
+
+    .lightbox-next {
+      right: 4px;
+    }
+
+    .lightbox-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      color: var(--clay);
+      font-size: 13px;
+    }
+
+    .lightbox-description {
+      max-width: 760px;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .download-link {
+      flex: 0 0 auto;
+      color: var(--sage);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .download-link:hover,
+    .download-link:focus-visible {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    @media (max-width: 820px) {
+      :root {
+        --page: min(100% - 32px, 680px);
+      }
+
+      .masthead {
+        min-height: 80px;
+      }
+
+      .masthead img {
+        width: 150px;
+      }
+
+      main {
+        padding: 70px 0 88px;
+      }
+
+      .intro {
+        margin-bottom: 56px;
+      }
+
+      .render-grid {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
+      .page-note {
+        grid-template-columns: 1fr;
+        padding: 36px 28px;
+      }
+
+      .lightbox-stage {
+        padding: 18px 0;
+      }
+
+      .lightbox-nav {
+        top: auto;
+        bottom: 30px;
+        z-index: 2;
+        transform: none;
+        background: rgb(36 34 30 / 0.72);
+      }
+
+      .lightbox-prev {
+        left: 12px;
+      }
+
+      .lightbox-next {
+        right: 12px;
+      }
+
+      .lightbox-image {
+        max-height: calc(100dvh - 240px);
+      }
+
+      .lightbox-footer {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .masthead-meta span {
+        display: none;
+      }
+
+      .gallery-heading {
+        align-items: flex-end;
+      }
+
+      h1 {
+        font-size: clamp(50px, 15vw, 68px);
+      }
+
+      .lightbox-shell {
+        padding: 18px 16px;
+      }
+
+      .lightbox-description {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .render-open img,
+      .render-open::after {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <img src="../../brand/logos/deasy-labs-lockup.svg" alt="Deasy Labs" />
+    <div class="masthead-meta" aria-label="Project status"><span>Visual study · September 2026</span></div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Homepage hero module · Interactive 3D scene concepts</p>
+      <h1 id="page-title">Make better context visible.</h1>
+      <p class="intro-copy">
+        Two directions for the interactive hero scene: wiring live sources into the context engine, and sorting a sea of documents down to a trusted set—each auto-plays the story and invites a touch, before the result reaches AI.
+      </p>
+      <ul class="style-keys" aria-label="Art direction principles">
+        <li>30° isometric construction</li>
+        <li>Matte mineral materials</li>
+        <li>Restrained glass layers</li>
+        <li>Signals carry meaning</li>
+        <li>Warm neutral foundations</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="gallery-title">
+      <div class="gallery-heading">
+        <h2 id="gallery-title">Hero scene directions</h2>
+        <span class="gallery-count">04 scenes</span>
+      </div>
+
+      <div class="render-grid">
+        <figure class="render-card">
+          <a class="render-open" href="./01-plugin-live-light.png" data-index="0" aria-label="Open Plug-in hero scene, light mode">
+            <img src="./01-plugin-live-light.png" alt="Light isometric hero scene: four source tiles, two cables plugged into a glass context engine where streams merge, a cursor-hand dragging a loose plug toward a pulsing empty port, and a chat panel lit by the output" width="1600" height="900" />
+          </a>
+          <figcaption>
+            <div class="caption-topline"><span class="caption-kicker">Direction A · Plug-in</span><span class="caption-number">01 / 04</span></div>
+            <h3>Wire it up — light</h3>
+            <p>Two sources reason together continuously; the scene runs on its own. A loose third cable and a pulsing port make the invitation to plug in obvious.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="render-card">
+          <a class="render-open" href="./02-plugin-live-dark.png" data-index="1" aria-label="Open Plug-in hero scene, dark mode">
+            <img src="./02-plugin-live-dark.png" alt="Dark isometric hero scene: source tiles with dangling cables, two seated in Sage-lit ports on a frosted context engine where streams merge into one channel that lights a chat panel and dashboard card, a cursor-hand holding a loose cable" width="1600" height="900" />
+          </a>
+          <figcaption>
+            <div class="caption-topline"><span class="caption-kicker">Direction A · Plug-in</span><span class="caption-number">02 / 04</span></div>
+            <h3>Wire it up — dark</h3>
+            <p>The same scene in Pitch and Coal. Sage carries the live signal, Glacier the flow, and the merged channel lands in the downstream AI surfaces.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="render-card">
+          <a class="render-open" href="./03-conveyor-sorter.png" data-index="2" aria-label="Open Conveyor hero scene, quality sorter">
+            <img src="./03-conveyor-sorter.png" alt="Isometric hero scene: a tumbling stream of documents rides a conveyor through a glass scanner arch; Rust rejects drop into four trays marked with pencil, duplicate, clock, and padlock glyphs while a short line of Pine shield-check tiles continues to a glowing chat panel" width="1600" height="900" />
+          </a>
+          <figcaption>
+            <div class="caption-topline"><span class="caption-kicker">Direction B · Conveyor</span><span class="caption-number">03 / 04</span></div>
+            <h3>Quality sorter</h3>
+            <p>A coin-sorter toy for documents: drafts, duplicates, stale files, and sensitive content leave the belt mid-fall, and only the trusted line reaches the answer.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="render-card">
+          <a class="render-open" href="./04-conveyor-cascade.png" data-index="3" aria-label="Open Conveyor hero scene, document cascade">
+            <img src="./04-conveyor-cascade.png" alt="Isometric hero scene: an avalanche of document tiles cascades from the top of the frame across a glass sorting deck; Rust tiles arc into four pictogram trays while a single small Pine stack survives beside a chat panel with one glowing answer" width="1600" height="900" />
+          </a>
+          <figcaption>
+            <div class="caption-topline"><span class="caption-kicker">Direction B · Conveyor</span><span class="caption-number">04 / 04</span></div>
+            <h3>Document cascade</h3>
+            <p>The Solitaire win screen, but with files: a sea of questionable documents pours in and a tiny trusted set survives. Volume makes the fear concrete, then resolves it.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <aside class="page-note" aria-label="Art direction summary">
+      <h2>Structured enough to explain. Human enough to remember.</h2>
+      <p>Each scene is framed as a live WebGL hero canvas: 30-degree construction, shallow layered depth, restrained glass, neutral foundations, brand color only for state, and headline space held open on the left.</p>
+    </aside>
+  </main>
+
+  <footer>Concepts developed from the Deasy &amp; Oxy weekly sync · August 26, 2026</footer>
+
+  <dialog id="lightbox" aria-labelledby="lightbox-title">
+    <div class="lightbox-shell">
+      <header class="lightbox-bar">
+        <div class="lightbox-title-wrap">
+          <span class="lightbox-eyebrow" id="lightbox-eyebrow"></span>
+          <h2 class="lightbox-title" id="lightbox-title"></h2>
+        </div>
+        <button class="icon-button" id="lightbox-close" type="button" aria-label="Close lightbox">×</button>
+      </header>
+
+      <div class="lightbox-stage">
+        <button class="icon-button lightbox-nav lightbox-prev" id="lightbox-prev" type="button" aria-label="Previous render">←</button>
+        <img class="lightbox-image" id="lightbox-image" src="" alt="" />
+        <button class="icon-button lightbox-nav lightbox-next" id="lightbox-next" type="button" aria-label="Next render">→</button>
+      </div>
+
+      <footer class="lightbox-footer">
+        <p class="lightbox-description" id="lightbox-description"></p>
+        <a class="download-link" id="lightbox-download" href="" download>Download image ↓</a>
+      </footer>
+    </div>
+  </dialog>
+
+  <script>
+    const renders = [
+      {
+        eyebrow: "Direction A · Plug-in · 01 / 04",
+        title: "Wire it up — light",
+        src: "./01-plugin-live-light.png",
+        alt: "Light isometric hero scene: four source tiles, two cables plugged into a glass context engine where streams merge, a cursor-hand dragging a loose plug toward a pulsing empty port, and a chat panel lit by the output",
+        description: "Two sources reason together continuously; the scene runs on its own. A loose third cable and a pulsing port make the invitation to plug in obvious."
+      },
+      {
+        eyebrow: "Direction A · Plug-in · 02 / 04",
+        title: "Wire it up — dark",
+        src: "./02-plugin-live-dark.png",
+        alt: "Dark isometric hero scene: source tiles with dangling cables, two seated in Sage-lit ports on a frosted context engine where streams merge into one channel that lights a chat panel and dashboard card, a cursor-hand holding a loose cable",
+        description: "The same scene in Pitch and Coal. Sage carries the live signal, Glacier the flow, and the merged channel lands in the downstream AI surfaces."
+      },
+      {
+        eyebrow: "Direction B · Conveyor · 03 / 04",
+        title: "Quality sorter",
+        src: "./03-conveyor-sorter.png",
+        alt: "Isometric hero scene: a tumbling stream of documents rides a conveyor through a glass scanner arch; Rust rejects drop into four trays marked with pencil, duplicate, clock, and padlock glyphs while a short line of Pine shield-check tiles continues to a glowing chat panel",
+        description: "A coin-sorter toy for documents: drafts, duplicates, stale files, and sensitive content leave the belt mid-fall, and only the trusted line reaches the answer."
+      },
+      {
+        eyebrow: "Direction B · Conveyor · 04 / 04",
+        title: "Document cascade",
+        src: "./04-conveyor-cascade.png",
+        alt: "Isometric hero scene: an avalanche of document tiles cascades from the top of the frame across a glass sorting deck; Rust tiles arc into four pictogram trays while a single small Pine stack survives beside a chat panel with one glowing answer",
+        description: "The Solitaire win screen, but with files: a sea of questionable documents pours in and a tiny trusted set survives. Volume makes the fear concrete, then resolves it."
+      }
+    ];
+
+    const dialog = document.querySelector("#lightbox");
+    const image = document.querySelector("#lightbox-image");
+    const title = document.querySelector("#lightbox-title");
+    const eyebrow = document.querySelector("#lightbox-eyebrow");
+    const description = document.querySelector("#lightbox-description");
+    const download = document.querySelector("#lightbox-download");
+    const closeButton = document.querySelector("#lightbox-close");
+    const previousButton = document.querySelector("#lightbox-prev");
+    const nextButton = document.querySelector("#lightbox-next");
+    let currentIndex = 0;
+    let opener = null;
+
+    function showRender(index) {
+      currentIndex = (index + renders.length) % renders.length;
+      const render = renders[currentIndex];
+      image.src = render.src;
+      image.alt = render.alt;
+      title.textContent = render.title;
+      eyebrow.textContent = render.eyebrow;
+      description.textContent = render.description;
+      download.href = render.src;
+      download.download = render.src.split("/").pop();
+    }
+
+    document.querySelectorAll(".render-open").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        opener = link;
+        showRender(Number(link.dataset.index));
+        dialog.showModal();
+        closeButton.focus();
+      });
+    });
+
+    closeButton.addEventListener("click", () => dialog.close());
+    previousButton.addEventListener("click", () => showRender(currentIndex - 1));
+    nextButton.addEventListener("click", () => showRender(currentIndex + 1));
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {
+      image.removeAttribute("src");
+      opener?.focus();
+    });
+
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showRender(currentIndex - 1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showRender(currentIndex + 1);
+      }
+    });
+  </script>
+</body>
+</html>

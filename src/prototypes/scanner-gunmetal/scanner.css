@@ -1,0 +1,993 @@
+/*
+ * Baseline Scanner — Gunmetal.
+ *
+ * The base scanner exactly as it looks — its stylesheet is imported whole —
+ * plus the few pieces this copy adds: a tooltip for the file piles, the
+ * kept-file strip on Enrich, and Retrieve as a connector chat. Everything
+ * here is drawn from the base's own tokens and parts.
+ */
+
+.scanner-gunmetal {
+  min-height: 100vh;
+  padding-block: 1.5rem 3rem;
+}
+
+.scanner-gunmetal .scanner-toolbar {
+  display: flex;
+  height: 39px;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-inline: 24px 0;
+}
+.scanner-gunmetal .scanner-toolbar .blade-tab { margin-left: 0; }
+.scanner-gunmetal .selected-source-tab .tab-dot { background: var(--good); animation: none; }
+.scanner-gunmetal .selected-source-count { color: var(--ink-faint); font-size: 11px; }
+/* Change source is a quiet link set beside the tab it changes, not a
+   button competing with the step's own actions. */
+.scanner-gunmetal .scanner-toolbar:has(.source-switch) { justify-content: start; }
+.scanner-gunmetal .source-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: center;
+  margin-top: 3px;
+  border: 0;
+  padding: 4px 2px;
+  background: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font: 500 12px/1 var(--sans);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 3px;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+.scanner-gunmetal .source-switch svg { width: 12px; height: 12px; }
+.scanner-gunmetal .source-switch:hover { color: var(--foreground); text-decoration-color: currentColor; }
+.scanner-gunmetal .source-switch:focus-visible { border-radius: 3px; outline: 2px solid var(--brand-signal); outline-offset: 2px; }
+.scanner-gunmetal .mobile-drop-hint { display: none; }
+
+/* Keep the apparatus in one place while its contents change. The opening's
+   source list and the four steps occupy the same frame height. */
+.scanner-gunmetal .scanner { height: 520px; min-height: 0; }
+.scanner-gunmetal .selected-report { height: 100%; min-height: 0; }
+.scanner-gunmetal .report-panel {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.scanner-gunmetal .report-panel .stepper { flex: none; }
+.scanner-gunmetal .scan-grid { flex: 1; }
+.scanner-gunmetal .filter-visual { display: grid; flex: 1; align-content: center; }
+.scanner-gunmetal .enrich-wrap { flex: 1; align-content: center; }
+.scanner-gunmetal .report-footer { margin-top: auto; }
+.scanner-gunmetal :is(.report-footer, .retrieve-footer) {
+  display: grid;
+  min-height: 48px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+.scanner-gunmetal .report-footer p { grid-column: 1; }
+.scanner-gunmetal .footer-actions { display: contents; }
+.scanner-gunmetal .report-footer.actions-only { display: grid; }
+.scanner-gunmetal .report-footer .button-ghost,
+.scanner-gunmetal .retrieve-footer .button-ghost:first-child { grid-column: 1; justify-self: start; }
+.scanner-gunmetal .retrieve-footer .button-ghost:nth-child(2) { grid-column: 2; justify-self: center; }
+.scanner-gunmetal .report-footer .button-primary,
+.scanner-gunmetal .retrieve-footer .button-primary { grid-column: 3; justify-self: end; white-space: nowrap; }
+.scanner-gunmetal .mobile-button-label { display: none; }
+.scanner-gunmetal .retrieve-panel .chat {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 7px;
+}
+.scanner-gunmetal .retrieve-panel .chat-composer,
+.scanner-gunmetal .retrieve-panel .retrieve-footer { flex: none; }
+
+/* The baseline frame and shadows stay; the contents use the paper and etched
+   marks from the earlier material study. */
+.scanner-gunmetal .source-etch {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background: var(--foreground);
+  -webkit-mask: var(--etch) center / contain no-repeat;
+  mask: var(--etch) center / contain no-repeat;
+}
+
+.scanner-gunmetal .source-meta,
+.scanner-gunmetal .stepper,
+.scanner-gunmetal .count-label,
+.scanner-gunmetal .filter-label span,
+.scanner-gunmetal .document-sub,
+.scanner-gunmetal .kept-label {
+  font-family: var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.scanner-gunmetal .step { font-size: 12px; }
+.scanner-gunmetal .count-label { font-size: 12px; }
+
+.scanner-gunmetal .scan-grid {
+  grid-template-columns: minmax(0, 1fr) 185px;
+  gap: 26px;
+}
+
+.scanner-gunmetal .document-swarm {
+  display: grid;
+  width: min(100%, 650px);
+  min-height: 174px;
+  flex: none;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  align-content: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+}
+
+.scanner-gunmetal .file,
+.scanner-gunmetal .filter-file {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 736 / 894;
+  border-radius: 2px;
+  background: var(--card) center / cover;
+  box-shadow: 0 2px 5px var(--shadow-card);
+}
+
+.scanner-gunmetal .file { position: relative; }
+.scanner-gunmetal .metric-stack { gap: 0; }
+.scanner-gunmetal .quality-card {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  gap: 10px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 16px 2px;
+  background: transparent;
+}
+.scanner-gunmetal .quality-card:last-child { border-bottom: 0; }
+.scanner-gunmetal .quality-swatch {
+  width: 12px;
+  height: 16px;
+  border: 2px solid var(--ring);
+  border-radius: 1px;
+}
+.scanner-gunmetal .quality-card:nth-child(2) .quality-swatch { opacity: .5; filter: grayscale(1); }
+.scanner-gunmetal .quality-word { color: var(--ink-soft); font-size: 13px; font-weight: 500; }
+.scanner-gunmetal .quality-value { color: var(--foreground); font: 400 25px/1 var(--serif); }
+
+.scanner-gunmetal .filter-swarm {
+  width: min(100%, 650px);
+  min-height: 154px;
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+  margin-inline: auto;
+}
+/* Filter's timeline runs in motion (FilterPanel), so none of the base
+   scanner's keyframes play here. The timeline drives each file's --catch
+   from 0 to 1 and back, which shows its flag as an outline. */
+.scanner-gunmetal .filter-count span,
+.scanner-gunmetal .filter-label span,
+.scanner-gunmetal .filter-file { animation: none; }
+.scanner-gunmetal .filter-file {
+  --catch: 0;
+  outline: 2px solid color-mix(in srgb, var(--catch-color) calc(var(--catch) * 100%), transparent);
+  outline-offset: -2px;
+}
+.scanner-gunmetal .filter-file.keep { --catch-color: var(--good); outline-offset: 1px; }
+.scanner-gunmetal .filter-count { height: 58px; padding-bottom: 14px; }
+.scanner-gunmetal .filter-denominator {
+  position: absolute;
+  inset: auto 0 0;
+  color: var(--ink-faint);
+  font: 12px/1 var(--sans);
+  opacity: 1;
+}
+
+.scanner-gunmetal .enriched-document {
+  display: grid;
+  min-height: 170px;
+  align-content: end;
+  border-color: color-mix(in srgb, var(--good) 50%, var(--line));
+  background-size: cover;
+  color: #332f29;
+  text-align: left;
+  box-shadow: 0 10px 24px var(--shadow-ambient);
+}
+.scanner-gunmetal .document-kicker {
+  color: #756f63;
+  font: 10px/1.2 var(--sans);
+}
+.scanner-gunmetal .document-name {
+  margin-top: 8px;
+  color: #332f29;
+  font-size: 12px;
+}
+.scanner-gunmetal .document-sub { color: #756f63; }
+.scanner-gunmetal .metadata-tags { display: grid; gap: 0; min-width: 240px; }
+.scanner-gunmetal .metadata-tag {
+  display: grid;
+  grid-template-columns: 95px 1fr;
+  gap: 12px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 9px 0;
+  background: transparent;
+  font-family: var(--sans);
+}
+.scanner-gunmetal .metadata-tag > span { color: var(--ink-faint); }
+.scanner-gunmetal .kept-thumb { width: 21px; height: 28px; }
+.scanner-gunmetal .chat-question,
+.scanner-gunmetal .chat-placeholder,
+.scanner-gunmetal .chat-composer .typing-query { font-family: var(--sans); }
+
+/* The baseline theme's mode rules come after its general component rules. */
+.variant-shell[data-color-mode] .scanner-gunmetal .quality-card,
+.variant-shell[data-color-mode] .scanner-gunmetal .metadata-tag {
+  background: transparent;
+  box-shadow: none;
+}
+@media (min-width: 641px) and (max-width: 760px) {
+  .scanner-gunmetal .rig:not(.has-source) .scanner { height: 382px; }
+}
+
+@media (max-width: 760px) {
+  .scanner-gunmetal .stage { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+  .scanner-gunmetal .source-column { min-width: 0; }
+  .scanner-gunmetal .sources { max-width: 100%; }
+}
+
+@media (max-width: 640px) {
+  .scanner-gunmetal .scanner-toolbar { padding-left: 0; }
+  .scanner-gunmetal .scanner-toolbar .blade-tab { min-width: 0; padding-inline: 12px; font-size: 10.5px; white-space: nowrap; }
+  .scanner-gunmetal .selected-source-count { display: none; }
+  .scanner-gunmetal .source-switch { flex: none; font-size: 11px; }
+  .scanner-gunmetal .scanner { height: 620px; }
+  .scanner-gunmetal .rig:not(.has-source) .scanner { height: 454px; }
+  .scanner-gunmetal .sources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; overflow: visible; }
+  .scanner-gunmetal .source-card { min-width: 0; min-height: 74px; gap: 7px; padding: 10px; }
+  .scanner-gunmetal .source-icon { width: 32px; height: 32px; }
+  .scanner-gunmetal .source-etch { width: 19px; height: 19px; }
+  .scanner-gunmetal .source-name { font-size: 12px; }
+  .scanner-gunmetal .source-meta { font-size: 10px; }
+  .scanner-gunmetal .desktop-drop-hint { display: none; }
+  .scanner-gunmetal .mobile-drop-hint { display: inline; }
+  .scanner-gunmetal .scan-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .scanner-gunmetal .stepper { margin-top: 28px; gap: 0; }
+  .scanner-gunmetal .step { gap: 4px; font-size: 10px; }
+  .scanner-gunmetal .step-dot { width: 18px; height: 18px; }
+  .scanner-gunmetal .step:not(.active) .step-name { display: none; }
+  .scanner-gunmetal :is(.report-footer, .retrieve-footer) { gap: 6px; }
+  .scanner-gunmetal :is(.report-footer, .retrieve-footer) .button { min-width: 0; padding-inline: 10px; font-size: 11.5px; white-space: nowrap; }
+  .scanner-gunmetal .report-footer p { max-width: none; font-size: 11px; }
+  .scanner-gunmetal .desktop-button-label { display: none; }
+  .scanner-gunmetal .mobile-button-label { display: inline; }
+  .scanner-gunmetal .document-swarm {
+    min-height: 0;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+  }
+  .scanner-gunmetal .metric-stack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .scanner-gunmetal .quality-card { display: grid; grid-template-columns: 10px 1fr; gap: 3px 5px; padding: 8px 4px; border-bottom: 0; }
+  .scanner-gunmetal .quality-swatch { width: 10px; height: 13px; }
+  .scanner-gunmetal .quality-word { font-size: 10px; }
+  .scanner-gunmetal .quality-value { grid-column: 2; font-size: 20px; }
+  .scanner-gunmetal .filter-swarm { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+  .scanner-gunmetal .enrich-wrap { flex-direction: column; gap: 10px; }
+  .scanner-gunmetal .metadata-tags { width: min(100%, 270px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanner-gunmetal .report-panel.rise-in::before { display: none; }
+  .scanner-gunmetal .filter-count .filter-count-4,
+  .scanner-gunmetal .filter-label .filter-label-4 { opacity: 1; }
+  .variant-shell[data-color-mode] .scanner-gunmetal .filter-file:not(.keep) {
+    opacity: 1;
+    background: transparent;
+    border-color: var(--line);
+    box-shadow: none;
+  }
+}
+
+.prototype-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.prototype-back {
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.prototype-back:hover {
+  color: var(--foreground);
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.mode-toggle button {
+  min-height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.mode-toggle button[data-active='true'] {
+  background: var(--popover);
+  color: var(--foreground);
+}
+
+/* ── File tooltip ──────────────────────────────────────────────────────── */
+
+.file-pile {
+  position: relative;
+}
+
+.file-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  display: grid;
+  gap: 3px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--popover);
+  box-shadow: 0 10px 28px var(--shadow-overlay);
+  pointer-events: none;
+  translate: -50% calc(-100% - 14px);
+  white-space: nowrap;
+}
+
+.file-tip[data-align='start'] { translate: -14px calc(-100% - 14px); }
+.file-tip[data-align='end'] { translate: calc(-100% + 14px) calc(-100% - 14px); }
+
+.file-tip-name {
+  color: var(--foreground);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.file-tip-reason {
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.file-tip-reason[data-tone='dup'] { color: var(--metric-duplicate); }
+.file-tip-reason[data-tone='old'] { color: var(--metric-old-version); }
+.file-tip-reason[data-tone='sen'] { color: var(--destructive); }
+.file-tip-reason[data-tone='sta'] { color: var(--metric-stale); }
+.file-tip-reason[data-tone='keep'] { color: var(--good); }
+
+/* ── Enrich: the rest of what survived ─────────────────────────────────── */
+
+.kept-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.kept-label {
+  margin-right: 6px;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* The same good-tinted file the Filter pile ends on. */
+.kept-thumb {
+  padding: 0;
+  border-color: var(--good);
+  background: var(--good-bg);
+  cursor: pointer;
+  transition: translate 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kept-thumb:hover { translate: 0 -2px; }
+}
+
+/* ── Retrieve: the connector chat ──────────────────────────────────────── */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* A join line, set in the base's small mono caps. */
+.chat-event {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.chat-event::before,
+.chat-event::after {
+  height: 0.5px;
+  flex: 1;
+  background: var(--line);
+  content: '';
+}
+
+.chat-event-deasy {
+  color: var(--good);
+}
+
+.chat-event-deasy::before,
+.chat-event-deasy::after {
+  background: color-mix(in srgb, var(--good) 48%, var(--line));
+}
+
+.chat-user {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+/* The question once sent: the base's query bar cut down to a bubble, in
+   the same two dresses it wears — Pitch on light, a sunken well on dark. */
+.chat-question {
+  max-width: 80%;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 12px 12px 4px 12px;
+  padding: 10px 14px;
+  background: var(--pitch);
+  color: var(--chalk);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.variant-shell[data-color-mode='dark'] .chat-question {
+  border-color: var(--border-soft);
+  background: var(--surface-sunken);
+  color: var(--foreground);
+}
+
+.chat-connectors,
+.chat-composer-connectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.connector {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.connector-icon,
+.connector-icon svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.connector-mark {
+  display: block;
+  width: 14px;
+  height: 12px;
+  background-color: var(--good);
+  mask: url('/brand/logos/deasy-labs-symbol-small.svg') no-repeat center / contain;
+  -webkit-mask: url('/brand/logos/deasy-labs-symbol-small.svg') no-repeat center / contain;
+}
+
+.connector-deasy {
+  border-color: color-mix(in srgb, var(--good) 48%, var(--border));
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+/* Inside the composer the chips take the bar's own text colour, which
+   flips with the mode, on a faint wash of it. */
+.chat-composer .connector {
+  border-color: color-mix(in srgb, currentColor 18%, transparent);
+  background: color-mix(in srgb, currentColor 6%, transparent);
+  color: inherit;
+}
+
+.chat-composer .connector-deasy {
+  border-color: color-mix(in srgb, #8ba68c 60%, transparent);
+  color: #a9c2aa;
+}
+
+.chat-composer .connector-mark {
+  background-color: #a9c2aa;
+}
+
+.chat-thinking {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.chat-thinking-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--brand-signal);
+  animation: chat-pulse 900ms ease-in-out infinite;
+}
+
+@keyframes chat-pulse {
+  50% { opacity: 0.3; }
+}
+
+/* Answer cards arrive with the conversation, not on the base's fixed
+   delays, and sit flush in the thread. */
+.chat .answer {
+  margin: 0;
+  animation: none;
+}
+
+.chat .bad-answer { opacity: 1; }
+
+.chat-composer {
+  margin-bottom: 0;
+}
+
+.chat-composer-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.chat-placeholder {
+  display: block;
+  opacity: 0.5;
+  font-family: var(--mono);
+  font-size: 13.5px;
+}
+
+.chat-composer .typing-query {
+  max-width: 100%;
+}
+
+.chat-composer-connectors {
+  flex: none;
+}
+
+.retrieve-footer .button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .chat-composer { flex-wrap: wrap; }
+  .chat-composer-connectors { flex-basis: 100%; padding-left: 37px; }
+  .chat-question { max-width: 92%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-thinking-dot { animation: none; }
+}
+
+/* ── Polish pass ───────────────────────────────────────────────────────── */
+
+/* The first answer, folded: one line that keeps the wrong figure in view
+   next to the right one. */
+.scanner-gunmetal .bad-recap {
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+}
+.scanner-gunmetal .bad-recap .verdict-mark { width: 18px; height: 18px; background: var(--bad); font-size: 10px; }
+.scanner-gunmetal .bad-recap p { color: var(--ink-soft); font-size: 13px; line-height: 1.45; }
+.scanner-gunmetal .bad-recap .verdict-sub { margin-right: 8px; }
+.scanner-gunmetal .bad-recap b { color: var(--bad); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+/* Content leaving the top of the thread fades out instead of being cut. */
+.scanner-gunmetal .retrieve-panel .chat {
+  -webkit-mask: linear-gradient(to bottom, transparent, #000 14px);
+  mask: linear-gradient(to bottom, transparent, #000 14px);
+  padding-top: 6px;
+}
+
+/* Kept files stand a little proud of the pile. */
+.scanner-gunmetal .filter-file.keep { box-shadow: 0 4px 12px var(--shadow-card); }
+
+/* The enlarged document is plain paper in both modes: the pile's texture is
+   a thumbnail, and scaled up its printed blocks sat under the words. */
+.variant-shell[data-color-mode] .scanner-gunmetal .enriched-document {
+  width: 250px;
+  min-height: 190px;
+  box-sizing: border-box;
+  border-color: color-mix(in srgb, var(--good) 45%, #d9d2c4);
+  background: #f7f3ea;
+  box-shadow: 0 1px 0 #fff inset, 0 12px 28px var(--shadow-ambient);
+}
+.scanner-gunmetal .document-lines {
+  display: block;
+  width: 82%;
+  height: 36px;
+  margin-bottom: 20px;
+  background: repeating-linear-gradient(to bottom, #e2dbcd 0 3px, transparent 3px 11px);
+}
+.scanner-gunmetal .document-name { overflow-wrap: anywhere; }
+
+@media (max-width: 640px) {
+  .scanner-gunmetal .bad-recap p { font-size: 12px; }
+  .scanner-gunmetal .bad-recap .verdict-sub { display: block; margin: 0 0 2px; }
+}
+
+/* The phone has a third of the width, so Retrieve takes a little more
+   height and the composer keeps its chips on one line beside the prompt. */
+@media (max-width: 640px) {
+  .scanner-gunmetal .scanner { height: 660px; }
+  .scanner-gunmetal .stepper { margin-top: 10px; }
+  .scanner-gunmetal .kept-row { margin-bottom: 14px; }
+  .scanner-gunmetal .chat-event { font-size: 9px; letter-spacing: 0.3px; gap: 8px; }
+  .scanner-gunmetal .chat .answer p { font-size: 13px; line-height: 1.5; }
+  .scanner-gunmetal .chat .good-answer { padding: 12px 14px; }
+  .scanner-gunmetal .chat .good-answer .verdict { margin-bottom: 8px; }
+  .scanner-gunmetal .chat .citation { margin-top: 10px; padding-top: 8px; }
+  .scanner-gunmetal .chat-composer { flex-wrap: nowrap; padding-block: 10px; }
+  .scanner-gunmetal .chat-composer .query-label { display: none; }
+  .scanner-gunmetal .chat-composer-connectors { flex-basis: auto; flex-wrap: nowrap; gap: 4px; padding-left: 0; }
+  .scanner-gunmetal .chat-composer .connector { padding: 0 5px; }
+  .scanner-gunmetal .chat-composer .connector-name { display: none; }
+}
+
+/* ── Filter: the survivors gather ──────────────────────────────────────── */
+
+/* Removed files leave a faint outline, and so do the survivors' empty slots,
+   so the result reads as the survivors rather than gaps in grey blocks. */
+
+.variant-shell[data-color-mode] .scanner-gunmetal .filter-file[data-removed],
+.variant-shell[data-color-mode] .scanner-gunmetal .filter-file.vacated {
+  opacity: .5;
+  background: transparent;
+  box-shadow: none;
+  outline: 1px dashed var(--line);
+  outline-offset: -1px;
+  transform: scale(.86);
+}
+.scanner-gunmetal .filter-swarm > .filter-file { transition: filter 500ms ease; }
+.scanner-gunmetal .filter-swarm.gathered > .filter-file { filter: opacity(.7); }
+.scanner-gunmetal .filter-result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  box-shadow: 0 14px 34px var(--shadow-ambient);
+  translate: -50% -50%;
+  animation: gunmetal-result-in 420ms ease both;
+}
+@keyframes gunmetal-result-in {
+  from { border-color: transparent; background: transparent; box-shadow: none; }
+}
+.scanner-gunmetal .filter-result .filter-file {
+  width: 50px;
+  flex: none;
+  animation: none;
+  outline: 2px solid var(--good);
+  outline-offset: 2px;
+}
+
+/* ── Enrich: the labels are the document's own ─────────────────────────── */
+
+/* The metadata is a label card clipped to the document's edge, sliding out
+   from behind it, instead of a table standing beside it. */
+.scanner-gunmetal .enrich-wrap { gap: 0; align-items: stretch; }
+.scanner-gunmetal .enriched-document { position: relative; z-index: 1; }
+.scanner-gunmetal .metadata-tags {
+  align-self: center;
+  margin-left: -1px;
+  border: 1px solid var(--line);
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+  padding: 4px 18px 4px 22px;
+  background: var(--card);
+  box-shadow: 0 8px 22px var(--shadow-card);
+  animation: gunmetal-label-out 420ms cubic-bezier(.2, .8, .2, 1) 260ms both;
+}
+@keyframes gunmetal-label-out {
+  from { opacity: 0; transform: translateX(-36px); }
+}
+.scanner-gunmetal .metadata-tag:last-child { border-bottom: 0; }
+.scanner-gunmetal .metadata-tag { padding: 7px 0; }
+
+@media (max-width: 640px) {
+  /* Bigger files on phone, so the pile fills the frame's height: 56 of them
+     make seven full rows of eight. */
+  .scanner-gunmetal .filter-swarm { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+  .scanner-gunmetal .filter-swarm > .filter-file:nth-child(n + 57) { display: none; }
+  .scanner-gunmetal .filter-result { gap: 9px; padding: 12px 14px; }
+  .scanner-gunmetal .filter-result .filter-file { width: 32px; }
+  .scanner-gunmetal .enrich-wrap { align-items: center; }
+  .scanner-gunmetal .metadata-tags {
+    margin: -1px 0 0;
+    border: 1px solid var(--line);
+    border-top: 0;
+    border-radius: 0 0 10px 10px;
+    padding: 6px 16px 4px;
+    width: 230px;
+    min-width: 0;
+    box-sizing: border-box;
+    animation-name: gunmetal-label-down;
+  }
+  @keyframes gunmetal-label-down {
+    from { opacity: 0; transform: translateY(-28px); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanner-gunmetal .metadata-tags,
+  .scanner-gunmetal .filter-result { animation: none; }
+}
+
+/* ── Sheets, after Rotating Document v2 ───────────────────────────────────
+ * The files are the same printed pages the hero streams: the doc-paper
+ * renders laid on Limestone stock and blended by luminosity, which is the
+ * CSS form of v2's remap onto the brand paper ramp. Each sheet has a Clay
+ * hairline edge (Sage once it is kept), one key light from the top left,
+ * a near and a far shadow, and a small tilt. Paper stays paper in both
+ * modes, as it does against v2's dark stage.
+ */
+.scanner-gunmetal {
+  --sheet-stock: #f7f3eb;
+  --sheet-edge: #d9d2c4;
+  --sheet-light: linear-gradient(150deg, rgb(255 255 255 / 55%), rgb(255 255 255 / 0%) 48%, rgb(36 34 30 / 6%));
+  --sheet-shadow: 0 1px 1px rgb(36 34 30 / 12%), 0 3px 7px rgb(36 34 30 / 9%);
+  --sheet-shadow-lift: 0 1px 1px rgb(36 34 30 / 12%), 0 8px 16px rgb(36 34 30 / 14%);
+}
+.variant-shell[data-color-mode='dark'] .scanner-gunmetal {
+  --sheet-shadow: 0 1px 1px rgb(0 0 0 / 38%), 0 4px 9px rgb(0 0 0 / 32%);
+  --sheet-shadow-lift: 0 1px 1px rgb(0 0 0 / 38%), 0 10px 20px rgb(0 0 0 / 42%);
+}
+
+.variant-shell[data-color-mode] .scanner-gunmetal :is(.file, .filter-file) {
+  --page: url('/renders/rotating-document/doc-paper-01.webp');
+  border: 1px solid var(--sheet-edge);
+  border-radius: 1.5px;
+  background: var(--sheet-light), var(--page) center / cover no-repeat, var(--sheet-stock);
+  background-blend-mode: normal, luminosity, normal;
+  box-shadow: var(--sheet-shadow);
+}
+.scanner-gunmetal :is(.file, .filter-file)[data-paper='1'] { --page: url('/renders/rotating-document/doc-paper-02.webp'); }
+.scanner-gunmetal :is(.file, .filter-file)[data-paper='2'] { --page: url('/renders/rotating-document/doc-paper-03.webp'); }
+.scanner-gunmetal :is(.file, .filter-file)[data-paper='3'] { --page: url('/renders/rotating-document/doc-paper-04.webp'); }
+
+/* Kept sheets take v2's ordered-output edge. */
+.variant-shell[data-color-mode] .scanner-gunmetal .filter-file.keep,
+.variant-shell[data-color-mode] .scanner-gunmetal .kept-thumb { border-color: color-mix(in srgb, var(--good) 70%, var(--sheet-edge)); }
+
+@media (hover: hover) and (pointer: fine) {
+  .scanner-gunmetal .file { transition: translate 160ms ease, box-shadow 160ms ease; }
+  .scanner-gunmetal .file:hover { z-index: 2; translate: 0 -2px; box-shadow: var(--sheet-shadow-lift); }
+}
+
+/* The enlarged document is the same stock, lit the same way. Its printed
+   page stays out: scaled up, the render's blocks sat under the words. */
+.variant-shell[data-color-mode] .scanner-gunmetal .enriched-document {
+  border-color: color-mix(in srgb, var(--good) 55%, var(--sheet-edge));
+  border-radius: 3px;
+  background: var(--sheet-light), var(--sheet-stock);
+  box-shadow: 0 1px 1px rgb(36 34 30 / 12%), 0 14px 30px var(--shadow-ambient);
+}
+.scanner-gunmetal .document-lines { background: repeating-linear-gradient(to bottom, var(--sheet-edge) 0 3px, transparent 3px 11px); }
+
+/* ── Controls and selection, polished ──────────────────────────────────── */
+
+/* Every footer button is the same height and type size, ghost or primary,
+   so a step's actions read as one row. */
+.scanner-gunmetal :is(.report-footer, .retrieve-footer) { padding-top: 12px; }
+.scanner-gunmetal :is(.report-footer, .retrieve-footer) .button {
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 0 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.scanner-gunmetal :is(.report-footer, .retrieve-footer) .button-ghost { font-weight: 500; }
+.scanner-gunmetal .button:focus-visible { outline: 2px solid var(--brand-signal); outline-offset: 2px; }
+.scanner-gunmetal .retrieve-footer .button:disabled { opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+
+/* The kept-file picker: the open document's place is an empty sage slot,
+   the others lift under the pointer and ring on focus. */
+.scanner-gunmetal .kept-row { gap: 9px; }
+.scanner-gunmetal .kept-label { margin-right: 8px; }
+.scanner-gunmetal .kept-slot {
+  width: 21px;
+  height: 28px;
+  box-sizing: border-box;
+  border: 1.5px dashed color-mix(in srgb, var(--good) 70%, transparent);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--good) 10%, transparent);
+}
+.scanner-gunmetal .kept-thumb { transition: translate 160ms ease, box-shadow 160ms ease; }
+.scanner-gunmetal .kept-thumb:focus-visible { outline: 2px solid var(--good); outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) {
+  .scanner-gunmetal .kept-thumb:hover { translate: 0 -3px; box-shadow: var(--sheet-shadow-lift); }
+}
+
+/* Source cards: the pressed card settles rather than jumps, and the icon
+   well lights with the card. */
+.scanner-gunmetal .source-card:active { transform: translateY(0) scale(0.985); transition-duration: 90ms; }
+.scanner-gunmetal .source-card:focus-visible { outline: 2px solid var(--brand-signal); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  /* The stepper spreads evenly: every gap is a line, only the current step
+     is named. */
+  .scanner-gunmetal .stepper { margin-inline: 2px; }
+  .scanner-gunmetal .step-fragment { flex: 1; }
+  .scanner-gunmetal .step-fragment:last-child { flex: none; }
+  .scanner-gunmetal .step-line { min-width: 10px; margin: 0 7px; }
+  .variant-shell[data-color-mode='light'] .scanner-gunmetal .step-line:not(.done) { background: var(--border); }
+
+  /* On a phone the sources are a list you tap, one full-width row each,
+     with the count set right and a chevron to say it opens. */
+  .scanner-gunmetal .sources { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .scanner-gunmetal .source-card { min-height: 58px; gap: 12px; padding: 9px 14px 9px 10px; }
+  .scanner-gunmetal .source-copy { display: flex; min-width: 0; flex: 1; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .scanner-gunmetal .source-name { font-size: 13.5px; white-space: nowrap; }
+  .scanner-gunmetal .source-meta { color: var(--ink-faint); font-size: 11.5px; white-space: nowrap; }
+  .scanner-gunmetal .source-card::after {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-top: 1.5px solid var(--ink-faint);
+    border-right: 1.5px solid var(--ink-faint);
+    content: '';
+    rotate: 45deg;
+  }
+  .scanner-gunmetal .rig:not(.has-source) .scanner { height: 354px; }
+
+  .scanner-gunmetal :is(.report-footer, .retrieve-footer) .button { min-height: 38px; padding: 0 14px; font-size: 12.5px; }
+  .scanner-gunmetal .report-footer p { font-size: 11px; line-height: 1.4; }
+  /* Too narrow to centre Replay; it sits beside the primary instead. */
+  .scanner-gunmetal .retrieve-footer { grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; }
+
+  /* The answer's verdict gets its own line under its small caption. */
+  .scanner-gunmetal .chat .verdict { flex-wrap: wrap; row-gap: 6px; }
+  .scanner-gunmetal .chat .verdict .verdict-sub { flex-basis: 100%; }
+  .scanner-gunmetal .chat-event { text-align: center; line-height: 1.5; }
+  .scanner-gunmetal .kept-row { gap: 7px; margin-top: 10px; }
+}
+
+/* ── One frame, one grid ───────────────────────────────────────────────────
+ * Once a source is chosen, the dashed drop zone becomes a solid surface.
+ * The stepper sits compact at the top left instead of spanning the frame,
+ * and the sheets lie square on their grid.
+ */
+.variant-shell[data-color-mode] .scanner-gunmetal .rig.has-source .scanner {
+  border-style: solid;
+  border-color: var(--line);
+  box-shadow: inset 0 1px 0 var(--surface-highlight);
+}
+
+.scanner-gunmetal .step {
+  font: 500 12.5px/1 var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.variant-shell[data-color-mode='light'] .scanner-gunmetal .step-line:not(.done) { background: var(--border); }
+.scanner-gunmetal .step-dot { width: 18px; height: 18px; border-width: 1px; font: 600 10px/1 var(--sans); }
+@media (min-width: 641px) {
+  .scanner-gunmetal .stepper { justify-content: center; margin: 2px 0 0; }
+  .scanner-gunmetal .step-fragment,
+  .scanner-gunmetal .step-fragment:last-child { flex: none; }
+  .scanner-gunmetal .step-line { width: 28px; min-width: 0; height: 1px; flex: none; margin: 0 12px; }
+}
+
+/* ── Read ──────────────────────────────────────────────────────────────── */
+
+.scanner-gunmetal .read-layout {
+  display: flex;
+  width: min(100%, 760px);
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  margin-inline: auto;
+}
+.scanner-gunmetal .read-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+.scanner-gunmetal .read-count { display: flex; align-items: baseline; gap: 10px; margin: 0; }
+.scanner-gunmetal .read-count .count-now { color: var(--foreground); font: 400 46px/.9 var(--serif); letter-spacing: -0.01em; }
+.scanner-gunmetal .read-count .count-label { margin: 0; color: var(--ink-faint); font: 500 13px/1 var(--sans); letter-spacing: 0; text-transform: none; }
+.scanner-gunmetal .read-legend { display: flex; gap: 28px; margin: 0; padding: 0; list-style: none; }
+.scanner-gunmetal .read-legend li { display: flex; flex-direction: column; gap: 8px; }
+.scanner-gunmetal .read-legend-word { display: flex; align-items: center; gap: 7px; color: var(--ink-soft); font: 500 12px/1 var(--sans); }
+.scanner-gunmetal .read-legend-value { color: var(--foreground); font: 500 22px/1 var(--sans); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.scanner-gunmetal .flag-swatch { width: 14px; height: 4px; border-radius: 2px; background: var(--flag); }
+
+.scanner-gunmetal .read-swarm {
+  width: 100%;
+  min-height: 0;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  gap: 10px 8px;
+  padding: 0;
+}
+.scanner-gunmetal .file-flags {
+  position: absolute;
+  z-index: 1;
+  top: 3px;
+  right: 3px;
+  left: 3px;
+  display: flex;
+  gap: 2px;
+}
+.scanner-gunmetal .file-flags i { height: 4px; flex: 1; border-radius: 2px; background: var(--flag); box-shadow: 0 0 0 1px var(--sheet-stock); }
+.scanner-gunmetal .file-flags [data-flag='dup'] { --flag: var(--metric-duplicate); }
+.scanner-gunmetal .file-flags [data-flag='sta'] { --flag: var(--flag-stale); }
+/* Stale is age, not a fault: a neutral tab, never the green that means kept. */
+.scanner-gunmetal { --flag-stale: color-mix(in srgb, var(--ink-soft) 55%, transparent); }
+.scanner-gunmetal .file-flags [data-flag='sen'] { --flag: var(--destructive); }
+
+@media (max-width: 640px) {
+  .scanner-gunmetal .read-layout { justify-content: start; gap: 18px; margin-top: 22px; }
+  .scanner-gunmetal .read-head { flex-direction: column; align-items: stretch; gap: 16px; }
+  .scanner-gunmetal .read-count .count-now { font-size: 40px; }
+  .scanner-gunmetal .read-legend { justify-content: space-between; gap: 12px; }
+  .scanner-gunmetal .read-legend-value { font-size: 19px; }
+  .scanner-gunmetal .read-swarm { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 9px 8px; }
+}

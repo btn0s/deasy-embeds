@@ -1,12 +1,12 @@
 # Deasy embeds
 
-The How it Works blade (`src/prototypes/how-it-works`), the scanner demo
-(`src/prototypes/scanner-gunmetal`) and the rotating-document 3D hero
-(`src/prototypes/rotating-cube-v2`) compiled into a framework-agnostic
-ES module package. Drop it into any TS/JS project; it does not need React,
-three.js or a bundler plugin on the host side.
+The How it Works blade, scanner demo, and rotating-document 3D hero live as
+**TypeScript source under `embeds/src/`** (see `embeds/src/prototypes/`) and
+compile into a framework-agnostic ES module package. Drop it into any TS/JS
+project; it does not need React, three.js or a bundler plugin on the host side.
 
-- Built straight from the prototype source; nothing there is modified or forked.
+- **Source of truth:** `embeds/src/` (published to [deasy-embeds](https://github.com/btn0s/deasy-embeds) under `src/`).
+- Prototype routes in the Vite app re-import from `embeds/src` for local dev.
 - React, motion, three.js and every image/model are bundled in (assets inlined).
 - Each embed renders inside a shadow root, so its styles never touch the host page
   and the host's styles never touch it. The host `<html>`, `<body>` and
@@ -74,14 +74,15 @@ scanner it was designed on; use `how-it-works` for the site module.
   `scanner` adds ~45 kB, and the
   hero adds ~1.6 MB (three.js plus the inlined textures and model).
 
-## Rebuild
+## Rebuild and publish
 
-From the repo root after changing a prototype:
+From `deasy-proto-01` after changing embed source:
 
 ```sh
 pnpm build:embeds   # writes embeds/package
+DEASY_EMBEDS_REPO=/path/to/deasy-embeds-clone node scripts/publish-deasy-embeds.mjs --push
 ```
 
-The built package is published to https://github.com/btn0s/deasy-embeds.
+The built package and `src/` tree are published to https://github.com/btn0s/deasy-embeds.
 Its `example.html` shows every piece on a plain HTML page (serve the folder
 statically, e.g. `python3 -m http.server`).
