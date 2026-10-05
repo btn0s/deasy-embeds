@@ -66,7 +66,7 @@ export default defineConfig({
   define: { 'process.env.NODE_ENV': JSON.stringify('production') },
   build: {
     outDir: inMonorepo ? `${embeds}package` : embeds,
-    emptyOutDir: !inMonorepo,
+    emptyOutDir: inMonorepo,
     copyPublicDir: false,
     assetsInlineLimit: Number.POSITIVE_INFINITY,
     cssCodeSplit: false,
@@ -77,7 +77,6 @@ export default defineConfig({
         scanner: `${embeds}src/scanner.tsx`,
         'how-it-works': `${embeds}src/how-it-works.tsx`,
         'rotating-document': `${embeds}src/rotating-document.tsx`,
-        vue: `${embeds}src/vue/index.ts`,
       },
       formats: ['es'],
     },

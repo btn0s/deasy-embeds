@@ -58,7 +58,8 @@ a page that only needs one blade doesn't load three.js.
 
 ## Vue
 
-The `/vue` entry exports Vue 3 components for all three shipped widgets. Install
+The `/vue` entry exports native Vue 3 components for the latest How it Works
+and Cube v2 widgets. Install
 Vue in the host app, then import only the components you use:
 
 ```vue
@@ -74,7 +75,9 @@ import { DeasyHowItWorks, DeasyRotatingDocument } from '@deasy/embeds/vue'
 
 `DeasyHowItWorks` and `DeasyRotatingDocument` are Vue implementations of the
 latest How it Works flow and cube v2 hero. They use Vue's composition API and
-own their flow state and Three.js scene directly. The separate legacy Scanner
+own their flow state and Three.js scene through TresJS. Motion for Vue preserves
+the shipped transitions. The Vue bundle contains no React renderer and includes
+its textures, model, and CSS. The separate legacy Scanner
 is not part of this Vue entry.
 
 `how-it-works` is the latest How it Works flow (connect up to four sources, Read,
@@ -90,10 +93,28 @@ scanner it was designed on; use `how-it-works` for the site module.
 - These were built as full-page prototypes: the scanners fill at least
   one viewport of height, and the hero listens to window scroll/wheel/touch.
 - The hero hides the prototype's fake site top bar unless `showTopbar` is set.
-  Append `?debug` to the host URL to show its Leva tuning panel.
+  Append `?debug` to the host URL to show its tuning panel.
 - Size: the shared runtime is ~250 kB gzip, `how-it-works` adds ~870 kB (including the inlined site background),
   `scanner` adds ~45 kB, and the
   hero adds ~1.6 MB (three.js plus the inlined textures and model).
+
+## Develop the native Vue source
+
+In this handoff repository, install the source dependencies (the root
+`package.json` describes the distributable package):
+
+```sh
+npm install --no-save $(node -p "Object.entries({...JSON.parse(require('fs').readFileSync('package-source.json')).dependencies,...JSON.parse(require('fs').readFileSync('package-source.json')).devDependencies}).map(([name,version])=>name+'@'+version).join(' ')")
+npx vite --config vite.preview.config.ts
+npx vite build --config vite.vue.config.ts
+```
+
+Open `/vue-preview.html` for both native widgets and `/reference-preview.html`
+for the shipped reference. The preview imports native TypeScript source; use
+`/vue-preview.html?bundle` to preview the distributable `vue.js` instead.
+Use `npx tsc --project tsconfig.vue.json` to check the Vue source.
+Vue JSX is only required when rebuilding the source. Consumers of
+`@deasy/embeds/vue` need Vue 3, with no extra compiler plugin.
 
 ## Rebuild and publish
 

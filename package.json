@@ -4,12 +4,33 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": { "types": "./index.d.ts", "default": "./index.js" },
-    "./scanner": { "types": "./scanner.d.ts", "default": "./scanner.js" },
-    "./how-it-works": { "types": "./how-it-works.d.ts", "default": "./how-it-works.js" },
-    "./rotating-document": { "types": "./rotating-document.d.ts", "default": "./rotating-document.js" },
-    "./vue": { "types": "./vue.d.ts", "default": "./vue.js" }
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./scanner": {
+      "types": "./scanner.d.ts",
+      "default": "./scanner.js"
+    },
+    "./how-it-works": {
+      "types": "./how-it-works.d.ts",
+      "default": "./how-it-works.js"
+    },
+    "./rotating-document": {
+      "types": "./rotating-document.d.ts",
+      "default": "./rotating-document.js"
+    },
+    "./vue": {
+      "types": "./vue.d.ts",
+      "default": "./vue.js"
+    }
   },
-  "dependencies": { "three": "^0.180.0" },
-  "peerDependencies": { "vue": "^3.3.0" }
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
+  }
 }
