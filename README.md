@@ -73,10 +73,9 @@ import { DeasyHowItWorks, DeasyRotatingDocument, DeasyScanner } from '@deasy/emb
 </template>
 ```
 
-Each component mounts the existing isolated embed in `onMounted`, forwards
-reactive display props, and unmounts it when Vue removes the component. The
-Vue entry keeps Vue as a peer dependency; the existing widget runtime remains
-bundled with the package.
+`DeasyRotatingDocument` now renders the cube v2 scene directly with Vue and
+Three.js. The Scanner and How it Works components currently mount their shipped
+isolated runtimes from Vue and clean them up with the component lifecycle.
 
 `how-it-works` is the latest How it Works flow (connect up to four sources, Read,
 Curate, Activate) with the reviewed home-v2 styling, fixed header, and

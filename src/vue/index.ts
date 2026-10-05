@@ -5,7 +5,8 @@ import {
   type HowItWorksHandle,
 } from '../how-it-works'
 import { mountScanner, type ScannerOptions, type ScannerHandle } from '../scanner'
-import { mountRotatingDocument, type RotatingDocumentOptions, type RotatingDocumentHandle } from '../rotating-document'
+import type { RotatingDocumentOptions, RotatingDocumentHandle } from '../rotating-document'
+import { VueRotatingDocument } from './rotatingDocument'
 
 /** Vue component props shared by all embeds. */
 export type VueMountProps = { loadFonts?: boolean }
@@ -68,31 +69,8 @@ export const DeasyScanner = defineComponent({
   },
 })
 
-/** The shipped 3D Rotating Document widget as a Vue component. */
-export const DeasyRotatingDocument = defineComponent({
-  name: 'DeasyRotatingDocument',
-  inheritAttrs: false,
-  props: {
-    showTopbar: { type: Boolean, default: false },
-    loadFonts: { type: Boolean, default: true },
-  },
-  setup(props, { attrs }) {
-    const el = ref<HTMLElement>()
-    let handle: RotatingDocumentHandle | undefined
-    onMounted(() => {
-      if (!el.value) return
-      handle = mountRotatingDocument(el.value, {
-        showTopbar: props.showTopbar,
-        loadFonts: props.loadFonts,
-      })
-    })
-    watch(() => props.showTopbar, (showTopbar) => {
-      el.value?.toggleAttribute('data-topbar', showTopbar)
-    })
-    onBeforeUnmount(() => handle?.unmount())
-    return () => h('div', { ...attrs, ref: el, class: ['deasy-vue-embed', attrs.class] })
-  },
-})
+/** Native Vue + Three.js implementation of the shipped rotating-document hero. */
+export const DeasyRotatingDocument = VueRotatingDocument
 
 export type { HowItWorksOptions, ScannerOptions, RotatingDocumentOptions }
 export type { HowItWorksHandle, ScannerHandle, RotatingDocumentHandle }

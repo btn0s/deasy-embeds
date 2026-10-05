@@ -10,5 +10,6 @@
     "./rotating-document": { "types": "./rotating-document.d.ts", "default": "./rotating-document.js" },
     "./vue": { "types": "./vue.d.ts", "default": "./vue.js" }
   },
+  "dependencies": { "three": "^0.180.0" },
   "peerDependencies": { "vue": "^3.3.0" }
 }

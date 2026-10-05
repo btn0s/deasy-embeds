@@ -1,7 +1,7 @@
 import { defineComponent, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { mountHowItWorks } from './how-it-works.js'
 import { mountScanner } from './scanner.js'
-import { mountRotatingDocument } from './rotating-document.js'
+import { VueRotatingDocument } from './src/vue/runtime/rotatingDocument.js'
 
 function component(name, propDefaults, mount, update) {
   return defineComponent({
@@ -35,18 +35,4 @@ export const DeasyScanner = component(
   ({ colorMode, transparent }) => ({ colorMode, transparent }),
 )
 
-export const DeasyRotatingDocument = defineComponent({
-  name: 'DeasyRotatingDocument',
-  inheritAttrs: false,
-  props: { showTopbar: Boolean, loadFonts: { type: Boolean, default: true } },
-  setup(props, { attrs }) {
-    const host = ref()
-    let handle
-    onMounted(() => {
-      if (host.value) handle = mountRotatingDocument(host.value, { ...props })
-    })
-    watch(() => props.showTopbar, (visible) => host.value?.toggleAttribute('data-topbar', visible))
-    onBeforeUnmount(() => handle?.unmount())
-    return () => h('div', { ...attrs, ref: host, class: ['deasy-vue-embed', attrs.class] })
-  },
-})
+export const DeasyRotatingDocument = VueRotatingDocument
