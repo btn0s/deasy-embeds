@@ -63,19 +63,19 @@ Vue in the host app, then import only the components you use:
 
 ```vue
 <script setup lang="ts">
-import { DeasyHowItWorks, DeasyRotatingDocument, DeasyScanner } from '@deasy/embeds/vue'
+import { DeasyHowItWorks, DeasyRotatingDocument } from '@deasy/embeds/vue'
 </script>
 
 <template>
   <DeasyHowItWorks design="site" />
-  <DeasyScanner color-mode="dark" />
   <DeasyRotatingDocument :show-topbar="false" />
 </template>
 ```
 
-`DeasyRotatingDocument` now renders the cube v2 scene directly with Vue and
-Three.js. The Scanner and How it Works components currently mount their shipped
-isolated runtimes from Vue and clean them up with the component lifecycle.
+`DeasyHowItWorks` and `DeasyRotatingDocument` are Vue implementations of the
+latest How it Works flow and cube v2 hero. They use Vue's composition API and
+own their flow state and Three.js scene directly. The separate legacy Scanner
+is not part of this Vue entry.
 
 `how-it-works` is the latest How it Works flow (connect up to four sources, Read,
 Curate, Activate) with the reviewed home-v2 styling, fixed header, and
