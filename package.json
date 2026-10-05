@@ -7,6 +7,8 @@
     ".": { "types": "./index.d.ts", "default": "./index.js" },
     "./scanner": { "types": "./scanner.d.ts", "default": "./scanner.js" },
     "./how-it-works": { "types": "./how-it-works.d.ts", "default": "./how-it-works.js" },
-    "./rotating-document": { "types": "./rotating-document.d.ts", "default": "./rotating-document.js" }
-  }
+    "./rotating-document": { "types": "./rotating-document.d.ts", "default": "./rotating-document.js" },
+    "./vue": { "types": "./vue.d.ts", "default": "./vue.js" }
+  },
+  "peerDependencies": { "vue": "^3.3.0" }
 }

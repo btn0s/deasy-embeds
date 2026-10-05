@@ -56,6 +56,28 @@ In React, mount into a ref in an effect and call `unmount()` in the cleanup.
 Import the subpaths (`/how-it-works`, `/scanner`, `/rotating-document`) rather than the root so
 a page that only needs one blade doesn't load three.js.
 
+## Vue
+
+The `/vue` entry exports Vue 3 components for all three shipped widgets. Install
+Vue in the host app, then import only the components you use:
+
+```vue
+<script setup lang="ts">
+import { DeasyHowItWorks, DeasyRotatingDocument, DeasyScanner } from '@deasy/embeds/vue'
+</script>
+
+<template>
+  <DeasyHowItWorks design="site" />
+  <DeasyScanner color-mode="dark" />
+  <DeasyRotatingDocument :show-topbar="false" />
+</template>
+```
+
+Each component mounts the existing isolated embed in `onMounted`, forwards
+reactive display props, and unmounts it when Vue removes the component. The
+Vue entry keeps Vue as a peer dependency; the existing widget runtime remains
+bundled with the package.
+
 `how-it-works` is the latest How it Works flow (connect up to four sources, Read,
 Curate, Activate) with the reviewed home-v2 styling, fixed header, and
 cream-on-charcoal palette by default. Use `mountHowItWorks(el)` or

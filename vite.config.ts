@@ -77,10 +77,12 @@ export default defineConfig({
         scanner: `${embeds}src/scanner.tsx`,
         'how-it-works': `${embeds}src/how-it-works.tsx`,
         'rotating-document': `${embeds}src/rotating-document.tsx`,
+        vue: `${embeds}src/vue/index.ts`,
       },
       formats: ['es'],
     },
     rollupOptions: {
+      external: ['vue'],
       output: { chunkFileNames: 'chunks/[name]-[hash].js' },
     },
   },
