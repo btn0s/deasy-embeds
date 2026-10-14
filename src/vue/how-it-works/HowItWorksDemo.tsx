@@ -1,5 +1,8 @@
-import { computed, defineComponent, shallowRef, type CSSProperties, type PropType } from 'vue';
+import { computed, defineComponent, inject, provide, shallowRef, type CSSProperties, type PropType } from 'vue';
 import { watchAfterMount, useMotionPreference } from '../composables';
+
+let instanceSeq = 0;
+const useScopeId = () => inject<string>('hiw-scope', 'hiw');
 import { AnimatePresence, MotionConfig, animate as tween, motion, useAnimate, useMotionValue, useTransform, type AnimationPlaybackControls, RowValue } from "motion-v";
 import { combos, fieldEdges, fieldNodes, type Combo, type SourceId } from './bladeData';
 import { DeasyLogo } from './DeasyLogo';
@@ -242,6 +245,7 @@ const DeasyHub = defineComponent({
   setup(props, {
     slots
   }) {
+    const scopeId = useScopeId();
     const ids = computed(() => props.ids);
     return () => <div class={`hub ${ids.value.length ? 'live' : ''}`}>
       <span class="hub-logo">
@@ -250,7 +254,7 @@ const DeasyHub = defineComponent({
       <div class="hub-sources">
         <span class="hub-hint" hidden={ids.value.length > 0}>Click a source to connect</span>
         <AnimatePresence initial={false}>
-          {ids.value.map(id => <motion.span class="hub-source" aria-hidden="true" layoutId={`src-${id}`} key={id} initial={{
+          {ids.value.map(id => <motion.span class="hub-source" aria-hidden="true" layoutId={`${scopeId}-src-${id}`} key={id} initial={{
             opacity: 0,
             y: 6
           }} animate={{
@@ -348,15 +352,16 @@ const RunHead = defineComponent({
   setup(props, {
     slots
   }) {
+    const scopeId = useScopeId();
     const ids = computed(() => props.ids);
     const phase = computed(() => props.phase);
     return () => <div class="run-head">
       {phase.value >= 0 ? <div class="linkstrip" aria-label={`${ids.value.map(id => sourceById[id].name).join(', ')} connected to Deasy`}>
           <span class="lk-sources" aria-hidden="true">
-            {ids.value.map(id => <motion.span class="lk-source" layoutId={`src-${id}`} transition={MORPH} key={id}><Etch source={sourceById[id]} /></motion.span>)}
+            {ids.value.map(id => <motion.span class="lk-source" layoutId={`${scopeId}-src-${id}`} transition={MORPH} key={id}><Etch source={sourceById[id]} /></motion.span>)}
           </span>
           <span class="lk-pipe" aria-hidden="true">{[0, 1, 2].map(index => <i key={index} />)}</span>
-          <motion.span class="lk-mark" layoutId="deasy-mark" transition={MORPH} aria-hidden="true"><DeasyLogo /></motion.span>
+          <motion.span class="lk-mark" layoutId={`${scopeId}-deasy-mark`} transition={MORPH} aria-hidden="true"><DeasyLogo /></motion.span>
         </div> : <div class="linkstrip linkstrip-placeholder" aria-hidden="true" />}
       <Stepper phase={phase.value} />
       <span />
@@ -541,6 +546,7 @@ const PileStage = defineComponent({
   setup(props, {
     slots
   }) {
+    const scopeId = useScopeId();
     const ids = computed(() => props.ids);
     const combo = computed(() => props.combo);
     const phase = computed(() => props.phase);
@@ -666,7 +672,7 @@ const PileStage = defineComponent({
           }, index) => {
             const tab = tabOf[kind];
             if (kind === 'keep') {
-              return gathered.value ? <span class="filter-file vacated" data-kind={kind} key={index} /> : <motion.span class={`filter-file ${curating.value ? 'keep' : ''}`} layoutId={`doc-${index}`} transition={MORPH} data-kind={kind} data-paper={paperOf(index)} data-id={index} key={index} />;
+              return gathered.value ? <span class="filter-file vacated" data-kind={kind} key={index} /> : <motion.span class={`filter-file ${curating.value ? 'keep' : ''}`} layoutId={`${scopeId}-doc-${index}`} transition={MORPH} data-kind={kind} data-paper={paperOf(index)} data-id={index} key={index} />;
             }
             return <span class={`filter-file ${kind}`} data-kind={kind} data-at={at} data-paper={paperOf(index)} data-id={index} style={{
               '--sweep': `${sweepOf(index)}ms`
@@ -675,7 +681,7 @@ const PileStage = defineComponent({
               </span>;
           })}
           {gathered.value ? <div class="filter-result" key="result">
-              {keptIds.map(id => <motion.span class="filter-file keep" layoutId={`doc-${id}`} transition={MORPH} data-paper={paperOf(id)} data-id={id} key={id} />)}
+              {keptIds.map(id => <motion.span class="filter-file keep" layoutId={`${scopeId}-doc-${id}`} transition={MORPH} data-paper={paperOf(id)} data-id={id} key={id} />)}
             </div> : null}
         </FilePile>
       </div>
@@ -895,6 +901,7 @@ const ActivateStage = defineComponent({
   setup(props, {
     slots
   }) {
+    const scopeId = useScopeId();
     const ids = computed(() => props.ids);
     const combo = computed(() => props.combo);
     const systems = computed(() => ids.value.map(id => sourceById[id].name));
@@ -953,7 +960,7 @@ const ActivateStage = defineComponent({
               answers with are marked when the answer lands. */}
           <div class="context-strip">
             <span class="kept-strip">
-              {keptIds.map(id => <motion.span class={`filter-file keep ${answered.value && citedIds.value.includes(id) ? 'cited' : ''}`} layoutId={`doc-${id}`} transition={MORPH} data-paper={paperOf(id)} key={id} />)}
+              {keptIds.map(id => <motion.span class={`filter-file keep ${answered.value && citedIds.value.includes(id) ? 'cited' : ''}`} layoutId={`${scopeId}-doc-${id}`} transition={MORPH} data-paper={paperOf(id)} key={id} />)}
             </span>
             <span class="context-caption">{short(combo.value.counts[4])} curated {unitOf(ids.value)}</span>
           </div>
@@ -1051,6 +1058,7 @@ export const HowItWorksDemo = defineComponent({
   setup(props, {
     slots
   }) {
+    provide('hiw-scope', `hiw-${++instanceSeq}`);
     const fixedHeader = computed(() => props.fixedHeader ?? false);
     const connected = shallowRef<SourceId[]>([]);
     const setConnected = next => connected.value = typeof next === "function" ? next(connected.value) : next;
@@ -1092,7 +1100,6 @@ export const HowItWorksDemo = defineComponent({
     const next = () => go(phase.value === 'read' ? 'curate' : 'activate');
     return () => <MotionConfig reducedMotion="user">
       <section class="wrap scan-section" id="how-it-works">
-        <div class="hiw-container">
         <div class="scanner-toolbar">
           {!running.value ? null : <>
               <span />
@@ -1122,7 +1129,6 @@ export const HowItWorksDemo = defineComponent({
                 </div>
             </div>
           </div>
-        </div>
         </div>
       </section>
     </MotionConfig>;

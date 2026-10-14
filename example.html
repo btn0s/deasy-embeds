@@ -3,53 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Deasy embeds — plain HTML host</title>
+    <title>Deasy embeds</title>
     <style>
-      body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #fff; color: #111; }
-      h2 { margin: 32px 24px 12px; font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: #888; }
+      body { margin: 0; background: #2f2c25; color: #f0ebe3; font: 16px/1.5 system-ui, sans-serif; }
     </style>
     <script type="importmap">
       { "imports": { "vue": "https://unpkg.com/vue@3.5.43/dist/vue.esm-browser.prod.js" } }
     </script>
   </head>
   <body>
-    <h2>How it Works — Vue handoff, dark</h2>
-    <div id="vue-how-it-works-dark"></div>
-
-    <h2>How it Works — Vue handoff, light</h2>
-    <div id="vue-how-it-works-light"></div>
-
-    <h2>How it Works — default shipped design (React reference)</h2>
-    <deasy-how-it-works></deasy-how-it-works>
-
-    <h2>Legacy Gunmetal — light</h2>
-    <deasy-how-it-works design="gunmetal" color-mode="light"></deasy-how-it-works>
-
-    <h2>Legacy Gunmetal — dark</h2>
-    <div id="how-it-works-dark"></div>
-
-    <h2>&lt;deasy-rotating-document&gt;</h2>
-    <deasy-rotating-document></deasy-rotating-document>
-
-    <h2>mountScanner(el, { colorMode: 'dark' })</h2>
-    <div id="scanner-dark"></div>
-
-    <h2>&lt;deasy-scanner color-mode="light"&gt;</h2>
-    <deasy-scanner color-mode="light"></deasy-scanner>
+    <div id="how-it-works-site"></div>
+    <div id="how-it-works-gunmetal-light"></div>
+    <div id="how-it-works-gunmetal-dark"></div>
+    <div id="rotating-document"></div>
 
     <script type="module">
       import { createApp, h } from 'vue'
-      import { DeasyHowItWorks } from './vue.js'
-      createApp({ render: () => h(DeasyHowItWorks, { colorMode: 'dark' }) }).mount('#vue-how-it-works-dark')
-      createApp({ render: () => h(DeasyHowItWorks, { colorMode: 'light' }) }).mount('#vue-how-it-works-light')
-    </script>
-    <script type="module">
-      import { mountHowItWorks, defineHowItWorksElement, mountScanner, defineScannerElement, defineRotatingDocumentElement } from './index.js'
-      defineHowItWorksElement()
-      window.howItWorks = mountHowItWorks(document.getElementById('how-it-works-dark'), { design: 'gunmetal', colorMode: 'dark' })
-      defineScannerElement()
-      defineRotatingDocumentElement()
-      window.scanner = mountScanner(document.getElementById('scanner-dark'), { colorMode: 'dark' })
+      import { DeasyHowItWorks, DeasyRotatingDocument } from './vue.js'
+      createApp({ render: () => h(DeasyHowItWorks) }).mount('#how-it-works-site')
+      createApp({ render: () => h(DeasyHowItWorks, { design: 'gunmetal', colorMode: 'light' }) }).mount('#how-it-works-gunmetal-light')
+      createApp({ render: () => h(DeasyHowItWorks, { design: 'gunmetal', colorMode: 'dark' }) }).mount('#how-it-works-gunmetal-dark')
+      createApp({ render: () => h(DeasyRotatingDocument) }).mount('#rotating-document')
     </script>
   </body>
 </html>

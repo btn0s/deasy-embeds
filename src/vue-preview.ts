@@ -14,7 +14,6 @@ createApp({
     h('nav', { class: 'preview-nav', 'aria-label': 'Vue port preview sections' }, [
       h('a', { href: '#how-it-works' }, 'How it Works'),
       h('a', { href: '#cube' }, 'Cube v2'),
-      h('a', { href: 'reference-preview.html' }, 'Shipped reference'),
       h('button', {
         class: 'preview-toggle',
         type: 'button',
@@ -23,11 +22,11 @@ createApp({
       }, colorMode.value === 'dark' ? 'Dark mode: on' : 'Dark mode: off'),
     ]),
     h('div', { id: 'how-it-works' }, [
-      h('div', { class: 'preview-label' }, 'Vue port · Latest How it Works'),
       h(DeasyHowItWorks, { colorMode: colorMode.value }),
+      h(DeasyHowItWorks, { design: 'gunmetal', colorMode: 'light' }),
+      h(DeasyHowItWorks, { design: 'gunmetal', colorMode: 'dark' }),
     ]),
     h('div', { id: 'cube' }, [
-      h('div', { class: 'preview-label' }, 'Vue port · Rotating Document / Cube v2'),
       h(DeasyRotatingDocument),
     ]),
   ]),
