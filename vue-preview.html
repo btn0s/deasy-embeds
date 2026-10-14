@@ -7,10 +7,16 @@
     <style>
       html { scroll-behavior: smooth; background: #2f2c25; }
       body { margin: 0; font-family: 'Rethink Sans', sans-serif; }
-      .preview-nav { position: sticky; top: 0; z-index: 20; display: flex; gap: 8px; padding: 10px 18px; background: #1f1d19; border-bottom: 1px solid #49463f; }
+      .preview-nav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 8px; padding: 10px 18px; background: #1f1d19; border-bottom: 1px solid #49463f; }
       .preview-nav a { color: #f7f3eb; font-size: 12px; text-decoration: none; padding: 7px 10px; border: 1px solid #49463f; border-radius: 4px; }
-      .preview-label { padding: 18px 24px 0; color: #8f877a; background: transparent; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
-      #cube { scroll-margin-top: 48px; }
+      .preview-nav a:hover { border-color: #7a7366; }
+      .preview-section { scroll-margin-top: 48px; }
+      .preview-section--light { background: #fbf9f5; color: #24221e; }
+      .preview-section--dark { background: #211e1c; color: #f0ebe3; }
+      .preview-section--cube { background: #24221e; color: #f0ebe3; }
+      .preview-label { box-sizing: border-box; max-width: 1080px; margin: 0 auto; padding: 36px 28px 0; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; color: #b8b0a4; font-size: 14px; font-weight: 500; }
+      .preview-section--light .preview-label { color: #5c5750; }
+      .preview-label code { font: 12px/1.4 'IBM Plex Mono', ui-monospace, monospace; opacity: 0.8; }
       .preview-toggle { margin-left: auto; color: #f7f3eb; background: none; font: inherit; font-size: 12px; padding: 7px 10px; border: 1px solid #49463f; border-radius: 4px; cursor: pointer; }
     </style>
   </head>

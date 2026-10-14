@@ -3,19 +3,124 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Deasy embeds</title>
+    <title>Deasy Vue embeds</title>
     <style>
-      body { margin: 0; background: #2f2c25; color: #f0ebe3; font: 16px/1.5 system-ui, sans-serif; }
+      html { scroll-behavior: smooth; background: #2f2c25; }
+      body { margin: 0; background: #2f2c25; color: #f0ebe3; font: 15px/1.5 'Rethink Sans', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+      .handoff-bar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: rgb(31 29 25 / 92%);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid #49463f;
+      }
+      .handoff-title {
+        margin-right: 6px;
+        color: #f0ebe3;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .handoff-bar a {
+        color: #d9d2c4;
+        font-size: 12px;
+        text-decoration: none;
+        padding: 6px 10px;
+        border: 1px solid #49463f;
+        border-radius: 4px;
+        transition: border-color 140ms ease, color 140ms ease;
+      }
+      .handoff-bar a:hover {
+        color: #fbf9f5;
+        border-color: #7a7366;
+      }
+      .handoff-bar .repo-link {
+        margin-left: auto;
+        color: #f0ebe3;
+        background: #2c2924;
+      }
+      .embed-section {
+        scroll-margin-top: 48px;
+      }
+      .embed-section--site { background: #2f2c25; color: #f0ebe3; }
+      .embed-section--light { background: #fbf9f5; color: #24221e; }
+      .embed-section--dark { background: #211e1c; color: #f0ebe3; }
+      .embed-section--cube { background: #24221e; color: #f0ebe3; }
+      .section-label {
+        box-sizing: border-box;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 36px 28px 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px 16px;
+        color: #b8b0a4;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .embed-section--light .section-label {
+        color: #5c5750;
+      }
+      .section-label code {
+        font: 12px/1.4 'IBM Plex Mono', ui-monospace, monospace;
+        opacity: 0.8;
+      }
+      @media (max-width: 640px) {
+        .section-label { padding: 28px 14px 0; }
+      }
     </style>
     <script type="importmap">
       { "imports": { "vue": "https://unpkg.com/vue@3.5.43/dist/vue.esm-browser.prod.js" } }
     </script>
   </head>
   <body>
-    <div id="how-it-works-site"></div>
-    <div id="how-it-works-gunmetal-light"></div>
-    <div id="how-it-works-gunmetal-dark"></div>
-    <div id="rotating-document"></div>
+    <header class="handoff-bar">
+      <span class="handoff-title">Deasy Vue embeds</span>
+      <a href="#site">Site design</a>
+      <a href="#gunmetal-light">Gunmetal light</a>
+      <a href="#gunmetal-dark">Gunmetal dark</a>
+      <a href="#cube">Cube v2</a>
+      <a class="repo-link" href="https://github.com/btn0s/deasy-embeds" target="_blank" rel="noreferrer">github.com/btn0s/deasy-embeds ↗</a>
+    </header>
+
+    <section id="site" class="embed-section embed-section--site">
+      <div class="section-label">
+        <span>How it Works — Site design</span>
+        <code>&lt;DeasyHowItWorks /&gt;</code>
+      </div>
+      <div id="how-it-works-site"></div>
+    </section>
+
+    <section id="gunmetal-light" class="embed-section embed-section--light">
+      <div class="section-label">
+        <span>How it Works — Gunmetal (light)</span>
+        <code>&lt;DeasyHowItWorks design="gunmetal" color-mode="light" /&gt;</code>
+      </div>
+      <div id="how-it-works-gunmetal-light"></div>
+    </section>
+
+    <section id="gunmetal-dark" class="embed-section embed-section--dark">
+      <div class="section-label">
+        <span>How it Works — Gunmetal (dark)</span>
+        <code>&lt;DeasyHowItWorks design="gunmetal" color-mode="dark" /&gt;</code>
+      </div>
+      <div id="how-it-works-gunmetal-dark"></div>
+    </section>
+
+    <section id="cube" class="embed-section embed-section--cube">
+      <div class="section-label">
+        <span>Rotating Document — Cube v2</span>
+        <code>&lt;DeasyRotatingDocument /&gt;</code>
+      </div>
+      <div id="rotating-document"></div>
+    </section>
 
     <script type="module">
       import { createApp, h } from 'vue'

@@ -6,7 +6,7 @@ import scannerCss from '../prototypes/scanner-gunmetal/scanner.css?inline'
 import flowCss from '../prototypes/how-it-works/howItWorks.css?inline'
 import siteCss from '../prototypes/how-it-works-site/site.css?inline'
 import { loadEmbedFonts, adaptEmbedCss, loadDocumentRules } from './composables'
-const styles = adaptEmbedCss([baselineCss, brandCss, scannerCss, flowCss, siteCss, '.variant-shell{min-height:0;font-family:var(--sans);font-size:var(--body-size);line-height:var(--body-line-height);-webkit-font-smoothing:antialiased}.variant-shell.hiw-site-page{min-height:0;background:#2f2c25}.variant-shell.hiw-site-page[data-surround=light]{background:#fbf9f5}.variant-shell[data-transparent]{background:transparent}.scanner-gunmetal{min-height:0;padding-block:48px 64px}.scan-section{margin-top:0}'].join('\n'))
+const styles = adaptEmbedCss([baselineCss, brandCss, scannerCss, flowCss, siteCss, '.variant-shell{min-height:0;font-family:var(--sans);font-size:var(--body-size);line-height:var(--body-line-height);-webkit-font-smoothing:antialiased}.variant-shell.hiw-site-page{min-height:0;background:#2f2c25}.variant-shell.hiw-site-page[data-surround=light]{background:#fbf9f5}.variant-shell[data-transparent]{background:transparent}.scanner-gunmetal{min-height:0;padding-block:12px 56px}.scan-section{margin-top:0}'].join('\n'))
 export const VueHowItWorks = defineComponent({
   name: 'DeasyHowItWorks',
   props: { design: { type: String, default: 'site' }, colorMode: { type: String, default: 'dark' }, transparent: Boolean, loadFonts: { type: Boolean, default: true } },
