@@ -59,7 +59,6 @@ const comboFor = (ids: readonly SourceId[]): Combo => {
     systems: combos[ids[0]].systems,
   }
 }
-const countLabel = (n: number) => (n === 1 ? '1 source connected' : `${n} sources connected`)
 
 /* A fixed hash stands in for randomness, so the pile scatters like a real
    folder but draws the same every time. */
@@ -71,7 +70,7 @@ const paperOf = (index: number) => Math.floor(scatter(index, 3) * 4)
 
 /* Read's sweep crosses the pile left to right in this many seconds. */
 const READ_SWEEP = 1.4
-const PILE_COLUMNS = 15
+const PILE_COLUMNS = 12
 const sweepOf = (index: number) => Math.round(((index % PILE_COLUMNS) / PILE_COLUMNS) * READ_SWEEP * 820 + scatter(index, 7) * 120)
 
 const stepNames = ['Read', 'Curate', 'Activate'] as const
@@ -86,15 +85,15 @@ const EASE = [0.19, 1, 0.22, 1] as const
 const EASE_IN_OUT = [0.645, 0.045, 0.355, 1] as const
 
 /* ── The pile ───────────────────────────────────────────────────────────────
-   Sixty sheets, twelve of them sound. Read tabs each problem sheet with
+   Forty-eight sheets, ten of them sound. Read tabs each problem sheet with
    what is wrong with it; Curate removes it in the beat that names that
-   problem; the twelve that are left go on to the agent. */
+   problem; the ten that are left go on to the agent. */
 
 type Kind = 'dup' | 'old' | 'sen' | 'sta' | 'keep'
 const kinds: readonly Kind[] = (
   'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' +
   'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' +
-  'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup'
+  'dup sta old dup keep sen sta keep'
 ).split(' ') as Kind[]
 /* An old version is a kind of duplicate, so it carries the same tab. */
 const tabOf: Record<Kind, 'dup' | 'sen' | 'sta' | null> = { dup: 'dup', old: 'dup', sen: 'sen', sta: 'sta', keep: null }
@@ -262,7 +261,7 @@ function RunHead({ ids, phase }: { ids: readonly SourceId[]; phase: number }) {
               <motion.span className="lk-source" layoutId={`src-${id}`} transition={MORPH} key={id}><Etch source={sourceById[id]} /></motion.span>
             ))}
           </span>
-          <span className="lk-pipe" aria-hidden="true" />
+          <span className="lk-pipe" aria-hidden="true">{[0, 1, 2].map((index) => <i key={index} />)}</span>
           <motion.span className="lk-mark" layoutId="deasy-mark" transition={MORPH} aria-hidden="true"><DeasyLogo /></motion.span>
         </div>
       ) : <div className="linkstrip linkstrip-placeholder" aria-hidden="true" />}
@@ -673,10 +672,13 @@ function ActivateStage({ ids, combo }: { ids: readonly SourceId[]; combo: Combo 
           </div>
           <motion.div className="graph-wrap" {...arrive(1.6)}>
             <EntityGraph systems={systems} />
+            <div className="graph-legend" aria-hidden="true">
+              <span><i data-mark="entity" />Entity</span>
+              <span><i data-mark="path" />Answer path</span>
+            </div>
           </motion.div>
         </div>
         <motion.div className="answer good-answer" {...arrive(ANSWER_AT)} aria-live="polite">
-          <div className="verdict">{systems.length > 1 ? `From ${systems.length} sources` : `From your ${systems[0]}`}</div>
           <p>
             Those accounts renew on a <strong>12-month term with 60 days’ notice</strong>, under v4 of the master agreement.
             Subscriptions that started before November 2024 stay on the legacy 30-day notice.
@@ -779,11 +781,9 @@ export function HowItWorksDemo({ fixedHeader = false }: { fixedHeader?: boolean 
     <MotionConfig reducedMotion="user">
       <section className="wrap scan-section" id="how-it-works">
         <div className="scanner-toolbar">
-          {!running ? (
-            <div className="blade-tab"><span className="tab-dot" />Connect one or more sources</div>
-          ) : (
+          {!running ? null : (
             <>
-              <div className="blade-tab selected-source-tab"><span className="tab-dot" />{countLabel(connected.length)}</div>
+              <span />
               <button className="source-switch" type="button" onClick={changeSource}>
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M2.5 5.5h9l-2.5-2.5M13.5 10.5h-9l2.5 2.5" />

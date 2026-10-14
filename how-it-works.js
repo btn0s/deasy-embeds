@@ -1,2 +1,2 @@
-import { n as e, t } from "./chunks/how-it-works-Dry6CKyO.js";
+import { n as e, t } from "./chunks/how-it-works-DpQxSXCp.js";
 export { t as defineHowItWorksElement, e as mountHowItWorks };

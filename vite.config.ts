@@ -66,7 +66,7 @@ export default defineConfig({
   define: { 'process.env.NODE_ENV': JSON.stringify('production') },
   build: {
     outDir: inMonorepo ? `${embeds}package` : embeds,
-    emptyOutDir: inMonorepo,
+    emptyOutDir: !inMonorepo,
     copyPublicDir: false,
     assetsInlineLimit: Number.POSITIVE_INFINITY,
     cssCodeSplit: false,
@@ -81,7 +81,6 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['vue'],
       output: { chunkFileNames: 'chunks/[name]-[hash].js' },
     },
   },

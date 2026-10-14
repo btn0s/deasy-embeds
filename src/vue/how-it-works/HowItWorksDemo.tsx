@@ -73,7 +73,6 @@ const comboFor = (ids: readonly SourceId[]): Combo => {
     systems: combos[ids[0]].systems
   };
 };
-const countLabel = (n: number) => n === 1 ? '1 source connected' : `${n} sources connected`;
 
 /* A fixed hash stands in for randomness, so the pile scatters like a real
    folder but draws the same every time. */
@@ -85,7 +84,7 @@ const paperOf = (index: number) => Math.floor(scatter(index, 3) * 4);
 
 /* Read's sweep crosses the pile left to right in this many seconds. */
 const READ_SWEEP = 1.4;
-const PILE_COLUMNS = 15;
+const PILE_COLUMNS = 12;
 const sweepOf = (index: number) => Math.round(index % PILE_COLUMNS / PILE_COLUMNS * READ_SWEEP * 820 + scatter(index, 7) * 120);
 const stepNames = ['Read', 'Curate', 'Activate'] as const;
 type Phase = 'connect' | 'read' | 'curate' | 'activate';
@@ -107,12 +106,12 @@ const EASE = [0.19, 1, 0.22, 1] as const;
 const EASE_IN_OUT = [0.645, 0.045, 0.355, 1] as const;
 
 /* ── The pile ───────────────────────────────────────────────────────────────
-   Sixty sheets, twelve of them sound. Read tabs each problem sheet with
+   Forty-eight sheets, ten of them sound. Read tabs each problem sheet with
    what is wrong with it; Curate removes it in the beat that names that
-   problem; the twelve that are left go on to the agent. */
+   problem; the ten that are left go on to the agent. */
 
 type Kind = 'dup' | 'old' | 'sen' | 'sta' | 'keep';
-const kinds: readonly Kind[] = ('dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' + 'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' + 'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup').split(' ') as Kind[];
+const kinds: readonly Kind[] = ('dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' + 'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' + 'dup sta old dup keep sen sta keep').split(' ') as Kind[];
 /* An old version is a kind of duplicate, so it carries the same tab. */
 const tabOf: Record<Kind, 'dup' | 'sen' | 'sta' | null> = {
   dup: 'dup',
@@ -356,7 +355,7 @@ const RunHead = defineComponent({
           <span class="lk-sources" aria-hidden="true">
             {ids.value.map(id => <motion.span class="lk-source" layoutId={`src-${id}`} transition={MORPH} key={id}><Etch source={sourceById[id]} /></motion.span>)}
           </span>
-          <span class="lk-pipe" aria-hidden="true" />
+          <span class="lk-pipe" aria-hidden="true">{[0, 1, 2].map(index => <i key={index} />)}</span>
           <motion.span class="lk-mark" layoutId="deasy-mark" transition={MORPH} aria-hidden="true"><DeasyLogo /></motion.span>
         </div> : <div class="linkstrip linkstrip-placeholder" aria-hidden="true" />}
       <Stepper phase={phase.value} />
@@ -490,6 +489,11 @@ const QualityPercent = defineComponent({
     resolving: {
       type: null as unknown as PropType<boolean>,
       required: true
+    },
+    /* Read climbs each figure from nothing alongside the file count. */
+    reading: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, {
@@ -497,20 +501,24 @@ const QualityPercent = defineComponent({
   }) {
     const initial = computed(() => props.initial);
     const resolving = computed(() => props.resolving);
+    const reading = computed(() => props.reading);
     const reduced = useMotionPreference();
-    const value = useMotionValue(initial.value);
+    const value = useMotionValue(reading.value ? 0 : initial.value);
     const label = useTransform(value, n => `${Math.round(n)}%`);
     watchAfterMount(() => {
       if (reduced.value) {
         value.set(resolving.value ? 0 : initial.value);
         return;
       }
-      const controls = tween(value, resolving.value ? 0 : initial.value, {
+      const controls = tween(value, resolving.value ? 0 : initial.value, reading.value ? {
+        duration: READ_SWEEP,
+        ease: EASE_IN_OUT
+      } : {
         duration: BEAT * 0.8,
         ease: EASE_IN_OUT
       });
       return () => controls.stop();
-    }, () => [initial.value, resolving.value, reduced.value, value]);
+    }, () => [initial.value, resolving.value, reading.value, reduced.value, value]);
     return () => <motion.strong class="quality-pct"><RowValue value={label} /></motion.strong>;
   }
 });
@@ -685,7 +693,7 @@ const PileStage = defineComponent({
             const active = curating.value && beat.value === check.clears;
             return <li class={`quality-row ${cleared ? 'cleared' : ''} ${active ? 'active' : ''}`} data-dim={check.key} key={check.key}>
                 <span class="quality-name">{check.label}</span>
-                <QualityPercent initial={combo.value.dims[index]} resolving={curating.value && beat.value >= check.clears} />
+                <QualityPercent initial={combo.value.dims[index]} resolving={curating.value && beat.value >= check.clears} reading={reading.value} />
               </li>;
           })}
         </ul>
@@ -951,10 +959,13 @@ const ActivateStage = defineComponent({
           </div>
           <motion.div class="graph-wrap" {...arrive(1.6)}>
             <EntityGraph systems={systems.value} />
+            <div class="graph-legend" aria-hidden="true">
+              <span><i data-mark="entity" />Entity</span>
+              <span><i data-mark="path" />Answer path</span>
+            </div>
           </motion.div>
         </div>
         <motion.div class="answer good-answer" {...arrive(ANSWER_AT)} aria-live="polite">
-          <div class="verdict">{systems.value.length > 1 ? `From ${systems.value.length} sources` : `From your ${systems.value[0]}`}</div>
           <p>
             Those accounts renew on a <strong>12-month term with 60 days’ notice</strong>, under v4 of the master agreement.
             Subscriptions that started before November 2024 stay on the legacy 30-day notice.
@@ -1081,9 +1092,10 @@ export const HowItWorksDemo = defineComponent({
     const next = () => go(phase.value === 'read' ? 'curate' : 'activate');
     return () => <MotionConfig reducedMotion="user">
       <section class="wrap scan-section" id="how-it-works">
+        <div class="hiw-container">
         <div class="scanner-toolbar">
-          {!running.value ? <div class="blade-tab"><span class="tab-dot" />Connect one or more sources</div> : <>
-              <div class="blade-tab selected-source-tab"><span class="tab-dot" />{countLabel(connected.value.length)}</div>
+          {!running.value ? null : <>
+              <span />
               <button class="source-switch" type="button" onClick={changeSource}>
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M2.5 5.5h9l-2.5-2.5M13.5 10.5h-9l2.5 2.5" />
@@ -1110,6 +1122,7 @@ export const HowItWorksDemo = defineComponent({
                 </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
     </MotionConfig>;

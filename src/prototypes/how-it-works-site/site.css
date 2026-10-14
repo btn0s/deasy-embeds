@@ -2,7 +2,9 @@
    The palette and printed pages also match the repo's 3D document scene. */
 .hiw-site-page {
   min-height: 100vh;
-  background: #2f2c25;
+  /* The prototype page sits on the site's cream; the embeds set their own
+     page colour. */
+  background: #fbf9f5;
   color: #24221e;
   font-family: var(--sans);
 }
@@ -32,8 +34,8 @@
   --cta-surface: var(--rust);
   --primary-hover: #aa4c0e;
   --graph-edge: color-mix(in srgb, var(--slate) 45%, transparent);
-  --graph-node: color-mix(in srgb, var(--slate) 38%, var(--chalk));
-  --graph-path: var(--pitch);
+  --graph-node: color-mix(in srgb, var(--slate) 70%, var(--chalk));
+  --graph-path: #a63d40;
 }
 .hiw-site .site-intro {
   display: grid;
@@ -134,7 +136,7 @@
   .scanner-gunmetal.hiw-site .stage { gap: 16px; }
   .hiw-site .quality-row { padding: 5px 0; border-bottom: var(--dots); }
   .scanner-gunmetal.hiw-site :is(.report-footer, .retrieve-footer) .button { min-height: 36px; padding: 0 16px; font-size: 12px; }
-  .scanner-gunmetal.hiw-site .filter-result { grid-template-columns: repeat(6, 32px); }
+  .scanner-gunmetal.hiw-site .filter-result { grid-template-columns: repeat(5, 32px); }
   .scanner-gunmetal.hiw-site .filter-result .filter-file { width: 32px; }
 }
 
@@ -206,8 +208,22 @@
 .hiw-site .quality { padding: 16px; border: var(--dots); border-radius: 4px; background: var(--chalk); }
 .hiw-site .quality-row { padding: 7px 0; }
 .hiw-site .quality-name { font-size: 13px; font-weight: 500; }
-.hiw-site .quality-pct { font-size: 24px; font-weight: 600; }
-.hiw-site .quality-row.active .quality-pct { color: var(--rust); }
+/* The three checks a sheet can be tabbed with wear that tab, and their
+   figures take its colour; Curate turns each green as it clears. */
+.hiw-site .quality-pct { color: var(--q-ink, var(--foreground)); font-size: 24px; font-weight: 600; }
+.hiw-site .quality-row[data-dim='dup'] { --q-tab: var(--metric-duplicate); --q-ink: var(--metric-duplicate); }
+.hiw-site .quality-row[data-dim='sen'] { --q-tab: var(--q-sen); --q-ink: var(--q-sen); }
+.hiw-site .quality-row[data-dim='sta'] { --q-tab: var(--flag-stale); --q-ink: var(--ink-soft); }
+.hiw-site .quality-row:is([data-dim='dup'], [data-dim='sen'], [data-dim='sta']) .quality-name::before {
+  display: inline-block;
+  width: 12px;
+  height: 4px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 2px;
+  background: var(--q-tab);
+  content: '';
+}
 .hiw-site .quality-row.cleared .quality-pct { color: var(--pine); }
 @media (max-width: 700px) {
   .hiw-site .quality { padding: 10px 12px; }
@@ -297,3 +313,85 @@
   .hiw-site .source-badge { min-width: 72px; }
 }
 .hiw-site .scanner-toolbar { min-height: 44px; align-items: center; }
+
+/* ── Dark ──────────────────────────────────────────────────────────────
+   The same widget on charcoal: the site palette shifts to dark surfaces
+   and cream ink, rust and the greens lift to read on them, and the base
+   tokens the shared styles use follow. Aliases on .variant-shell resolve
+   there, so the ones in use are set here directly. */
+.variant-shell[data-surround='dark'] .hiw-site {
+  --chalk: #3a362f;
+  --limestone: #2c2924;
+  --clay-limestone: #3a3630;
+  --clay: #4a463e;
+  --stone: #7a7366;
+  --ash: #b8b0a4;
+  --pitch: #f0ebe3;
+  --slate: #95aedd;
+  --pine: #8ba68c;
+  --rust: #d67e43;
+  --primary-hover: #e08f58;
+  --graph-path: #e07c77;
+  --background: #2c2924;
+  --card: #3a362f;
+  --popover: #3f3b33;
+  --muted: #2a2722;
+  --border: #4a463e;
+  --border-soft: #3f3b34;
+  --line: #4a463e;
+  --line-soft: #3f3b34;
+  --ink-faint: #8f877a;
+  --track: #3a3630;
+  --good-bg: color-mix(in srgb, #8ba68c 14%, #2c2924);
+  --surface-highlight: transparent;
+  --shadow-card: rgb(0 0 0 / 24%);
+  --shadow-ambient: rgb(0 0 0 / 32%);
+  color: var(--pitch);
+  color-scheme: dark;
+}
+.variant-shell[data-surround='dark'] .hiw-site .rig,
+.variant-shell[data-surround='dark'] .hiw-site .rig.has-source { border-color: var(--stone); }
+.variant-shell[data-surround='dark'] .hiw-site .source-card:hover { background: #423e36; }
+.variant-shell[data-surround='dark'] .hiw-site .step:not(.active):not(.done) { color: var(--ink-faint); }
+.variant-shell[data-surround='dark'] .hiw-site .button-primary { color: #211e1c; }
+.variant-shell[data-surround='dark'] .hiw-site .button-primary:hover { background: var(--primary-hover); }
+.variant-shell[data-surround='dark'] .hiw-site .source-switch:hover { color: var(--pitch); }
+/* The question bar stays the darkest surface, set off from the panel. */
+.variant-shell[data-surround='dark'] .hiw-site .chat-composer {
+  border-color: var(--clay);
+  background: #1f1d1a;
+  color: var(--pitch);
+}
+.variant-shell[data-surround='dark'] .hiw-site .chat-composer .query-icon { background: color-mix(in srgb, var(--pitch) 10%, transparent); }
+
+/* ── Container ─────────────────────────────────────────────────────────
+   One dotted frame holds the whole interactive section. The source
+   switch sits on the frame's top edge, so the frame keeps an even inset
+   and the panel never moves when the switch appears. The panel inside
+   trades its dashes for a hairline, so the dots read as the one frame. */
+.hiw-site .hiw-container {
+  --page: #fbf9f5;
+  position: relative;
+  padding: 28px;
+  border: 2px dotted var(--stone);
+  border-radius: 10px;
+}
+.variant-shell[data-surround='dark'] .hiw-site .hiw-container { --page: #2f2c25; }
+.scanner-gunmetal.hiw-site .hiw-container > .scanner-toolbar {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 24px;
+  min-height: 0;
+  padding: 0 8px;
+  background: var(--page);
+  translate: 0 -50%;
+}
+.hiw-site .hiw-container > .scanner-toolbar:not(:has(.source-switch)) { display: none; }
+.hiw-site .hiw-container > .scanner-toolbar .source-switch { min-height: 28px; }
+.variant-shell[data-color-mode] .hiw-site .hiw-container .rig,
+.variant-shell[data-color-mode] .hiw-site .hiw-container .rig.has-source { border: 1px solid var(--clay); }
+@media (max-width: 640px) {
+  .hiw-site .hiw-container { padding: 16px; border-radius: 8px; }
+  .scanner-gunmetal.hiw-site .hiw-container > .scanner-toolbar { right: 14px; }
+}
