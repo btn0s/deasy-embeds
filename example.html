@@ -8,9 +8,18 @@
       body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #fff; color: #111; }
       h2 { margin: 32px 24px 12px; font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: #888; }
     </style>
+    <script type="importmap">
+      { "imports": { "vue": "https://unpkg.com/vue@3.5.43/dist/vue.esm-browser.prod.js" } }
+    </script>
   </head>
   <body>
-    <h2>How it Works — default shipped design</h2>
+    <h2>How it Works — Vue handoff, dark</h2>
+    <div id="vue-how-it-works-dark"></div>
+
+    <h2>How it Works — Vue handoff, light</h2>
+    <div id="vue-how-it-works-light"></div>
+
+    <h2>How it Works — default shipped design (React reference)</h2>
     <deasy-how-it-works></deasy-how-it-works>
 
     <h2>Legacy Gunmetal — light</h2>
@@ -28,6 +37,12 @@
     <h2>&lt;deasy-scanner color-mode="light"&gt;</h2>
     <deasy-scanner color-mode="light"></deasy-scanner>
 
+    <script type="module">
+      import { createApp, h } from 'vue'
+      import { DeasyHowItWorks } from './vue.js'
+      createApp({ render: () => h(DeasyHowItWorks, { colorMode: 'dark' }) }).mount('#vue-how-it-works-dark')
+      createApp({ render: () => h(DeasyHowItWorks, { colorMode: 'light' }) }).mount('#vue-how-it-works-light')
+    </script>
     <script type="module">
       import { mountHowItWorks, defineHowItWorksElement, mountScanner, defineScannerElement, defineRotatingDocumentElement } from './index.js'
       defineHowItWorksElement()
