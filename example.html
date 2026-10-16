@@ -48,8 +48,6 @@
         scroll-margin-top: 48px;
       }
       .embed-section--site { background: #2f2c25; color: #f0ebe3; }
-      .embed-section--light { background: #fbf9f5; color: #24221e; }
-      .embed-section--dark { background: #211e1c; color: #f0ebe3; }
       .embed-section--cube { background: #24221e; color: #f0ebe3; }
       .section-label {
         box-sizing: border-box;
@@ -64,9 +62,6 @@
         color: #b8b0a4;
         font-size: 14px;
         font-weight: 500;
-      }
-      .embed-section--light .section-label {
-        color: #5c5750;
       }
       .section-label code {
         font: 12px/1.4 'IBM Plex Mono', ui-monospace, monospace;
@@ -84,8 +79,6 @@
     <header class="handoff-bar">
       <span class="handoff-title">Deasy Vue embeds</span>
       <a href="#site">Site design</a>
-      <a href="#gunmetal-light">Gunmetal light</a>
-      <a href="#gunmetal-dark">Gunmetal dark</a>
       <a href="#cube">Cube v2</a>
       <a class="repo-link" href="https://github.com/btn0s/deasy-embeds" target="_blank" rel="noreferrer">github.com/btn0s/deasy-embeds ↗</a>
     </header>
@@ -96,22 +89,6 @@
         <code>&lt;DeasyHowItWorks /&gt;</code>
       </div>
       <div id="how-it-works-site"></div>
-    </section>
-
-    <section id="gunmetal-light" class="embed-section embed-section--light">
-      <div class="section-label">
-        <span>How it Works — Gunmetal (light)</span>
-        <code>&lt;DeasyHowItWorks design="gunmetal" color-mode="light" /&gt;</code>
-      </div>
-      <div id="how-it-works-gunmetal-light"></div>
-    </section>
-
-    <section id="gunmetal-dark" class="embed-section embed-section--dark">
-      <div class="section-label">
-        <span>How it Works — Gunmetal (dark)</span>
-        <code>&lt;DeasyHowItWorks design="gunmetal" color-mode="dark" /&gt;</code>
-      </div>
-      <div id="how-it-works-gunmetal-dark"></div>
     </section>
 
     <section id="cube" class="embed-section embed-section--cube">
@@ -126,8 +103,6 @@
       import { createApp, h } from 'vue'
       import { DeasyHowItWorks, DeasyRotatingDocument } from './vue.js'
       createApp({ render: () => h(DeasyHowItWorks) }).mount('#how-it-works-site')
-      createApp({ render: () => h(DeasyHowItWorks, { design: 'gunmetal', colorMode: 'light' }) }).mount('#how-it-works-gunmetal-light')
-      createApp({ render: () => h(DeasyHowItWorks, { design: 'gunmetal', colorMode: 'dark' }) }).mount('#how-it-works-gunmetal-dark')
       createApp({ render: () => h(DeasyRotatingDocument) }).mount('#rotating-document')
     </script>
   </body>

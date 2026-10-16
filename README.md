@@ -27,15 +27,11 @@ import { DeasyHowItWorks, DeasyRotatingDocument } from '@deasy/embeds/vue'
 </script>
 
 <template>
-  <!-- Reviewed site design (default: design="site", colorMode="dark") -->
+  <!-- Reviewed site design on a dark surround (default) -->
   <DeasyHowItWorks />
 
   <!-- Site design on a light surround -->
   <DeasyHowItWorks color-mode="light" />
-
-  <!-- Legacy Gunmetal design (light or dark) -->
-  <DeasyHowItWorks design="gunmetal" color-mode="light" />
-  <DeasyHowItWorks design="gunmetal" color-mode="dark" />
 
   <!-- Rotating Document / Cube v2 hero -->
   <DeasyRotatingDocument :show-topbar="false" />
@@ -46,8 +42,7 @@ import { DeasyHowItWorks, DeasyRotatingDocument } from '@deasy/embeds/vue'
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `design` | `'site' \| 'gunmetal'` | `'site'` | `'site'` renders the reviewed home-v2 palette and fixed header; `'gunmetal'` renders the earlier Gunmetal treatment. |
-| `colorMode` | `'dark' \| 'light'` | `'dark'` | Dark or light palette for either design. |
+| `colorMode` | `'dark' \| 'light'` | `'dark'` | Dark or light surround. |
 | `transparent` | `boolean` | `false` | Leave the outer shell background transparent so the host page shows through. |
 | `loadFonts` | `boolean` | `true` | Inject the Google Fonts stylesheet into `document.head`. |
 
@@ -83,7 +78,7 @@ DEASY_EMBEDS_REPO=/path/to/deasy-embeds-clone node scripts/publish-deasy-embeds.
 ```
 
 The built package and `src/` tree are published to https://github.com/btn0s/deasy-embeds.
-Its `example.html` mounts the Vue components (`DeasyHowItWorks` in site, gunmetal light, and gunmetal dark, plus `DeasyRotatingDocument`) on a plain HTML page.
+Its `example.html` mounts the Vue components (`DeasyHowItWorks` and `DeasyRotatingDocument`) on a plain HTML page.
 
 ## Deprecated React entry points
 
