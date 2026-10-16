@@ -12,8 +12,8 @@
  *   single eyebrow style for every small heading.
  * - Colour by role. Rust means act or look here: the button, the current
  *   step, Deasy once it is connected. Green means kept, done or live.
- *   The three problems a sheet can be tabbed with keep their own muted
- *   tints; everything else is ink.
+ *   Each of the seven checks tabs the sheets it finds in its own muted
+ *   tint; everything else is ink.
  * - Flat surfaces and quiet rules keep the documents in focus.
  */
 
@@ -21,14 +21,22 @@
   --col: 860px;
   --panel-r: 4px;
   --q-sen: #a63d40;
+  --q-off: #b8921f;
+  --q-met: #3f8584;
+  --q-inc: #8a5a8c;
+  --q-con: #c46a2b;
   --ink-meter: color-mix(in srgb, var(--foreground) 42%, transparent);
   --graph-edge: color-mix(in srgb, var(--ink-faint) 34%, transparent);
-  /* The graph's legend: entities in blue, the answer's path in red. */
+  /* The graph: entities in blue, the answer's path in red. */
   --graph-node: color-mix(in srgb, #5f7193 70%, var(--card));
   --graph-path: #a63d40;
 }
 .variant-shell[data-color-mode='dark'] .how-it-works {
   --q-sen: #e07c77;
+  --q-off: #d9b44a;
+  --q-met: #6fb3b0;
+  --q-inc: #b58ab8;
+  --q-con: #e0955a;
   --graph-node: color-mix(in srgb, #95aedd 70%, var(--card));
   --graph-path: #e07c77;
 }
@@ -40,6 +48,20 @@
 .how-it-works .filter-file.old { --catch-color: var(--metric-duplicate); }
 .how-it-works .file-tip-reason[data-tone='sen'] { color: var(--q-sen); }
 .how-it-works .file-tip-reason[data-tone='old'] { color: var(--metric-duplicate); }
+/* The four checks past the first three tab, catch and name in their own
+   tints. */
+.how-it-works .file-flags [data-flag='off'] { --flag: var(--q-off); }
+.how-it-works .file-flags [data-flag='met'] { --flag: var(--q-met); }
+.how-it-works .file-flags [data-flag='inc'] { --flag: var(--q-inc); }
+.how-it-works .file-flags [data-flag='con'] { --flag: var(--q-con); }
+.how-it-works .filter-file.off { --catch-color: var(--q-off); }
+.how-it-works .filter-file.met { --catch-color: var(--q-met); }
+.how-it-works .filter-file.inc { --catch-color: var(--q-inc); }
+.how-it-works .filter-file.con { --catch-color: var(--q-con); }
+.how-it-works .file-tip-reason[data-tone='off'] { color: var(--q-off); }
+.how-it-works .file-tip-reason[data-tone='met'] { color: var(--q-met); }
+.how-it-works .file-tip-reason[data-tone='inc'] { color: var(--q-inc); }
+.how-it-works .file-tip-reason[data-tone='con'] { color: var(--q-con); }
 
 /* The one small heading style: plain sentence case. */
 .how-it-works .eyebrow {
@@ -361,10 +383,6 @@
 .how-it-works .graph-svg .ge.on { opacity: 1; stroke: var(--graph-path); stroke-width: 1.4; }
 .how-it-works .graph-svg .gn.lit { fill: var(--graph-path); }
 .how-it-works .graph-svg .ghalo { fill: var(--graph-path); opacity: 0.12; }
-.how-it-works .graph-legend { display: flex; gap: 16px; margin-top: 4px; color: var(--ink-soft); font: 500 12px/1.2 var(--sans); }
-.how-it-works .graph-legend span { display: inline-flex; align-items: center; gap: 6px; }
-.how-it-works .graph-legend i { width: 8px; height: 8px; border-radius: 50%; background: var(--graph-node); }
-.how-it-works .graph-legend i[data-mark='path'] { background: var(--graph-path); }
 .how-it-works .graph-svg .glabel { fill: var(--ink-soft); font-family: var(--sans); font-size: 12.5px; font-weight: 500; }
 .how-it-works .graph-svg .xcap { fill: var(--ink-faint); font-family: var(--sans); font-size: 12.5px; font-weight: 500; }
 .how-it-works .graph-svg .mnode { opacity: 0; animation: hiw-grow 300ms ease 3.8s forwards; }
@@ -692,10 +710,16 @@
 /* Quality results carry the curation story without duplicate meter marks. */
 .how-it-works .quality-name { font-weight: 500; color: var(--foreground); }
 .how-it-works .quality-pct { color: var(--q-ink, var(--foreground)); font: 600 21px/1.1 var(--sans); }
+/* Every check wears the tab it puts on a sheet, and its figure takes that
+   colour; Curate turns each green as it clears. */
 .how-it-works .quality-row[data-dim='dup'] { --q-tab: var(--metric-duplicate); --q-ink: var(--metric-duplicate); }
 .how-it-works .quality-row[data-dim='sen'] { --q-tab: var(--q-sen); --q-ink: var(--q-sen); }
 .how-it-works .quality-row[data-dim='sta'] { --q-tab: var(--flag-stale); --q-ink: var(--ink-soft); }
-.how-it-works .quality-row:is([data-dim='dup'], [data-dim='sen'], [data-dim='sta']) .quality-name::before {
+.how-it-works .quality-row[data-dim='off'] { --q-tab: var(--q-off); --q-ink: var(--q-off); }
+.how-it-works .quality-row[data-dim='met'] { --q-tab: var(--q-met); --q-ink: var(--q-met); }
+.how-it-works .quality-row[data-dim='inc'] { --q-tab: var(--q-inc); --q-ink: var(--q-inc); }
+.how-it-works .quality-row[data-dim='con'] { --q-tab: var(--q-con); --q-ink: var(--q-con); }
+.how-it-works .quality-name::before {
   display: inline-block;
   width: 12px;
   height: 4px;

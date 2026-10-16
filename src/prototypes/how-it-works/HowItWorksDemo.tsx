@@ -86,28 +86,32 @@ const EASE_IN_OUT = [0.645, 0.045, 0.355, 1] as const
 
 /* ── The pile ───────────────────────────────────────────────────────────────
    Forty-eight sheets, ten of them sound. Read tabs each problem sheet with
-   what is wrong with it; Curate removes it in the beat that names that
+   what is wrong with it, in the colour of the check that finds it; Curate removes it in the beat that names that
    problem; the ten that are left go on to the agent. */
 
-type Kind = 'dup' | 'old' | 'sen' | 'sta' | 'keep'
+type Kind = 'dup' | 'old' | 'sen' | 'sta' | 'off' | 'met' | 'inc' | 'con' | 'keep'
 const kinds: readonly Kind[] = (
-  'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' +
-  'dup sta old dup keep sen sta keep dup old sta dup sen keep sta old dup keep sta dup ' +
-  'dup sta old dup keep sen sta keep'
+  'dup sta off dup keep sen met keep con old inc dup sen keep sta off met keep inc con ' +
+  'dup con sta dup keep met off keep sen old inc sta dup keep con sen sta keep off dup ' +
+  'inc sta off dup keep sen met keep'
 ).split(' ') as Kind[]
 /* An old version is a kind of duplicate, so it carries the same tab. */
-const tabOf: Record<Kind, 'dup' | 'sen' | 'sta' | null> = { dup: 'dup', old: 'dup', sen: 'sen', sta: 'sta', keep: null }
+type Tab = Exclude<Kind, 'old' | 'keep'>
+const tabOf: Record<Kind, Tab | null> = {
+  dup: 'dup', old: 'dup', sen: 'sen', sta: 'sta', off: 'off', met: 'met', inc: 'inc', con: 'con', keep: null,
+}
 
-/* Curate's timeline, in seconds: four beats, then the result. */
+/* Curate's timeline, in seconds: a beat per check, then the result. */
 const BEAT = 0.65
 const CATCH_AT = 0.15
 const CATCH_SPREAD = 0.2
 const KEEP_AT = 4.65
-const beatOfSheet = (kind: Exclude<Kind, 'keep'>, index: number) =>
-  kind === 'dup' ? 0 : kind === 'sen' ? 1 : kind === 'sta' ? 2 + index % 2 : 4 + index % 3
+/* Each sheet goes in the beat of the check that tabbed it. */
+const beatOf: Record<Tab, number> = { dup: 0, sen: 1, sta: 2, off: 3, met: 4, inc: 5, con: 6 }
+const beatOfSheet = (kind: Exclude<Kind, 'keep'>) => beatOf[tabOf[kind]!]
 const sheets = kinds.map((kind, index) => ({
   kind,
-  at: kind === 'keep' ? KEEP_AT : beatOfSheet(kind, index) * BEAT + CATCH_AT + scatter(index, 4) * CATCH_SPREAD,
+  at: kind === 'keep' ? KEEP_AT : beatOfSheet(kind) * BEAT + CATCH_AT + scatter(index, 4) * CATCH_SPREAD,
 }))
 const keptIds = sheets.flatMap((sheet, index) => (sheet.kind === 'keep' ? [index] : []))
 const keptNames = [
@@ -123,7 +127,11 @@ const fileNames = [
   'Support_Runbook', 'Onboarding_Guide', 'Vendor_Contract', 'Roadmap', 'Incident_Review',
 ]
 const sensitiveNames = ['payroll_export_2024.csv', 'customer_emails.xlsx', 'offer_letter_JSmith.pdf', 'passport_scan.pdf', 'vendor_bank_details.xlsx']
-const found: Record<Kind, string> = { dup: 'Duplicate', old: 'Old version', sen: 'Sensitive data', sta: 'Stale', keep: 'No issues found' }
+const offTopicNames = ['Holiday_Party_Plan.docx', 'Fantasy_League_2024.xlsx', 'Office_Lunch_Menu.pdf', 'Team_Offsite_Photos.zip']
+const found: Record<Kind, string> = {
+  dup: 'Duplicate', old: 'Old version', sen: 'Sensitive data', sta: 'Stale', off: 'Off-topic',
+  met: 'Missing metadata', inc: 'Incomplete', con: 'Conflicting information', keep: 'No issues found',
+}
 
 /* A sheet keeps its name from Read to Curate; only the verdict changes. */
 const describeSheet = (id: number, curating: boolean) => {
@@ -134,6 +142,10 @@ const describeSheet = (id: number, curating: boolean) => {
     old: `${base}_v${1 + (id % 3)}_OLD.docx`,
     sen: sensitiveNames[id % sensitiveNames.length],
     sta: `${base}_2019.pptx`,
+    off: offTopicNames[id % offTopicNames.length],
+    met: `Scan_${4100 + id}.pdf`,
+    inc: `${base}_DRAFT.docx`,
+    con: `${base}_FINAL_v2.pdf`,
     keep: keptNames[keptIds.indexOf(id) % keptNames.length],
   }[kind]
   const reason = kind === 'keep' ? (curating ? 'Kept' : found.keep) : curating ? `Removed: ${found[kind].toLowerCase()}` : found[kind]
@@ -141,7 +153,7 @@ const describeSheet = (id: number, curating: boolean) => {
 }
 
 /* The seven checks, in the blade's order, and the Curate beat that clears
-   each. The three a sheet can carry as a tab keep their tab's colour. */
+   each. Each wears the colour of the tab it puts on a sheet. */
 const checks = [
   { key: 'dup', label: 'Duplicates', clears: 0 },
   { key: 'sta', label: 'Stale', clears: 2 },
@@ -672,10 +684,6 @@ function ActivateStage({ ids, combo }: { ids: readonly SourceId[]; combo: Combo 
           </div>
           <motion.div className="graph-wrap" {...arrive(1.6)}>
             <EntityGraph systems={systems} />
-            <div className="graph-legend" aria-hidden="true">
-              <span><i data-mark="entity" />Entity</span>
-              <span><i data-mark="path" />Answer path</span>
-            </div>
           </motion.div>
         </div>
         <motion.div className="answer good-answer" {...arrive(ANSWER_AT)} aria-live="polite">

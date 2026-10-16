@@ -30,6 +30,10 @@
   --good: var(--pine);
   --metric-duplicate: var(--slate);
   --q-sen: var(--ochre);
+  --q-off: #b8921f;
+  --q-met: #3f8584;
+  --q-inc: #8a5a8c;
+  --q-con: #a63d40;
   --brand-signal: var(--rust);
   --cta-surface: var(--rust);
   --primary-hover: #aa4c0e;
@@ -146,7 +150,9 @@
 .hiw-site .run-head .linkstrip { min-height: 22px; }
 .hiw-site .run-body { margin-top: 0; }
 .scanner-gunmetal.hiw-site .scanner { height: 432px; }
-.scanner-gunmetal.hiw-site .scanner:has([data-phase='activate']) { height: 472px; }
+/* Read and Curate stand as tall as Activate, so the larger quality key has
+   room above the actions and the panel holds one height through the run. */
+.scanner-gunmetal.hiw-site .scanner:is(:has(.pile-stage), :has([data-phase='activate'])) { height: 472px; }
 .hiw-site .column-label { margin: 0 0 14px; }
 @media (max-width: 640px) {
   .hiw-site .rig > .run-head { margin-bottom: 20px; }
@@ -204,21 +210,34 @@
   .hiw-site .activate-context { gap: 8px; }
 }
 
-/* Keep the quality findings prominent beside the shrinking file pile. */
-.hiw-site .quality { padding: 16px; border: var(--dots); border-radius: 4px; background: var(--chalk); }
-.hiw-site .quality-row { padding: 7px 0; }
-.hiw-site .quality-name { font-size: 13px; font-weight: 500; }
-/* The three checks a sheet can be tabbed with wear that tab, and their
-   figures take its colour; Curate turns each green as it clears. */
-.hiw-site .quality-pct { color: var(--q-ink, var(--foreground)); font-size: 24px; font-weight: 600; }
+/* The key carries the curation story, so it gets real weight beside the
+   shrinking file pile: a wider column, a firmer edge, bigger type. */
+.how-it-works.hiw-site .pile-stage { grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; }
+@media (max-width: 900px) {
+  .how-it-works.hiw-site .pile-stage { grid-template-columns: minmax(0, 1fr) 256px; gap: 28px; }
+}
+@media (max-width: 640px) {
+  .how-it-works.hiw-site .pile-stage { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+.hiw-site .quality { padding: 20px 22px 14px; border: 1px dashed var(--stone); border-radius: 4px; background: var(--chalk); }
+.hiw-site .quality-head { padding-bottom: 12px; font-size: 16px; }
+.hiw-site .quality-row { min-height: 40px; padding: 6px 0; }
+.hiw-site .quality-name { font-size: 14px; font-weight: 500; }
+.hiw-site .quality-pct { color: var(--q-ink, var(--foreground)); font-size: 26px; font-weight: 600; }
+/* Every check wears the tab it puts on a sheet, and its figure takes that
+   colour; Curate turns each green as it clears. */
 .hiw-site .quality-row[data-dim='dup'] { --q-tab: var(--metric-duplicate); --q-ink: var(--metric-duplicate); }
 .hiw-site .quality-row[data-dim='sen'] { --q-tab: var(--q-sen); --q-ink: var(--q-sen); }
 .hiw-site .quality-row[data-dim='sta'] { --q-tab: var(--flag-stale); --q-ink: var(--ink-soft); }
-.hiw-site .quality-row:is([data-dim='dup'], [data-dim='sen'], [data-dim='sta']) .quality-name::before {
+.hiw-site .quality-row[data-dim='off'] { --q-tab: var(--q-off); --q-ink: var(--q-off); }
+.hiw-site .quality-row[data-dim='met'] { --q-tab: var(--q-met); --q-ink: var(--q-met); }
+.hiw-site .quality-row[data-dim='inc'] { --q-tab: var(--q-inc); --q-ink: var(--q-inc); }
+.hiw-site .quality-row[data-dim='con'] { --q-tab: var(--q-con); --q-ink: var(--q-con); }
+.hiw-site .quality-name::before {
   display: inline-block;
-  width: 12px;
-  height: 4px;
-  margin-right: 8px;
+  width: 14px;
+  height: 5px;
+  margin-right: 10px;
   vertical-align: middle;
   border-radius: 2px;
   background: var(--q-tab);
@@ -226,11 +245,11 @@
 }
 .hiw-site .quality-row.cleared .quality-pct { color: var(--pine); }
 @media (max-width: 700px) {
-  .hiw-site .quality { padding: 10px 12px; }
-  .hiw-site .quality-head { font-size: 14px; }
-  .hiw-site .quality-row { padding: 4px 0; }
-  .hiw-site .quality-name { font-size: 12px; }
-  .hiw-site .quality-pct { font-size: 18px; }
+  .hiw-site .quality { padding: 12px 14px; }
+  .hiw-site .quality-head { padding-bottom: 8px; font-size: 14px; }
+  .hiw-site .quality-row { min-height: 30px; padding: 4px 0; }
+  .hiw-site .quality-name { font-size: 12.5px; }
+  .hiw-site .quality-pct { font-size: 19px; }
 }
 @media (max-width: 640px) {
   .scanner-gunmetal.hiw-site .scanner:has(.pile-stage) { height: 552px; }
@@ -332,6 +351,10 @@
   --rust: #d67e43;
   --primary-hover: #e08f58;
   --graph-path: #e07c77;
+  --q-off: #d9b44a;
+  --q-met: #6fb3b0;
+  --q-inc: #b58ab8;
+  --q-con: #e07c77;
   --background: #2c2924;
   --card: #3a362f;
   --popover: #3f3b33;
